@@ -8,11 +8,17 @@ public class Bishop extends Piece{
 		super(color,game,location);
 	}
 	
-	@Override
 	public void setPossibleMoves() {
 		
 		
 	}
+	
+	@Override
+	public String getUnicode() {
+		if(this.getColor()) { return "\u2657"; }
+		else { return "\u265d" ; }
+	}
+
 	
 
 }

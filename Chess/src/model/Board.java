@@ -9,7 +9,7 @@ public class Board {
 	public Board(Game game) {
 		_game = game;
 		_pieces = new Piece[8][8];
-		
+		makePieces();
 	}
 	
 	public void makePieces() {
@@ -56,6 +56,10 @@ public class Board {
 			}
 		}
 		return null;
+	}
+	
+	public boolean isEmpty(int x, int y){
+		return _pieces[x][y]==null;
 	}
 	
 	

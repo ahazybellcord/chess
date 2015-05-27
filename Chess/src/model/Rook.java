@@ -8,10 +8,15 @@ public class Rook extends Piece{
 		super(color,game,location);
 	}
 	
-	@Override
 	public void setPossibleMoves() {
 		
 		
+	}
+	
+	@Override
+	public String getUnicode() {
+		if(this.getColor()) { return "\u2656"; }
+		else { return "\u265c" ; }
 	}
 	
 

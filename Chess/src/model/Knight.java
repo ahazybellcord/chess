@@ -8,10 +8,15 @@ public class Knight extends Piece{
 		super(color,game,location);
 	}
 	
-	@Override
 	public void setPossibleMoves() {
 		
 		
+	}
+	
+	@Override
+	public String getUnicode() {
+		if(this.getColor()) { return "\u2658"; }
+		else { return "\u265e" ; }
 	}
 	
 

@@ -15,15 +15,19 @@ public class Piece {
 		_location = location;
 	}
 	
-	public void setPossibleMoves() {
-		
-	}
-	
 	public boolean moveIsValid(Point location) {
 		for(Point point : _possibleMoves) {
 			if(point.equals(location)) { return true; }
 		}
 		return false;
+	}
+	
+	public boolean getColor() {
+		return _color;
+	}
+	
+	public String getUnicode() {
+		return "";
 	}
 
 	
