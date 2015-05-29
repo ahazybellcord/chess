@@ -62,6 +62,10 @@ public class Board {
 		return _pieces[x][y]==null;
 	}
 	
+	public void setPiece(Piece piece, int x, int y){
+		_pieces[x][y] = piece;
+	}
+	
 	
 
 }
