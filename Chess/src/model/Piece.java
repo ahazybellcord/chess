@@ -45,9 +45,7 @@ public class Piece {
 
 	public boolean checkMove(int x, int y) {
 		Board b = this.getGame().getBoard();
-		System.out.println("Are we even?");
 		if(b.isEmpty(x, y)){
-			System.out.println("isEmpty");
 			 return true;
 		}
 		if(b.getPiece(x, y)!=null) {

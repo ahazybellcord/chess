@@ -12,7 +12,6 @@ public class Rook extends Piece{
 		//check +y
 		for(int i=this.getLocation().y+1; i<8; i++) {
 			if(checkMove(this.getLocation().x,i)) {
-				System.out.println("Test");
 				this.getPossibleMoves().add(new Point(this.getLocation().x,i));
 				if(!this.getGame().getBoard().isEmpty(this.getLocation().x, i)){
 					break;
