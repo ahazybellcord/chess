@@ -26,10 +26,34 @@ public class Piece {
 		return _color;
 	}
 	
+	public Point getLocation() {
+		return _location;
+	}
+	
+	public ArrayList<Point> getPossibleMoves() {
+		return _possibleMoves;
+	}
+	
 	public String getUnicode() {
 		return "";
 	}
+	
+	public Game getGame() {
+		return _game;
+	}
 
+	public boolean checkMove(int x, int y) {
+		Board b = this.getGame().getBoard();
+		if(b.isEmpty(x, y)){
+			 return true;
+		}
+		if(b.getPiece(x, y)!=null) {
+			if(b.getPiece(x, y).getColor()!=this.getColor()) {
+				 return true;
+			}
+		}
+		return false;
+	}
 	
 
 }

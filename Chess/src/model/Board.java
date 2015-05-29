@@ -14,15 +14,15 @@ public class Board {
 	
 	public void makePieces() {
 		Boolean color = true;
-		int position = 0;
+		int position = 7;
 		for(int i = 0; i<2; i++){
 			//create Pawns
 			for(int j=0; j<8; j++){
 				if(i==1){
-					_pieces[j][position-1] = new Pawn(color,_game,new Point(j,position-1));
+					_pieces[j][position+1] = new Pawn(color,_game,new Point(j,position+1));
 				}
 				else{
-					_pieces[j][position+1] = new Pawn(color,_game,new Point(j,position+1));
+					_pieces[j][position-1] = new Pawn(color,_game,new Point(j,position-1));
 				}
 			}
 			//create Bishops
@@ -40,7 +40,7 @@ public class Board {
 			_pieces[4][position] = new King(color,_game,new Point(4,position));
 			
 			color = false;
-			position = 7;
+			position = 0;
 		}
 		
 	}
