@@ -23,6 +23,10 @@ public class Piece {
 		return false;
 	}
 	
+	public void setPossibleMoves(){
+		
+	}
+	
 	public boolean getColor() {
 		return _color;
 	}

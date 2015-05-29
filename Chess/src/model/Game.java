@@ -10,6 +10,14 @@ public class Game {
 	public Board getBoard() {
 		return _board;
 	}
+
+	public void handleClick(int x, int y) {
+		if(!_board.isEmpty(x, y)){
+			Piece p = _board.getPiece(x, y);
+			p.setPossibleMoves();
+		}
+		
+	}
 	
 
 }

@@ -8,9 +8,15 @@ public class King extends Piece{
 		super(color,game,location);
 	}
 	
+	@Override
 	public void setPossibleMoves() {
-		
-		
+		Queen myQueen = new Queen(this.getColor(), this.getGame(), this.getLocation());
+		myQueen.setPossibleMoves();
+		for(Point p : myQueen.getPossibleMoves()){
+			if(Math.abs(p.x-this.getLocation().x)<2 && Math.abs(p.y-this.getLocation().y)<2){
+				this.getPossibleMoves().add(p);
+			}
+		}
 	}
 	
 	@Override

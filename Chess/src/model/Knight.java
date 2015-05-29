@@ -8,6 +8,7 @@ public class Knight extends Piece{
 		super(color,game,location);
 	}
 	
+	@Override
 	public void setPossibleMoves() {
 		int[] ek = {-1, 1};
 		int[] dusra = {-2,2};

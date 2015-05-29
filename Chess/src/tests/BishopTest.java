@@ -14,12 +14,13 @@ public class BishopTest {
 	public void test() {
 		Game g = new Game();
 		Bishop myBishop = (Bishop)g.getBoard().getPiece(2, 0);
+//		System.out.println(myBishop.getColor());
 		g.getBoard().setPiece(null, 3, 1);
 		g.getBoard().setPiece(null, 1, 1);
 //		g.getBoard().setPiece(null, 1, 0);
 		myBishop.setPossibleMoves();
 	
-//		System.out.println(myBishop.getPossibleMoves().toString());
+		System.out.println(myBishop.getPossibleMoves().toString());
 	}
 	
 	@Test

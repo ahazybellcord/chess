@@ -8,6 +8,7 @@ public class Bishop extends Piece{
 		super(color,game,location);
 	}
 	
+	@Override
 	public void setPossibleMoves() {
 		//check first quadrant
 		for(int i=1; i<8; i++) {

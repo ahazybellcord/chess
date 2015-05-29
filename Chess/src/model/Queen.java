@@ -8,6 +8,7 @@ public class Queen extends Piece{
 		super(color,game,location);
 	}
 	
+	@Override
 	public void setPossibleMoves() {
 		Bishop b = new Bishop(this.getColor(), super.getGame(),this.getLocation());
 		Rook r = new Rook(this.getColor(), super.getGame(),this.getLocation());

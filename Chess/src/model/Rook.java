@@ -3,11 +3,13 @@ package model;
 import java.awt.Point;
 
 public class Rook extends Piece{
-	
+	private boolean _moved;
 	public Rook(boolean color, Game game, Point location) {
 		super(color,game,location);
+		_moved = false;
 	}
 	
+	@Override
 	public void setPossibleMoves() {
 		//check +y
 		for(int i=this.getLocation().y+1; i<8; i++) {
@@ -63,6 +65,14 @@ public class Rook extends Piece{
 	public String getUnicode() {
 		if(this.getColor()) { return "\u2656"; }
 		else { return "\u265c" ; }
+	}
+	
+	public void setMoved(){
+		_moved = true;
+	}
+	
+	public boolean wasMoved(){
+		return _moved;
 	}
 	
 
