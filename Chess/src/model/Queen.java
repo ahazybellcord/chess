@@ -9,8 +9,16 @@ public class Queen extends Piece{
 	}
 	
 	public void setPossibleMoves() {
-		
-		
+		Bishop b = new Bishop(this.getColor(), super.getGame(),this.getLocation());
+		Rook r = new Rook(this.getColor(), super.getGame(),this.getLocation());
+		b.setPossibleMoves();
+		r.setPossibleMoves();
+		for(Point p : b.getPossibleMoves()) {
+			this.getPossibleMoves().add(p);
+		}
+		for(Point p : r.getPossibleMoves()) {
+			this.getPossibleMoves().add(p);
+		}
 	}
 	
 	@Override
