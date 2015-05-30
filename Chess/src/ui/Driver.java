@@ -21,7 +21,7 @@ public class Driver implements Runnable, Observer {
 
 	@Override
 	public void run() {
-		_frame = new JFrame("Chess");
+		_frame = new JFrame("Chess " + "(White to move)");
 		_window = new BoardWindow(_game);
 		_frame.add(_window);
 		_frame.pack();
@@ -36,6 +36,13 @@ public class Driver implements Runnable, Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		_window.update();
+		if(_game.getCurrentPlayer()){
+			_frame.setTitle("Chess (White to move)" );
+		}
+		else{
+			_frame.setTitle("Chess (Black to move)");
+		}
+		
 	}
 
 }
