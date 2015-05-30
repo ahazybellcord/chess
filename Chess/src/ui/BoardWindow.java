@@ -73,18 +73,18 @@ public class BoardWindow extends JPanel {
 				for(int j=0; j<8; j++) {
 					if(!_game.getBoard().isEmpty(j, i)){
 								
-				       _buttons[j][Math.abs(i-7)].setText(_game.getBoard().getPiece(j, i).getUnicode());
-				       _buttons[j][Math.abs(i-7)].setFont(new Font("Arial", Font.PLAIN, 40));
-				       _buttons[j][Math.abs(i-7)].setForeground(Color.DARK_GRAY);
-				       _buttons[j][Math.abs(i-7)].setBackground(Color.gray);
-				       _buttons[j][Math.abs(i-7)].setOpaque(false);
+				       _buttons[j][7-i].setText(_game.getBoard().getPiece(j, i).getUnicode());
+				       _buttons[j][7-i].setFont(new Font("Arial", Font.PLAIN, 40));
+				       _buttons[j][7-i].setForeground(Color.DARK_GRAY);
+				       _buttons[j][7-i].setBackground(Color.gray);
+				       _buttons[j][7-i].setOpaque(false);
 				       
 								
 					}
 					else{
-						_buttons[j][Math.abs(i-7)].setText("");
-						_buttons[j][Math.abs(i-7)].setBackground(Color.gray);
-						_buttons[j][Math.abs(i-7)].setOpaque(false);
+						_buttons[j][7-i].setText("");
+						_buttons[j][7-i].setBackground(Color.gray);
+						_buttons[j][7-i].setOpaque(false);
 						
 					}
 					
@@ -92,12 +92,12 @@ public class BoardWindow extends JPanel {
 			}
 			if(_game.getPreviousClick()!=null){
 				Piece p = _game.getPreviousClick();
-				_buttons[p.getLocation().x][Math.abs(p.getLocation().y-7)].setForeground(Color.BLUE);
+				_buttons[p.getLocation().x][7-p.getLocation().y].setForeground(Color.BLUE);
 				for(Point k: p.getPossibleMoves()){
-					_buttons[k.x][Math.abs(k.y-7)].setForeground(Color.RED);
+					_buttons[k.x][7-k.y].setForeground(Color.RED);
 					if(_game.getBoard().isEmpty(k.x, k.y)){
-						_buttons[k.x][Math.abs(k.y-7)].setBackground(Color.DARK_GRAY);
-						_buttons[k.x][Math.abs(k.y-7)].setOpaque(true);
+						_buttons[k.x][7-k.y].setBackground(Color.DARK_GRAY);
+						_buttons[k.x][7-k.y].setOpaque(true);
 
 
 					}
