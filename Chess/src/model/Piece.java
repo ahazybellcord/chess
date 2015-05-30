@@ -8,12 +8,14 @@ public class Piece {
 	private Game _game;
 	private Point _location;
 	private HashSet<Point> _possibleMoves;
+	private boolean _moved;
 	
 	public Piece(boolean color, Game game, Point location) {
 		_color = color;
 		_game = game;
 		_location = location;
 		_possibleMoves = new HashSet<Point>();
+		_moved = false;
 	}
 	
 	public boolean moveIsValid(Point location) {
@@ -37,6 +39,14 @@ public class Piece {
 	
 	public void setLocation(int x, int y) {
 		_location = new Point(x,y);
+	}
+	
+	public void setMoved(){
+		_moved = true;
+	}
+
+	public boolean wasMoved(){
+		return _moved;
 	}
 	
 	public HashSet<Point> getPossibleMoves() {

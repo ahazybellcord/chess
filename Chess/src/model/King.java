@@ -26,6 +26,5 @@ public class King extends Piece{
 		else { return "\u265a" ; }
 	}
 	
-
 }
 

@@ -1,6 +1,8 @@
 package model;
 
 import java.awt.Point;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Observable;
 
 public class Game extends Observable {
@@ -64,16 +66,9 @@ public class Game extends Observable {
 	}
 
 	private void move(Piece piece, int x, int y) {
-		
-		if(new String("model.Pawn").equals(piece.getClass().getName())) {
-			((Pawn) piece).setMoved();
-			System.out.println("Piece is a pawn. Set moved to "+((Pawn) piece).wasMoved());
+		if(!piece.wasMoved()) {
+			piece.setMoved();
 		}
-		if(new String("model.Rook").equals(piece.getClass().getName())) {
-			((Rook) piece).setMoved();
-			System.out.println("Piece is a rook. Set moved to "+((Rook) piece).wasMoved());
-		}
-		
 		_board.setPiece(null, piece.getLocation().x, piece.getLocation().y);
 		System.out.println("Set the position of the piece that's moving on the Board to null.");
 		_board.setPiece(piece, x, y);
@@ -88,6 +83,8 @@ public class Game extends Observable {
 		setChanged();
 		notifyObservers();
 		System.out.println("Notified the UI.");
+		save();
+		System.out.println("Saved the game in the current configuration");
 	}
 	
 	// a cute text representation of the board to test model-UI updating
@@ -111,6 +108,41 @@ public class Game extends Observable {
 	public Piece getPreviousClick(){
 		return _previousClick;
 	}
+	
+	public void save() {
+		String game = "";
+		for(int j=0; j<8; j++) {
+			for(int i=0; i<8; i++) {
+				Piece currentPiece = this.getBoard().getPiece(i, j);
+				if(currentPiece!=null) {
+					game += currentPiece.getUnicode();
+					//if the piece is a pawn, rook or king, include _moved variable
+					if(currentPiece.getClass().getName().equals("model.Pawn")
+							||currentPiece.getClass().getName().equals("model.Rook")
+							||currentPiece.getClass().getName().equals("model.King")) {
+						game += boolToInt(currentPiece.wasMoved());
+					}
+				}
+				game += "\n";
+			}
+		}
+		game += boolToInt(this.getCurrentPlayer());
+		try {
+			PrintWriter saveFile = new PrintWriter("save.txt");
+			saveFile.println(game);
+			saveFile.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	// a helper method to create the save file
+	private int boolToInt(boolean b) {
+		if(b) { return 1; }
+		else return 0;
+	}
+
 
 
 }

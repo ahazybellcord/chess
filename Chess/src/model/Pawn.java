@@ -3,17 +3,16 @@ package model;
 import java.awt.Point;
 
 public class Pawn extends Piece{
-	private boolean _moved;
+
 	public Pawn(boolean color, Game game, Point location) {
 		super(color,game,location);
-		_moved = false;
 	}
     
 	@Override
 	public void setPossibleMoves() {
 		super.setPossibleMoves();
 		if(this.getColor()){
-			if(!_moved){
+			if(!this.wasMoved()){
 				if(checkEmpty(this.getLocation().x, this.getLocation().y-2)){
 					if(this.getGame().getBoard().isEmpty(this.getLocation().x, this.getLocation().y-2)){
 						this.getPossibleMoves().add(new Point(this.getLocation().x, this.getLocation().y-2));
@@ -41,7 +40,7 @@ public class Pawn extends Piece{
 			}
 		}
 		else{
-			if(!_moved){
+			if(!this.wasMoved()){
 				if(checkEmpty(this.getLocation().x, this.getLocation().y+2)){
 					if(this.getGame().getBoard().isEmpty(this.getLocation().x, this.getLocation().y+2)){
 						this.getPossibleMoves().add(new Point(this.getLocation().x, this.getLocation().y+2));
@@ -79,15 +78,6 @@ public class Pawn extends Piece{
 		if(this.getColor()) { return "\u2659"; }
 		else { return "\u265f" ; }
 	}
-
-	public void setMoved(){
-		_moved = true;
-	}
-
-	public boolean wasMoved(){
-		return _moved;
-	}
-
 
 }
 
