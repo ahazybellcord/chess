@@ -40,23 +40,21 @@ public class Game extends Observable {
 			System.out.println("Previous click isn't null!");
 			if(_board.isEmpty(x, y)){
 				System.out.println("Board is empty and previous click isn't empty!");
-				for(Point p: _previousClick.getPossibleMoves()){
-					if(p.x == x && p.y == y){
+				
+					if(_previousClick.moveIsValid(new Point(x,y))){
 						move(_previousClick, x, y);
 						System.out.println("The coordinates match and the piece should move!");
-						break;
 					}
-				}
+				
 			}
 			else if(_board.getPiece(x, y).getColor()!=this.getCurrentPlayer()){
 				System.out.println("There's an opponent piece and previous click isn't empty!");
-				for(Point p: _previousClick.getPossibleMoves()){
-					if(p.x == x && p.y == y){
+				
+					if(_previousClick.moveIsValid(new Point(x,y))){
 						move(_previousClick, x, y);
 						System.out.println("The coordinates match, the piece should move and opponent's piece should be disposed!");
-						break;
 					}
-				}
+				
 			}
 			else{
 				_previousClick = _board.getPiece(x, y);
