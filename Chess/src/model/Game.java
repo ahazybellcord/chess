@@ -3,16 +3,24 @@ package model;
 import java.awt.Point;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Observable;
 
 public class Game extends Observable {
 	private Board _board;
 	private boolean _currentPlayer;
 	private Piece _previousClick;
+	private String _notation;
+	private ArrayList<String> _moves;
+	private int _turnNumber;
+	
 	public Game() {
 		_board = new Board(this);
 		_currentPlayer = true;
 		_previousClick = null;
+		_notation = "";
+		_moves = new ArrayList<String>();
+		_turnNumber = 1;
 	}
 	
 	public Board getBoard() {
@@ -71,11 +79,16 @@ public class Game extends Observable {
 		}
 		_board.setPiece(null, piece.getLocation().x, piece.getLocation().y);
 		System.out.println("Set the position of the piece that's moving on the Board to null.");
+		//notate starting position
+		notate(piece,piece.getLocation().x, piece.getLocation().y);
 		_board.setPiece(piece, x, y);
 		System.out.println("Moved the piece to the new location!");
+		//notate where it moved to
+		notate(x,y);
 		piece.setLocation(x,y);
 		System.out.println("Set location of the piece to new location!");
 		this.changePlayers();
+		_turnNumber++;
 		System.out.println("Switched players.");
 		_previousClick = null;
 		System.out.println("Set previous click to null again.");
@@ -103,6 +116,42 @@ public class Game extends Observable {
 				}
 			}
 		}
+	}
+
+	//notate which piece is moving and its source
+	private void notate(Piece piece, int x, int y) {
+		_notation += _turnNumber + ". ";
+		if(!piece.getClass().getName().equals("model.Pawn")) {
+			_notation += piece.getUnicode() + " " + getChessCoordinate(x,y) + " ";
+		}
+	}
+
+	//notate the destination of a move and add it to the list of moves
+	private void notate(int x, int y) {
+		_notation += getChessCoordinate(x,y);
+		_moves.add(_notation);
+		System.out.println(_notation);
+		_notation = "";
+		System.out.println("All moves so far");
+		System.out.println("----------------");
+		for(int i=0; i<_moves.size(); i++) {
+			System.out.println(_moves.get(i));
+		}
+	}
+
+	private String getChessCoordinate(int x, int y) {
+		String coordinate = "";
+		for(int i=0; i<8; i++) {
+			if(i==x) { 
+				coordinate += (char)('a'+i); 
+			} 
+		}
+		for(int j=0; j<8; j++) {
+			if(j==y) { 
+				coordinate += (8-y); 
+			} 
+		}
+		return coordinate;
 	}
 	
 	public Piece getPreviousClick(){
@@ -142,6 +191,8 @@ public class Game extends Observable {
 		if(b) { return 1; }
 		else return 0;
 	}
+	
+	
 
 
 
