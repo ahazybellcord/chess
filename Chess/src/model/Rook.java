@@ -11,6 +11,7 @@ public class Rook extends Piece{
 	
 	@Override
 	public void setPossibleMoves() {
+		super.setPossibleMoves();
 		//check +y
 		for(int i=this.getLocation().y+1; i<8; i++) {
 			if(checkMove(this.getLocation().x,i)) {

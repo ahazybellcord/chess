@@ -10,6 +10,7 @@ public class King extends Piece{
 	
 	@Override
 	public void setPossibleMoves() {
+		super.setPossibleMoves();
 		Queen myQueen = new Queen(this.getColor(), this.getGame(), this.getLocation());
 		myQueen.setPossibleMoves();
 		for(Point p : myQueen.getPossibleMoves()){

@@ -11,67 +11,67 @@ public class Pawn extends Piece{
     
 	@Override
 	public void setPossibleMoves() {
+		super.setPossibleMoves();
 		if(this.getColor()){
 			if(!_moved){
-				if(checkMove(this.getLocation().x, this.getLocation().y-2)){
+				if(checkEmpty(this.getLocation().x, this.getLocation().y-2)){
 					if(this.getGame().getBoard().isEmpty(this.getLocation().x, this.getLocation().y-2)){
 						this.getPossibleMoves().add(new Point(this.getLocation().x, this.getLocation().y-2));
 					}
 				}
 			}
-			if(checkMove(this.getLocation().x, this.getLocation().y-1)){
+			if(checkEmpty(this.getLocation().x, this.getLocation().y-1)){
 				if(this.getGame().getBoard().isEmpty(this.getLocation().x, this.getLocation().y-1)){
 					this.getPossibleMoves().add(new Point(this.getLocation().x, this.getLocation().y-1));
 				}
 			}
 			if(this.getLocation().x<7){
-				if(checkMove(this.getLocation().x+1, this.getLocation().y-1)){
+				if(checkOpponent(this.getLocation().x+1, this.getLocation().y-1)){
 					if(!this.getGame().getBoard().isEmpty(this.getLocation().x+1, this.getLocation().y-1)){
 						this.getPossibleMoves().add(new Point(this.getLocation().x+1, this.getLocation().y-1));
 					}
 				}
 			}
 			if(this.getLocation().x>0){
-				if(checkMove(this.getLocation().x-1, this.getLocation().y-1)){
+				if(checkOpponent(this.getLocation().x-1, this.getLocation().y-1)){
 					if(!this.getGame().getBoard().isEmpty(this.getLocation().x-1, this.getLocation().y-1)){
 						this.getPossibleMoves().add(new Point(this.getLocation().x-1, this.getLocation().y-1));
 					}
 				}
 			}
-
-
 		}
 		else{
 			if(!_moved){
-				if(checkMove(this.getLocation().x, this.getLocation().y+2)){
+				if(checkEmpty(this.getLocation().x, this.getLocation().y+2)){
 					if(this.getGame().getBoard().isEmpty(this.getLocation().x, this.getLocation().y+2)){
 						this.getPossibleMoves().add(new Point(this.getLocation().x, this.getLocation().y+2));
 					}
 				}
 			}
-			if(checkMove(this.getLocation().x, this.getLocation().y+1)){
+			if(checkEmpty(this.getLocation().x, this.getLocation().y+1)){
 				if(this.getGame().getBoard().isEmpty(this.getLocation().x, this.getLocation().y+1)){
 					this.getPossibleMoves().add(new Point(this.getLocation().x, this.getLocation().y+1));
 				}
 			}
 			if(this.getLocation().x<7){
-				if(checkMove(this.getLocation().x+1, this.getLocation().y+1)){
+				if(checkOpponent(this.getLocation().x+1, this.getLocation().y+1)){
 					if(!this.getGame().getBoard().isEmpty(this.getLocation().x+1, this.getLocation().y+1)){
 						this.getPossibleMoves().add(new Point(this.getLocation().x+1, this.getLocation().y+1));
 					}
 				}
 			}
 			if(this.getLocation().x>0){
-				if(checkMove(this.getLocation().x-1, this.getLocation().y-1)){
+				if(checkOpponent(this.getLocation().x-1, this.getLocation().y+1)){
 					if(!this.getGame().getBoard().isEmpty(this.getLocation().x-1, this.getLocation().y+1)){
 						this.getPossibleMoves().add(new Point(this.getLocation().x-1, this.getLocation().y+1));
 					}
 				}
 			}
-
 		}
-
-
+	}
+	
+	public boolean checkEmpty(int x, int y) {
+		return this.getGame().getBoard().isEmpty(x, y);
 	}
 
 	@Override

@@ -10,6 +10,7 @@ public class Knight extends Piece{
 	
 	@Override
 	public void setPossibleMoves() {
+		super.setPossibleMoves();
 		int[] pehla = {-1, 1};
 		int[] dusra = {-2,2};
 		for(int i : pehla) {

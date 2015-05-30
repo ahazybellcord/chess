@@ -21,8 +21,8 @@ public class Game extends Observable {
 		return _currentPlayer;
 	}
 	
-	public void setCurrentPlayer(boolean b){
-		_currentPlayer = b;
+	public void changePlayers() {
+		_currentPlayer = !_currentPlayer;
 	}
 
 	public void handleClick(int x, int y) {
@@ -33,7 +33,6 @@ public class Game extends Observable {
 				_previousClick = _board.getPiece(x, y);
 				_previousClick.setPossibleMoves();
 				System.out.println("Possible clicks are" + _previousClick.getPossibleMoves().toString());
-
 			}
 		}
 		else{
@@ -45,7 +44,6 @@ public class Game extends Observable {
 						move(_previousClick, x, y);
 						System.out.println("The coordinates match and the piece should move!");
 					}
-				
 			}
 			else if(_board.getPiece(x, y).getColor()!=this.getCurrentPlayer()){
 				System.out.println("There's an opponent piece and previous click isn't empty!");
@@ -54,34 +52,59 @@ public class Game extends Observable {
 						move(_previousClick, x, y);
 						System.out.println("The coordinates match, the piece should move and opponent's piece should be disposed!");
 					}
-				
 			}
 			else{
 				_previousClick = _board.getPiece(x, y);
 				_previousClick.setPossibleMoves();
 				System.out.println("Possible clicks are" + _previousClick.getPossibleMoves().toString());
-			}
-			
+			}	
 		}
-		
-		
 	}
 
 	private void move(Piece piece, int x, int y) {
+		
+		if(new String("model.Pawn").equals(piece.getClass().getName())) {
+			((Pawn) piece).setMoved();
+			System.out.println("Piece is a pawn. Set moved to "+((Pawn) piece).wasMoved());
+		}
+		if(new String("model.Rook").equals(piece.getClass().getName())) {
+			((Rook) piece).setMoved();
+			System.out.println("Piece is a rook. Set moved to "+((Rook) piece).wasMoved());
+		}
+		
 		_board.setPiece(null, piece.getLocation().x, piece.getLocation().y);
 		System.out.println("Set the position of the piece that's moving on the Board to null.");
-		_board.setPiece(null, x, y);
-		System.out.println("Set the position on the Board that the piece is moving to, null.");
 		_board.setPiece(piece, x, y);
 		System.out.println("Moved the piece to the new location!");
-		this.setCurrentPlayer(!this.getCurrentPlayer());
-		System.out.println("Moved switched.");
+		piece.setLocation(x,y);
+		System.out.println("Set location of the piece to new location!");
+		this.changePlayers();
+		System.out.println("Switched players.");
 		_previousClick = null;
 		System.out.println("Set previous click to null again.");
+		printBoard();
 		setChanged();
 		notifyObservers();
 		System.out.println("Notified the UI.");
 	}
 	
+	// a cute text representation of the board to test model-UI updating
+	private void printBoard() {
+		for(int i=0; i<8; i++) {
+			for(int j=0; j<8; j++){
+				if(this.getBoard().getPiece(j, i)!=null) {
+					System.out.print(this.getBoard().getPiece(j, i).getUnicode()+" ");
+					if(j==7) { System.out.print("\n");
+					}
+				}
+				else {
+					System.out.print("   ");
+					if(j==7) { System.out.print("\n");
+					}
+				}
+			}
+		}
+	}
+
 
 }

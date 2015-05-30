@@ -10,6 +10,7 @@ public class Bishop extends Piece{
 	
 	@Override
 	public void setPossibleMoves() {
+		super.setPossibleMoves();
 		//check first quadrant
 		for(int i=1; i<8; i++) {
 			if(this.getLocation().x+i<8 && this.getLocation().y-i>-1) {
