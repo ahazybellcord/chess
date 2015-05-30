@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 import model.Game;
+import model.Piece;
 
 public class BoardWindow extends JPanel {
 	private Game _game;
@@ -36,6 +37,7 @@ public class BoardWindow extends JPanel {
 							
 			       _buttons[j][i].setText(_game.getBoard().getPiece(j, i).getUnicode());
 			       _buttons[j][i].setFont(new Font("Arial", Font.PLAIN, 40));
+			       _buttons[j][i].setForeground(Color.DARK_GRAY);
 							
 				}
 				else{
@@ -44,6 +46,14 @@ public class BoardWindow extends JPanel {
 				
 			}
 		}
+		if(_game.getPreviousClick()!=null){
+			Piece p = _game.getPreviousClick();
+			_buttons[p.getLocation().x][p.getLocation().y].setForeground(Color.BLUE);
+		}
+		else{
+			
+		}
+		
 	}
 
 }

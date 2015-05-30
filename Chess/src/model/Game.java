@@ -59,6 +59,8 @@ public class Game extends Observable {
 				System.out.println("Possible clicks are" + _previousClick.getPossibleMoves().toString());
 			}	
 		}
+		setChanged();
+		notifyObservers();
 	}
 
 	private void move(Piece piece, int x, int y) {
@@ -104,6 +106,10 @@ public class Game extends Observable {
 				}
 			}
 		}
+	}
+	
+	public Piece getPreviousClick(){
+		return _previousClick;
 	}
 
 

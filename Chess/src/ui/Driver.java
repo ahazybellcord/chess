@@ -26,6 +26,7 @@ public class Driver implements Runnable, Observer {
 		_frame.add(_window);
 		_frame.pack();
 		_frame.setVisible(true);
+		_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	public static void main(String[] args) {
