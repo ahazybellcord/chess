@@ -39,7 +39,7 @@ public class BoardButton extends JButton {
 				_game.handleClick(_x, _y);
 			}
 			else{
-				_game.handleClick(_x, Math.abs(_y-7));
+				_game.handleClick(_x, 7-_y);
 			}
 			
 		}
