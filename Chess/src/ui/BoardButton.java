@@ -35,7 +35,13 @@ public class BoardButton extends JButton {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			_game.handleClick(_x, _y);
+			if(_game.getCurrentPlayer()){
+				_game.handleClick(_x, _y);
+			}
+			else{
+				_game.handleClick(_x, Math.abs(_y-7));
+			}
+			
 		}
 		
 	}
