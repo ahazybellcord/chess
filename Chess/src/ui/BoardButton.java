@@ -24,6 +24,7 @@ public class BoardButton extends JButton {
 		_x = x;
 		_y = y;
 		_game = game;
+		this.addActionListener(new BoardButtonHandler());
 	}
 
 	public Piece getPiece() {

@@ -10,9 +10,9 @@ public class Knight extends Piece{
 	
 	@Override
 	public void setPossibleMoves() {
-		int[] ek = {-1, 1};
+		int[] pehla = {-1, 1};
 		int[] dusra = {-2,2};
-		for(int i : ek) {
+		for(int i : pehla) {
 			for(int j : dusra) {
 				if(this.getLocation().x+i>-1 && this.getLocation().x+i<8 && this.getLocation().y+j>-1 && this.getLocation().y+j<8) {
 					if(checkMove(this.getLocation().x+i,this.getLocation().y+j)) {
