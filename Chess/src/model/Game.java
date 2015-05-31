@@ -12,6 +12,7 @@ public class Game extends Observable {
 	private Piece _previousClick;
 	private String _notation;
 	private ArrayList<String> _moves;
+	private ArrayList<String> _gameHistory;
 	
 	public Game() {
 		_board = new Board(this);
@@ -19,6 +20,8 @@ public class Game extends Observable {
 		_previousClick = null;
 		_notation = "";
 		_moves = new ArrayList<String>();
+		_gameHistory = new ArrayList<String>();
+		save();
 	}
 	
 	public Board getBoard() {
@@ -27,6 +30,10 @@ public class Game extends Observable {
 	
 	public ArrayList<String> getMoves(){
 		return _moves;
+	}
+	
+	public ArrayList<String> getGameHistory() {
+		return _gameHistory;
 	}
 	
 	public boolean getCurrentPlayer(){
@@ -176,6 +183,10 @@ public class Game extends Observable {
 				game += "\n";
 			}
 		}
+		
+		//add board configuration encoded as String to game history
+		_gameHistory.add(game);
+		
 		game += boolToInt(this.getCurrentPlayer());
 		try {
 			PrintWriter saveFile = new PrintWriter("save.txt");
