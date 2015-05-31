@@ -13,6 +13,7 @@ public class Game extends Observable {
 	private String _notation;
 	private ArrayList<String> _moves;
 	private ArrayList<String> _gameHistory;
+	private boolean _inCheck;
 	
 	public Game() {
 		_board = new Board(this);
@@ -21,6 +22,7 @@ public class Game extends Observable {
 		_notation = "";
 		_moves = new ArrayList<String>();
 		_gameHistory = new ArrayList<String>();
+		_inCheck = false;
 		save();
 	}
 	
@@ -34,6 +36,18 @@ public class Game extends Observable {
 	
 	public ArrayList<String> getGameHistory() {
 		return _gameHistory;
+	}
+	
+	public void putInCheck() {
+		_inCheck = true;
+	}
+	
+	public void removeCheck() {
+		_inCheck = false;
+	}
+	
+	public boolean isInCheck() {
+		return _inCheck;
 	}
 	
 	public boolean getCurrentPlayer(){
@@ -106,6 +120,47 @@ public class Game extends Observable {
 		System.out.println("Notified the UI.");
 		save();
 		System.out.println("Saved the game in the current configuration");
+		// at this point the move has been made and next player is up
+				// we must check to see if the current player is in check
+				// if so then we need to restrict his moves such that
+				// each move must force _inCheck = false.
+				// so when the current player attempts to move, when we generate possible moves
+				// for the piece he has chosen we need to see whether those moves result
+				// in _inCheck = false.
+				// when _inCheck = true we need to call checkCheckmate()
+				// which sets the possible moves of all the current player's pieces
+				// and sees if the union is empty
+		checkCheck();
+	}
+	
+	public void checkCheck() {
+		// find current player's king
+		Point kingLocation = new Point(0,0);
+		for(int i=0; i<8; i++) {
+			for(int j=0; j<8; j++) {
+				if(_board.getPiece(i,j).getColor()==_currentPlayer && _board.getPiece(i,j).getClass().getName().equals("model.King")) {
+					kingLocation = new Point(i,j);
+					break;
+				}
+			}
+ 		}
+		
+		// now generate possible moves for the opponent and see if they intersect the king
+		for(int i=0; i<8; i++) {
+			for(int j=0; j<8; j++) {
+				if(_board.getPiece(i,j)!=null) {
+					if(_board.getPiece(i,j).getColor()!=this._currentPlayer) {
+						_board.getPiece(i,j).setPossibleMoves();
+						for(Point p : _board.getPiece(i,j).getPossibleMoves()) {
+							if(p.equals(kingLocation)) {
+								putInCheck();
+								break;
+							}
+						}
+					}
+				}
+			}
+ 		}
 	}
 	
 	// a cute text representation of the board to test model-UI updating
