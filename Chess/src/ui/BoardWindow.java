@@ -40,7 +40,7 @@ public class BoardWindow extends JPanel {
 		
 		JPanel boardPanel = new JPanel();
 		boardPanel.setLayout(new GridLayout(8,8,2,2));
-		boolean backgroundColor = false;
+		boolean backgroundColor = true;
 		for(int i=0; i<8; i++) {
 			for(int j=0; j<8; j++) {
 				_buttons[j][i] = new BoardButton(_game,j,i);
@@ -88,7 +88,7 @@ public class BoardWindow extends JPanel {
 	
 	public void update(){
 		if(_game.getCurrentPlayer()){
-			boolean backgroundColor = false;
+			boolean backgroundColor = true;
 			for(int i=0; i<8; i++) {
 				for(int j=0; j<8; j++) {
 					if(!_game.getBoard().isEmpty(j, i)){								

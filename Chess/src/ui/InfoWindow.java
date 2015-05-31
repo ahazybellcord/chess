@@ -20,7 +20,7 @@ public class InfoWindow extends JPanel{
 		_whitePanel = new JPanel();
 		this.setLayout(new GridLayout(1,2,15,2));
 		_whitePanel.setLayout(new BoxLayout(_whitePanel, BoxLayout.Y_AXIS));
-		JLabel myLabel = new JLabel("White");
+		JLabel myLabel = new JLabel("White   ");
 		myLabel.setFont(new Font("Times New Roman", Font.PLAIN, 25));
 		_whitePanel.add(myLabel);
 		for(int i = 0; i<_game.getMoves().size(); i = i+2){
@@ -30,7 +30,7 @@ public class InfoWindow extends JPanel{
 		
 		_blackPanel = new JPanel();
 		_blackPanel.setLayout(new BoxLayout(_blackPanel, BoxLayout.Y_AXIS));
-		JLabel blackLabel = new JLabel("Black");
+		JLabel blackLabel = new JLabel("Black   ");
 		blackLabel.setFont(new Font("Times New Roman", Font.PLAIN, 25));
 		_blackPanel.add(blackLabel);
 		for(int i = 1; i<_game.getMoves().size(); i = i+2){
@@ -42,7 +42,7 @@ public class InfoWindow extends JPanel{
 	
 	public void update(){
 		_whitePanel.removeAll();
-		JLabel myLabel = new JLabel("White");
+		JLabel myLabel = new JLabel("White   ");
 		myLabel.setFont(new Font("Times New Roman", Font.PLAIN, 25));
 		_whitePanel.add(myLabel);
 		String whitePieces = "\n";
@@ -59,7 +59,7 @@ public class InfoWindow extends JPanel{
 		
 		
 		_blackPanel.removeAll();
-		JLabel blackLabel = new JLabel("Black");
+		JLabel blackLabel = new JLabel("Black   ");
 		blackLabel.setFont(new Font("Times New Roman", Font.PLAIN, 25));
 		_blackPanel.add(blackLabel);
 		String blackPieces = "\n";
