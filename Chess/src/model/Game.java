@@ -27,6 +27,10 @@ public class Game extends Observable {
 		return _board;
 	}
 	
+	public ArrayList<String> getMoves(){
+		return _moves;
+	}
+	
 	public boolean getCurrentPlayer(){
 		return _currentPlayer;
 	}
