@@ -38,7 +38,7 @@ public class BoardButton extends JButton {
 				_game.handleClick(_x, _y);
 			}
 			else{
-				_game.handleClick(_x, 7-_y);
+				_game.handleClick(7-_x, 7-_y);
 			}
 		}
 		
