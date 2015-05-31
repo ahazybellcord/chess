@@ -112,6 +112,7 @@ public class Game extends Observable {
 		System.out.println("Set location of the piece to new location!");
 		this.changePlayers();
 		System.out.println("Switched players.");
+		checkCheck();
 		_previousClick = null;
 		System.out.println("Set previous click to null again.");
 		printBoard();
@@ -130,7 +131,7 @@ public class Game extends Observable {
 				// when _inCheck = true we need to call checkCheckmate()
 				// which sets the possible moves of all the current player's pieces
 				// and sees if the union is empty
-		checkCheck();
+
 	}
 	
 	public void checkCheck() {
@@ -138,12 +139,14 @@ public class Game extends Observable {
 		Point kingLocation = new Point(0,0);
 		for(int i=0; i<8; i++) {
 			for(int j=0; j<8; j++) {
-				if(_board.getPiece(i,j).getColor()==_currentPlayer && _board.getPiece(i,j).getClass().getName().equals("model.King")) {
-					kingLocation = new Point(i,j);
-					break;
+				if(_board.getPiece(i,j)!=null) {
+					if(_board.getPiece(i,j).getColor()==_currentPlayer && _board.getPiece(i,j).getClass().getName().equals("model.King")) {
+						kingLocation = new Point(i,j);
+						break;
+					}
 				}
 			}
- 		}
+		}
 		
 		// now generate possible moves for the opponent and see if they intersect the king
 		for(int i=0; i<8; i++) {
