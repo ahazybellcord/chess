@@ -14,6 +14,7 @@ public class Game extends Observable {
 	private ArrayList<String> _moves;
 	private ArrayList<String> _gameHistory;
 	private boolean _inCheck;
+	private ArrayList<Piece> _capturedPieces;
 	
 	public Game() {
 		_board = new Board(this);
@@ -23,6 +24,7 @@ public class Game extends Observable {
 		_moves = new ArrayList<String>();
 		_gameHistory = new ArrayList<String>();
 		_inCheck = false;
+		_capturedPieces = new ArrayList<Piece>();
 		save();
 	}
 	
@@ -48,6 +50,10 @@ public class Game extends Observable {
 	
 	public boolean isInCheck() {
 		return _inCheck;
+	}
+	
+	public ArrayList<Piece> getCapturedPieces(){
+		return _capturedPieces;
 	}
 	
 	public boolean getCurrentPlayer(){
@@ -104,6 +110,9 @@ public class Game extends Observable {
 		System.out.println("Set the position of the piece that's moving on the Board to null.");
 		//notate starting position
 		notate(piece,piece.getLocation().x, piece.getLocation().y);
+		if(_board.getPiece(x, y)!=null){
+			_capturedPieces.add(_board.getPiece(x, y));
+		}
 		_board.setPiece(piece, x, y);
 		System.out.println("Moved the piece to the new location!");
 		//notate where it moved to
