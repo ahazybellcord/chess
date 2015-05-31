@@ -12,7 +12,6 @@ public class Game extends Observable {
 	private Piece _previousClick;
 	private String _notation;
 	private ArrayList<String> _moves;
-	private int _turnNumber;
 	
 	public Game() {
 		_board = new Board(this);
@@ -20,7 +19,6 @@ public class Game extends Observable {
 		_previousClick = null;
 		_notation = "";
 		_moves = new ArrayList<String>();
-		_turnNumber = 1;
 	}
 	
 	public Board getBoard() {
@@ -92,7 +90,6 @@ public class Game extends Observable {
 		piece.setLocation(x,y);
 		System.out.println("Set location of the piece to new location!");
 		this.changePlayers();
-		_turnNumber++;
 		System.out.println("Switched players.");
 		_previousClick = null;
 		System.out.println("Set previous click to null again.");
@@ -124,7 +121,7 @@ public class Game extends Observable {
 
 	//notate which piece is moving and its source
 	private void notate(Piece piece, int x, int y) {
-		_notation += _turnNumber + ". ";
+		_notation += (_moves.size() + 1) + ". ";
 		if(!piece.getClass().getName().equals("model.Pawn")) {
 			_notation += piece.getUnicode() + " " + getChessCoordinate(x,y) + " ";
 		}

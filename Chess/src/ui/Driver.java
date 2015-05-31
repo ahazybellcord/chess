@@ -12,21 +12,20 @@ import model.Game;
 public class Driver implements Runnable, Observer {
 	private JFrame _frame;
 	private Game _game;
-	private BoardWindow _window;
+	private BoardWindow _boardWindow;
 	private InfoWindow _infoWindow;
 	
 	public Driver() {
 		_game = new Game();
-		_game.addObserver(this);
-		
+		_game.addObserver(this);	
 	}
 
 	@Override
 	public void run() {
-		_frame = new JFrame("Chess " + "(White to move)");
-		_window = new BoardWindow(_game);
+		_frame = new JFrame("Chess (White to move)");
+		_boardWindow = new BoardWindow(_game);
 		_infoWindow = new InfoWindow(_game);
-		_frame.add(_window, BorderLayout.WEST);
+		_frame.add(_boardWindow, BorderLayout.WEST);
 		_frame.add(_infoWindow, BorderLayout.EAST);
 		_frame.pack();
 		_frame.setVisible(true);
@@ -39,7 +38,7 @@ public class Driver implements Runnable, Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		_window.update();
+		_boardWindow.update();
 		_infoWindow.update();
 		if(_game.getCurrentPlayer()){
 			_frame.setTitle("Chess (White to move)" );
@@ -48,7 +47,6 @@ public class Driver implements Runnable, Observer {
 			_frame.setTitle("Chess (Black to move)");
 		}
 		_frame.pack();
-		
 	}
 
 }

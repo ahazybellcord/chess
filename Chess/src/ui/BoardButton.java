@@ -3,8 +3,6 @@ package ui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.rmi.RemoteException;
-
 import javax.swing.JButton;
 
 import model.Game;
@@ -15,11 +13,12 @@ public class BoardButton extends JButton {
     private int _x;
     private int _y;
     private Game _game;
+    
 	public BoardButton(Game game, int x, int y) {
 		if(!game.getBoard().isEmpty(x, y)){
 			_piece = game.getBoard().getPiece(x, y);
 			this.setText(_piece.getUnicode());
-			this.setFont(new Font("Arial", Font.PLAIN, 40));
+			this.setFont(new Font("Times New Roman", Font.PLAIN, 40));
 		}
 		_x = x;
 		_y = y;
@@ -41,8 +40,8 @@ public class BoardButton extends JButton {
 			else{
 				_game.handleClick(_x, 7-_y);
 			}
-			
 		}
 		
 	}
+	
 }
