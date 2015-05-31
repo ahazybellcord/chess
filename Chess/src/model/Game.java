@@ -15,8 +15,19 @@ public class Game extends Observable {
 	private ArrayList<String> _gameHistory;
 	private boolean _inCheck;
 	private ArrayList<Piece> _capturedPieces;
+	private ArrayList<String> _names;
 	
-	public Game() {
+	public Game(String[] args) {
+		_names = new ArrayList<String>();
+		if(args.length!=0){
+			_names.add(args[0]);
+			_names.add(args[1]);
+			
+		}
+		else{
+			_names.add("White");
+			_names.add("Black");
+		}
 		_board = new Board(this);
 		_currentPlayer = true;
 		_previousClick = null;
@@ -34,6 +45,10 @@ public class Game extends Observable {
 	
 	public ArrayList<String> getMoves(){
 		return _moves;
+	}
+	
+	public ArrayList<String> getNames(){
+		return _names;
 	}
 	
 	public ArrayList<String> getGameHistory() {

@@ -12,7 +12,8 @@ public class KnightTest {
 
 	@Test
 	public void test() {
-		Game g = new Game();
+		String[] args = new String[0];
+		Game g = new Game(args);
 		Knight myKnight = (Knight)g.getBoard().getPiece(1, 0);
 		g.getBoard().setPiece(null, 3, 1);
 		myKnight.setPossibleMoves();
@@ -22,7 +23,8 @@ public class KnightTest {
 	
 	@Test
 	public void test1(){
-		Game g = new Game();
+		String[] args = new String[0];
+		Game g = new Game(args);
 		for(int i = 0; i<8;i++){
 			for(int j = 0; j<8; j++){
 				g.getBoard().setPiece(null, i, j);

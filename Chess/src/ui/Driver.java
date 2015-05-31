@@ -15,9 +15,16 @@ public class Driver implements Runnable, Observer {
 	private BoardWindow _boardWindow;
 	private InfoWindow _infoWindow;
 	
-	public Driver() {
-		_game = new Game();
-		_game.addObserver(this);	
+	public Driver(String[] args) {
+		if(args.length==0 || args.length==2){
+			_game = new Game(args);
+			_game.addObserver(this);
+		}
+		else{
+			System.err.println("You can input exactly two names!");
+			System.exit(1);
+		}
+			
 	}
 
 	@Override
@@ -33,7 +40,7 @@ public class Driver implements Runnable, Observer {
 	}
 	
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Driver());
+		SwingUtilities.invokeLater(new Driver(args));
 	}
 
 	@Override

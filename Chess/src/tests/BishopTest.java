@@ -12,7 +12,8 @@ public class BishopTest {
 
 	@Test
 	public void test() {
-		Game g = new Game();
+		String[] args = new String[0];
+		Game g = new Game(args);
 		Bishop myBishop = (Bishop)g.getBoard().getPiece(2, 0);
 //		System.out.println(myBishop.getColor());
 		g.getBoard().setPiece(null, 3, 1);
@@ -25,7 +26,8 @@ public class BishopTest {
 	
 	@Test
 	public void test1(){
-		Game g = new Game();
+		String[] args = new String[0];
+		Game g = new Game(args);
 		for(int i = 0; i<8;i++){
 			for(int j = 0; j<8; j++){
 				g.getBoard().setPiece(null, i, j);

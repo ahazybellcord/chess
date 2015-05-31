@@ -12,7 +12,8 @@ public class QueenTest {
 
 	@Test
 	public void test() {
-		Game g = new Game();
+		String[] args = new String[0];
+		Game g = new Game(args);
 		Queen myQueen = (Queen)g.getBoard().getPiece(3, 0);
 		g.getBoard().setPiece(null, 2, 1);
 		g.getBoard().setPiece(null, 4, 1);
@@ -25,7 +26,8 @@ public class QueenTest {
 	
 	@Test
 	public void test1(){
-		Game g = new Game();
+		String[] args = new String[0];
+		Game g = new Game(args);
 		for(int i = 0; i<8;i++){
 			for(int j = 0; j<8; j++){
 				g.getBoard().setPiece(null, i, j);
