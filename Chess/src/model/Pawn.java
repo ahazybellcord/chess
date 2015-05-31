@@ -14,7 +14,7 @@ public class Pawn extends Piece{
 		if(this.getColor()){
 			if(!this.wasMoved()){
 				if(checkEmpty(this.getLocation().x, this.getLocation().y-2)){
-					if(this.getGame().getBoard().isEmpty(this.getLocation().x, this.getLocation().y-2)){
+					if(this.getGame().getBoard().isEmpty(this.getLocation().x, this.getLocation().y-2) && this.getGame().getBoard().isEmpty(this.getLocation().x,  this.getLocation().y-1)){
 						this.getPossibleMoves().add(new Point(this.getLocation().x, this.getLocation().y-2));
 					}
 				}
@@ -42,7 +42,7 @@ public class Pawn extends Piece{
 		else{
 			if(!this.wasMoved()){
 				if(checkEmpty(this.getLocation().x, this.getLocation().y+2)){
-					if(this.getGame().getBoard().isEmpty(this.getLocation().x, this.getLocation().y+2)){
+					if(this.getGame().getBoard().isEmpty(this.getLocation().x, this.getLocation().y+2) && this.getGame().getBoard().isEmpty(this.getLocation().x, this.getLocation().y+1)){
 						this.getPossibleMoves().add(new Point(this.getLocation().x, this.getLocation().y+2));
 					}
 				}
