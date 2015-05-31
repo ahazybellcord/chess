@@ -40,11 +40,23 @@ public class BoardWindow extends JPanel {
 		
 		JPanel boardPanel = new JPanel();
 		boardPanel.setLayout(new GridLayout(8,8,2,2));
+		boolean backgroundColor = false;
 		for(int i=0; i<8; i++) {
 			for(int j=0; j<8; j++) {
 				_buttons[j][i] = new BoardButton(_game,j,i);
 				_buttons[j][i].setPreferredSize(new Dimension(80,80));
 				_buttons[j][i].setBorder(new LineBorder(Color.GRAY, 1));
+				if(backgroundColor){
+					backgroundColor = !backgroundColor;
+				}
+				else{
+					_buttons[j][i].setBackground(Color.LIGHT_GRAY);
+					backgroundColor = !backgroundColor;
+				}
+				if(j==7){
+					backgroundColor = !backgroundColor;
+				}
+				_buttons[j][i].setOpaque(true);
 				boardPanel.add(_buttons[j][i]);
 			}
 		}
@@ -76,20 +88,30 @@ public class BoardWindow extends JPanel {
 	
 	public void update(){
 		if(_game.getCurrentPlayer()){
+			boolean backgroundColor = false;
 			for(int i=0; i<8; i++) {
 				for(int j=0; j<8; j++) {
 					if(!_game.getBoard().isEmpty(j, i)){								
 				       _buttons[j][i].setText(_game.getBoard().getPiece(j, i).getUnicode());
 				       _buttons[j][i].setFont(new Font("Times New Roman", Font.PLAIN, 40));
 				       _buttons[j][i].setForeground(Color.DARK_GRAY);
-				       _buttons[j][i].setBackground(Color.gray);
-				       _buttons[j][i].setOpaque(false);			
+		
 					}
 					else{
 						_buttons[j][i].setText("");
-						_buttons[j][i].setBackground(Color.gray);
-						_buttons[j][i].setOpaque(false);
 					}
+					if(backgroundColor){
+						_buttons[j][i].setBackground(new JButton().getBackground());
+						backgroundColor = !backgroundColor;
+					}
+					else{
+						_buttons[j][i].setBackground(Color.LIGHT_GRAY);
+						backgroundColor = !backgroundColor;
+					}
+					if(j==7){
+						backgroundColor = !backgroundColor;
+					}
+					
 				}
 			}
 			
@@ -99,7 +121,7 @@ public class BoardWindow extends JPanel {
 				for(Point k: p.getPossibleMoves()){
 					_buttons[k.x][k.y].setForeground(Color.RED);
 					if(_game.getBoard().isEmpty(k.x, k.y)){
-						_buttons[k.x][k.y].setBackground(Color.LIGHT_GRAY);
+						_buttons[k.x][k.y].setBackground(Color.gray);
 						_buttons[k.x][k.y].setOpaque(true);
 					}
 				}
@@ -119,20 +141,31 @@ public class BoardWindow extends JPanel {
 			}
 		}
 		else{
+			boolean backgroundColor = false; 
 			for(int i=0; i<8; i++) {
 				for(int j=0; j<8; j++) {
+					if(j==0){
+						backgroundColor = !backgroundColor;
+					}
+					if(backgroundColor){
+						_buttons[7-j][7-i].setBackground(new JButton().getBackground());
+						backgroundColor = !backgroundColor;
+					}
+					else{
+						_buttons[7-j][7-i].setBackground(Color.LIGHT_GRAY);
+						backgroundColor = !backgroundColor;
+					}
+					
 					if(!_game.getBoard().isEmpty(j, i)){		
 				       _buttons[7-j][7-i].setText(_game.getBoard().getPiece(j, i).getUnicode());
 				       _buttons[7-j][7-i].setFont(new Font("Times New Roman", Font.PLAIN, 40));
 				       _buttons[7-j][7-i].setForeground(Color.DARK_GRAY);
-				       _buttons[7-j][7-i].setBackground(Color.gray);
-				       _buttons[7-j][7-i].setOpaque(false);		
+	
 					}
 					else{
 						_buttons[7-j][7-i].setText("");
-						_buttons[7-j][7-i].setBackground(Color.gray);
-						_buttons[7-j][7-i].setOpaque(false);
 					}
+					
 				}
 			}
 			
@@ -142,7 +175,7 @@ public class BoardWindow extends JPanel {
 				for(Point k: p.getPossibleMoves()){
 					_buttons[7-k.x][7-k.y].setForeground(Color.RED);
 					if(_game.getBoard().isEmpty(k.x, k.y)){
-						_buttons[7-k.x][7-k.y].setBackground(Color.LIGHT_GRAY);
+						_buttons[7-k.x][7-k.y].setBackground(Color.gray);
 						_buttons[7-k.x][7-k.y].setOpaque(true);
 					}
 				}
@@ -161,6 +194,8 @@ public class BoardWindow extends JPanel {
 				_sideButtons[0][i].setBorder(new EmptyBorder(1, 1, 1, 1));
 			}
 		}
+		
+		
 
 	}
 
