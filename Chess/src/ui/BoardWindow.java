@@ -32,7 +32,7 @@ public class BoardWindow extends JPanel {
 		_sideButtons = new JButton[1][8];
 		for(int i = 0; i<8; i++){
 			_sideButtons[0][i] = new JButton("" + (8-i));
-			_sideButtons[0][i].setPreferredSize(new Dimension(40,80));
+			_sideButtons[0][i].setPreferredSize(new Dimension(20,80));
 			_sideButtons[0][i].setFont(new Font("Arial", Font.PLAIN, 25));
 			_sideButtons[0][i].setBorder(new EmptyBorder(1, 1, 1, 1));
 
@@ -55,7 +55,7 @@ public class BoardWindow extends JPanel {
 		topHalf.add(boardPanel);
 		JPanel bottomHalf = new JPanel();
 		JButton emptyButton = new JButton();
-		emptyButton.setPreferredSize(new Dimension(40,80));
+		emptyButton.setPreferredSize(new Dimension(20,20));
 		emptyButton.setBorder(new EmptyBorder(1,1,1,1));
 	    bottomHalf.add(emptyButton);
 		JPanel bottomPanel = new JPanel();
@@ -63,7 +63,7 @@ public class BoardWindow extends JPanel {
 		_bottomButtons = new JButton[1][8];
 		for(int i = 0; i<8; i++){
 			_bottomButtons[0][i] = new JButton("" + (char)('a'+i));
-			_bottomButtons[0][i].setPreferredSize(new Dimension(80,40));
+			_bottomButtons[0][i].setPreferredSize(new Dimension(80,30));
 			_bottomButtons[0][i].setFont(new Font("Arial", Font.PLAIN, 25));
 			_bottomButtons[0][i].setBorder(new EmptyBorder(1,1,1,1));
 			bottomPanel.add(_bottomButtons[0][i]);
@@ -111,13 +111,13 @@ public class BoardWindow extends JPanel {
 			}
 			for(int i = 0; i<8; i++){
 				_bottomButtons[0][i].setText("" + (char)('a'+i));
-				_bottomButtons[0][i].setPreferredSize(new Dimension(80,40));
+				_bottomButtons[0][i].setPreferredSize(new Dimension(80,30));
 				_bottomButtons[0][i].setFont(new Font("Arial", Font.PLAIN, 25));
 				_bottomButtons[0][i].setBorder(new EmptyBorder(1,1,1,1));
 			}
 			for(int i = 0; i<8; i++){
 				_sideButtons[0][i].setText("" + (8-i));
-				_sideButtons[0][i].setPreferredSize(new Dimension(40,80));
+				_sideButtons[0][i].setPreferredSize(new Dimension(20,80));
 				_sideButtons[0][i].setFont(new Font("Arial", Font.PLAIN, 25));
 				_sideButtons[0][i].setBorder(new EmptyBorder(1, 1, 1, 1));
 			}
@@ -159,13 +159,13 @@ public class BoardWindow extends JPanel {
 			}
 			for(int i = 0; i<8; i++){
 				_bottomButtons[0][i].setText("" + (char)('h'-i));
-				_bottomButtons[0][i].setPreferredSize(new Dimension(80,40));
+				_bottomButtons[0][i].setPreferredSize(new Dimension(80,30));
 				_bottomButtons[0][i].setFont(new Font("Arial", Font.PLAIN, 25));
 				_bottomButtons[0][i].setBorder(new EmptyBorder(1,1,1,1));
 			}
 			for(int i = 0; i<8; i++){
 				_sideButtons[0][i].setText("" + (i+1));
-				_sideButtons[0][i].setPreferredSize(new Dimension(40,80));
+				_sideButtons[0][i].setPreferredSize(new Dimension(20,80));
 				_sideButtons[0][i].setFont(new Font("Arial", Font.PLAIN, 25));
 				_sideButtons[0][i].setBorder(new EmptyBorder(1, 1, 1, 1));
 			}
