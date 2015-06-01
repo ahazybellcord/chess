@@ -20,11 +20,21 @@ public class BoardWindow extends JPanel {
 	private BoardButton[][] _buttons;
 	private JButton[][] _sideButtons;
 	private JButton[][] _bottomButtons;
+	private Color _borderColor;
+	private Color _altColor;
+	private Color _possibleMovesColor;
+	private Color _highlightColor;
+	private Color _possibleCaptureColor;
 	
 	public BoardWindow(Game game) {
 		_game = game;
 		_buttons = new BoardButton[8][8];
 		
+		_borderColor = Color.GRAY;
+		_altColor = new Color(209,236,237);
+		_possibleMovesColor = Color.GRAY;
+		_highlightColor = Color.BLUE;
+		_possibleCaptureColor = new Color(255,131,231);
 		
 		JPanel sidePanel = new JPanel();
 		sidePanel.setLayout(new GridLayout(8,1,2,2));
@@ -45,12 +55,12 @@ public class BoardWindow extends JPanel {
 			for(int j=0; j<8; j++) {
 				_buttons[j][i] = new BoardButton(_game,j,i);
 				_buttons[j][i].setPreferredSize(new Dimension(80,80));
-				_buttons[j][i].setBorder(new LineBorder(Color.GRAY, 1));
+				_buttons[j][i].setBorder(new LineBorder(_borderColor, 1));
 				if(backgroundColor){
 					backgroundColor = !backgroundColor;
 				}
 				else{
-					_buttons[j][i].setBackground(Color.LIGHT_GRAY);
+					_buttons[j][i].setBackground(_altColor);
 					backgroundColor = !backgroundColor;
 				}
 				if(j==7){
@@ -94,8 +104,7 @@ public class BoardWindow extends JPanel {
 					if(!_game.getBoard().isEmpty(j, i)){								
 				       _buttons[j][i].setText(_game.getBoard().getPiece(j, i).getUnicode());
 				       _buttons[j][i].setFont(new Font("Times New Roman", Font.PLAIN, 40));
-				       _buttons[j][i].setForeground(Color.DARK_GRAY);
-		
+				       _buttons[j][i].setForeground(Color.BLACK);
 					}
 					else{
 						_buttons[j][i].setText("");
@@ -105,23 +114,22 @@ public class BoardWindow extends JPanel {
 						backgroundColor = !backgroundColor;
 					}
 					else{
-						_buttons[j][i].setBackground(Color.LIGHT_GRAY);
+						_buttons[j][i].setBackground(_altColor);
 						backgroundColor = !backgroundColor;
 					}
 					if(j==7){
 						backgroundColor = !backgroundColor;
 					}
-					
 				}
 			}
 			
 			if(_game.getPreviousClick()!=null){
 				Piece p = _game.getPreviousClick();
-				_buttons[p.getLocation().x][p.getLocation().y].setForeground(Color.BLUE);
+				_buttons[p.getLocation().x][p.getLocation().y].setForeground(_highlightColor);
 				for(Point k: p.getPossibleMoves()){
-					_buttons[k.x][k.y].setForeground(Color.RED);
+					_buttons[k.x][k.y].setForeground(_possibleCaptureColor);
 					if(_game.getBoard().isEmpty(k.x, k.y)){
-						_buttons[k.x][k.y].setBackground(Color.gray);
+						_buttons[k.x][k.y].setBackground(_possibleMovesColor);
 						_buttons[k.x][k.y].setOpaque(true);
 					}
 				}
@@ -152,30 +160,28 @@ public class BoardWindow extends JPanel {
 						backgroundColor = !backgroundColor;
 					}
 					else{
-						_buttons[7-j][7-i].setBackground(Color.LIGHT_GRAY);
+						_buttons[7-j][7-i].setBackground(_altColor);
 						backgroundColor = !backgroundColor;
 					}
 					
 					if(!_game.getBoard().isEmpty(j, i)){		
 				       _buttons[7-j][7-i].setText(_game.getBoard().getPiece(j, i).getUnicode());
 				       _buttons[7-j][7-i].setFont(new Font("Times New Roman", Font.PLAIN, 40));
-				       _buttons[7-j][7-i].setForeground(Color.DARK_GRAY);
-	
+				       _buttons[7-j][7-i].setForeground(Color.BLACK);
 					}
 					else{
 						_buttons[7-j][7-i].setText("");
 					}
-					
 				}
 			}
 			
 			if(_game.getPreviousClick()!=null){
 				Piece p = _game.getPreviousClick();
-				_buttons[7-p.getLocation().x][7-p.getLocation().y].setForeground(Color.BLUE);
+				_buttons[7-p.getLocation().x][7-p.getLocation().y].setForeground(_highlightColor);
 				for(Point k: p.getPossibleMoves()){
-					_buttons[7-k.x][7-k.y].setForeground(Color.RED);
+					_buttons[7-k.x][7-k.y].setForeground(_possibleCaptureColor);
 					if(_game.getBoard().isEmpty(k.x, k.y)){
-						_buttons[7-k.x][7-k.y].setBackground(Color.gray);
+						_buttons[7-k.x][7-k.y].setBackground(_possibleMovesColor);
 						_buttons[7-k.x][7-k.y].setOpaque(true);
 					}
 				}
@@ -194,9 +200,6 @@ public class BoardWindow extends JPanel {
 				_sideButtons[0][i].setBorder(new EmptyBorder(1, 1, 1, 1));
 			}
 		}
-		
-		
-
 	}
 
 }
