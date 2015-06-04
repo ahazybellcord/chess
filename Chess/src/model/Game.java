@@ -123,36 +123,36 @@ public class Game extends Observable {
 		int castling = 0;
 		//check if castling kingside - white
 		if(piece.getLocation().equals(new Point(4,7)) && x==6 && y==7) {
-			Rook r = (Rook) this.getBoard().getPiece(7,7);
-			this.getBoard().setPiece(null, 7, 7);
-			this.getBoard().setPiece(r,5,7);
+			Rook r = (Rook) _board.getPiece(7,7);
+			_board.setPiece(null, 7, 7);
+			_board.setPiece(r,5,7);
 			r.setLocation(5, 7);
 			r.setMoved();
 			castling = 1;
 		}
 		//check if castling kingside - black
 		if(piece.getLocation().equals(new Point(4,0)) && x==6 && y==0) {
-			Rook r = (Rook) this.getBoard().getPiece(7,0);
-			this.getBoard().setPiece(null, 7, 0);
-			this.getBoard().setPiece(r,5,0);
+			Rook r = (Rook) _board.getPiece(7,0);
+			_board.setPiece(null, 7, 0);
+			_board.setPiece(r,5,0);
 			r.setLocation(5, 0);
 			r.setMoved();
 			castling = 1;
 		}
 		//check if castling queenside - white
 		if(piece.getLocation().equals(new Point(4,7)) && x==2 && y==7) {
-			Rook r = (Rook) this.getBoard().getPiece(0,7);
-			this.getBoard().setPiece(null, 0, 7);
-			this.getBoard().setPiece(r,3,7);
+			Rook r = (Rook) _board.getPiece(0,7);
+			_board.setPiece(null, 0, 7);
+			_board.setPiece(r,3,7);
 			r.setLocation(3, 7);
 			r.setMoved();
 			castling = 2;
 		}
 		//check if castling queenside - black
 		if(piece.getLocation().equals(new Point(4,0)) && x==2 && y==0) {
-			Rook r = (Rook) this.getBoard().getPiece(0,0);
-			this.getBoard().setPiece(null, 0, 0);
-			this.getBoard().setPiece(r,3,0);
+			Rook r = (Rook) _board.getPiece(0,0);
+			_board.setPiece(null, 0, 0);
+			_board.setPiece(r,3,0);
 			r.setLocation(3, 0);
 			r.setMoved();
 			castling = 2;
@@ -186,6 +186,7 @@ public class Game extends Observable {
 		notifyObservers();
 		System.out.println("Notified the UI.");
 		save();
+		getNumberOfPossibleMoves(_currentPlayer);
 		System.out.println("Saved the game in the current configuration");
 		// at this point the move has been made and next player is up
 				// we must check to see if the current player is in check
@@ -256,8 +257,8 @@ public class Game extends Observable {
 	private void printBoard() {
 		for(int i=0; i<8; i++) {
 			for(int j=0; j<8; j++){
-				if(this.getBoard().getPiece(j, i)!=null) {
-					System.out.print(this.getBoard().getPiece(j, i).getUnicode()+" ");
+				if(_board.getPiece(j, i)!=null) {
+					System.out.print(_board.getPiece(j, i).getUnicode()+" ");
 					if(j==7) { System.out.print("\n");
 					}
 				}
@@ -272,7 +273,7 @@ public class Game extends Observable {
 
 	//notate which piece is moving and its source
 	private void notate(Piece piece, char rank, int castling, boolean captured, int x, int y) {
-		if(!this.getCurrentPlayer()) { _notation += (_moves.size()/2 + 1) + ". "; }
+		if(!_currentPlayer) { _notation += (_moves.size()/2 + 1) + ". "; }
 		if(castling==1) {
 			_notation += "O-O";
 		}
@@ -291,7 +292,7 @@ public class Game extends Observable {
 			_notation += getChessCoordinate(x,y);
 		}
 		if(this.isInCheck()) { _notation += "+"; }
-		if(this.getCurrentPlayer()) { _notation += " "; }
+		if(_currentPlayer) { _notation += " "; }
 
 		_moves.add(_notation);
 		_notation = "";
@@ -316,7 +317,7 @@ public class Game extends Observable {
 		String game = "";
 		for(int j=0; j<8; j++) {
 			for(int i=0; i<8; i++) {
-				Piece currentPiece = this.getBoard().getPiece(i, j);
+				Piece currentPiece = _board.getPiece(i, j);
 				if(currentPiece!=null) {
 					game += currentPiece.getUnicode();
 					//if the piece is a pawn, rook or king, include _moved variable
@@ -333,7 +334,7 @@ public class Game extends Observable {
 		//add board configuration encoded as String to game history
 		_gameHistory.add(game);
 		
-		game += boolToInt(this.getCurrentPlayer());
+		game += boolToInt(_currentPlayer);
 		try {
 			PrintWriter saveFile = new PrintWriter("save.txt");
 			saveFile.println(game);
@@ -349,9 +350,5 @@ public class Game extends Observable {
 		if(b) { return 1; }
 		else return 0;
 	}
-	
-	
-
-
 
 }
