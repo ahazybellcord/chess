@@ -26,5 +26,10 @@ public class King extends Piece{
 		else { return "\u265a" ; }
 	}
 	
+	@Override
+	public String getSymbol() {
+		return "K";
+	}
+	
 }
 

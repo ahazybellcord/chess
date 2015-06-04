@@ -36,5 +36,9 @@ public class Knight extends Piece{
 		else { return "\u265e" ; }
 	}
 	
+	@Override
+	public String getSymbol() {
+		return "N";
+	}
 
 }

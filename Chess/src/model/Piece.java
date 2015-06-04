@@ -57,6 +57,10 @@ public class Piece {
 		return "";
 	}
 	
+	public String getSymbol() {
+		return "";
+	}
+	
 	public Game getGame() {
 		return _game;
 	}

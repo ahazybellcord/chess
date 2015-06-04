@@ -28,6 +28,11 @@ public class Queen extends Piece{
 		if(this.getColor()) { return "\u2655"; }
 		else { return "\u265b" ; }
 	}
+	
+	@Override
+	public String getSymbol() {
+		return "Q";
+	}
 
 }
 

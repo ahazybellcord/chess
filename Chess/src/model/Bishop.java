@@ -75,6 +75,11 @@ public class Bishop extends Piece{
 		if(this.getColor()) { return "\u2657"; }
 		else { return "\u265d" ; }
 	}
+	
+	@Override
+	public String getSymbol() {
+		return "B";
+	}
 
 	
 
