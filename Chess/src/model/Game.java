@@ -37,6 +37,7 @@ public class Game extends Observable {
 		_inCheck = false;
 		_capturedPieces = new ArrayList<Piece>();
 		save();
+		getNumberOfPossibleMoves(this.getCurrentPlayer());
 	}
 	
 	public Board getBoard() {
@@ -118,6 +119,44 @@ public class Game extends Observable {
 	}
 
 	private void move(Piece piece, int x, int y) {
+		// castling 0: no, 1: kingside, 2: queenside
+		int castling = 0;
+		//check if castling kingside - white
+		if(piece.getLocation().equals(new Point(4,7)) && x==6 && y==7) {
+			Rook r = (Rook) this.getBoard().getPiece(7,7);
+			this.getBoard().setPiece(null, 7, 7);
+			this.getBoard().setPiece(r,5,7);
+			r.setLocation(5, 7);
+			r.setMoved();
+			castling = 1;
+		}
+		//check if castling kingside - black
+		if(piece.getLocation().equals(new Point(4,0)) && x==6 && y==0) {
+			Rook r = (Rook) this.getBoard().getPiece(7,0);
+			this.getBoard().setPiece(null, 7, 0);
+			this.getBoard().setPiece(r,5,0);
+			r.setLocation(5, 0);
+			r.setMoved();
+			castling = 1;
+		}
+		//check if castling queenside - white
+		if(piece.getLocation().equals(new Point(4,7)) && x==2 && y==7) {
+			Rook r = (Rook) this.getBoard().getPiece(0,7);
+			this.getBoard().setPiece(null, 0, 7);
+			this.getBoard().setPiece(r,3,7);
+			r.setLocation(3, 7);
+			r.setMoved();
+			castling = 2;
+		}
+		//check if castling queenside - black
+		if(piece.getLocation().equals(new Point(4,0)) && x==2 && y==0) {
+			Rook r = (Rook) this.getBoard().getPiece(0,0);
+			this.getBoard().setPiece(null, 0, 0);
+			this.getBoard().setPiece(r,3,0);
+			r.setLocation(3, 0);
+			r.setMoved();
+			castling = 2;
+		}
 		if(!piece.wasMoved()) {
 			piece.setMoved();
 		}
@@ -141,7 +180,7 @@ public class Game extends Observable {
 		_previousClick = null;
 		System.out.println("Set previous click to null again.");
 		// notate the move
-		notate(piece,rank,captured,x,y);
+		notate(piece,rank,castling,captured,x,y);
 		printBoard();
 		setChanged();
 		notifyObservers();
@@ -161,6 +200,24 @@ public class Game extends Observable {
 
 	}
 	
+	public int getNumberOfPossibleMoves(boolean color) {
+		int count=0;
+
+		for(int i=0; i<8; i++) {
+			for(int j=0; j<8; j++) {
+				if(_board.getPiece(i,j)!=null) {
+					if(_board.getPiece(i, j).getColor()==_currentPlayer) {
+						//count all the possible moves of each piece of the given color
+						_board.getPiece(i, j).setPossibleMoves();
+						count += _board.getPiece(i, j).getPossibleMoves().size();
+					}
+				}
+			}
+		}
+		System.out.println("There are "+count+" possible moves for the current player");
+		return count;
+	}
+
 	public void checkCheck() {
 		removeCheck();
 		// find current player's king
@@ -214,20 +271,28 @@ public class Game extends Observable {
 	}
 
 	//notate which piece is moving and its source
-	private void notate(Piece piece, char rank, boolean captured, int x, int y) {
+	private void notate(Piece piece, char rank, int castling, boolean captured, int x, int y) {
 		if(!this.getCurrentPlayer()) { _notation += (_moves.size()/2 + 1) + ". "; }
-		_notation += piece.getSymbol();
-		//if a piece is captured, indicate with 'x'
-		if(captured) { 
-			if(piece.getClass().getName().equals("model.Pawn")) {
-				_notation += rank;
-			}
-			_notation += "x"; 
+		if(castling==1) {
+			_notation += "O-O";
 		}
-		_notation += getChessCoordinate(x,y);
+		else if(castling==2) {
+			_notation += "O-O-O";
+		}
+		else {
+			_notation += piece.getSymbol();
+			//if a piece is captured, indicate with 'x'
+			if(captured) { 
+				if(piece.getClass().getName().equals("model.Pawn")) {
+					_notation += rank;
+				}
+				_notation += "x"; 
+			}
+			_notation += getChessCoordinate(x,y);
+		}
 		if(this.isInCheck()) { _notation += "+"; }
 		if(this.getCurrentPlayer()) { _notation += " "; }
-		
+
 		_moves.add(_notation);
 		_notation = "";
 	}
