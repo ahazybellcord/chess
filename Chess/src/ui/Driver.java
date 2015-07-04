@@ -73,6 +73,7 @@ public class Driver implements Runnable, Observer {
 				        "White Wins!",
 				        "Checkmate",
 				        JOptionPane.INFORMATION_MESSAGE);
+				
 			}
 			else{
 				_frame.setTitle("Chess - Black Wins!");
@@ -80,7 +81,9 @@ public class Driver implements Runnable, Observer {
 				        "Black Wins!",
 				        "Checkmate",
 				        JOptionPane.INFORMATION_MESSAGE);
+				
 			}
+			_frame.setEnabled(false);
 			
 			
 		}
