@@ -16,6 +16,8 @@ public class Game extends Observable {
 	private boolean _inCheck;
 	private ArrayList<Piece> _capturedPieces;
 	private ArrayList<String> _names;
+	private boolean _pawnPromotion;
+	private int _promotionChoice;
 	
 	public Game(String[] args) {
 		_names = new ArrayList<String>();
@@ -29,12 +31,14 @@ public class Game extends Observable {
 			_names.add("Black");
 		}
 		_board = new Board(this);
+		_promotionChoice = -1;
 		_currentPlayer = true;
 		_previousClick = null;
 		_notation = "";
 		_moves = new ArrayList<String>();
 		_gameHistory = new ArrayList<String>();
 		_inCheck = false;
+		_pawnPromotion = false;
 		_capturedPieces = new ArrayList<Piece>();
 		save();
 		getNumberOfPossibleMoves(this.getCurrentPlayer());
@@ -79,6 +83,10 @@ public class Game extends Observable {
 	public void changePlayers() {
 		_currentPlayer = !_currentPlayer;
 	}
+	
+	public void setPromotionChoice(int n){
+		_promotionChoice = n;
+	}
 
 	public void handleClick(int x, int y) {
 		if(_previousClick == null){
@@ -96,8 +104,10 @@ public class Game extends Observable {
 				System.out.println("Board is empty and previous click isn't empty!");
 				
 					if(_previousClick.moveIsValid(new Point(x,y))){
-						move(_previousClick, x, y);
-						System.out.println("The coordinates match and the piece should move!");
+							move(_previousClick, x, y);
+							System.out.println("The coordinates match and the piece should move!");
+						
+						
 					}
 			}
 			else if(_board.getPiece(x, y).getColor()!=this.getCurrentPlayer()){
@@ -119,6 +129,7 @@ public class Game extends Observable {
 	}
 
 	private void move(Piece piece, int x, int y) {
+		
 		// castling 0: no, 1: kingside, 2: queenside
 		int castling = 0;
 		//check if castling kingside - white
@@ -174,6 +185,14 @@ public class Game extends Observable {
 		
 		piece.setLocation(x,y);
 		System.out.println("Set location of the piece to new location!");
+		if(piece.getClass().getName().equals("model.Pawn") && piece.getColor() == true && y == 0){
+			System.out.println("Pawn Promotion Method called!");
+			handlePawnPromotion(x, y);
+		}
+		else if(piece.getClass().getName().equals("model.Pawn") && piece.getColor() == false && y == 7){
+			System.out.println("Pawn Promotion Method called!");
+			handlePawnPromotion(x, y);
+		}
 		this.changePlayers();
 		System.out.println("Switched players.");
 		checkCheck();
@@ -201,6 +220,76 @@ public class Game extends Observable {
 
 	}
 	
+	private void handlePawnPromotion(int x, int y) {
+			_pawnPromotion = true;
+			setChanged();
+			notifyObservers();
+			if(_promotionChoice != -1){
+				if(_promotionChoice == 0){
+					System.out.println("The pawn should be promoted to a Knight.");
+					_board.setPiece(null, x, y);
+					if(y==0){
+						Knight myKnight = new Knight(true, this,new Point(x, y));
+						_board.setPiece(myKnight, x, y);
+					}
+					else{
+						Knight myKnight = new Knight(false, this,new Point(x, y));
+						_board.setPiece(myKnight, x, y);
+					}
+					_pawnPromotion = false;
+					
+				}
+				else if(_promotionChoice == 1){
+					System.out.println("The pawn should be promoted to a Rook.");
+					_board.setPiece(null, x, y);
+					if(y==0){
+						Rook myRook = new Rook(true, this,new Point(x, y));
+						_board.setPiece(myRook, x, y);
+					}
+					else{
+						Rook myRook = new Rook(false, this,new Point(x, y));
+						_board.setPiece(myRook, x, y);
+					}
+					_pawnPromotion = false;
+				}
+				else if(_promotionChoice == 2){
+					System.out.println("The pawn should be promoted to a Queen.");
+					_board.setPiece(null, x, y);
+					if(y==0){
+						Queen myQueen = new Queen(true, this,new Point(x, y));
+						_board.setPiece(myQueen, x, y);
+					}
+					else{
+						Queen myQueen = new Queen(false, this,new Point(x, y));
+						_board.setPiece(myQueen, x, y);
+					}
+					_pawnPromotion = false;
+				}
+				else if(_promotionChoice ==3){
+					System.out.println("The pawn should be promoted to a Bishop.");
+					if(y==0){
+						Bishop myBishop = new Bishop(true, this,new Point(x, y));
+						_board.setPiece(myBishop, x, y);
+					}
+					else{
+						Bishop myBishop = new Bishop(false, this,new Point(x, y));
+						_board.setPiece(myBishop, x, y);
+					}
+					_pawnPromotion = false;
+				}
+			}
+			else{
+				System.out.println("Promotion choice not selected properly.");
+				System.exit(1);
+			}
+			
+			
+	}
+	
+	public boolean getPawnPromotion(){
+		return _pawnPromotion;
+	}
+
 	public int getNumberOfPossibleMoves(boolean color) {
 		int count=0;
 

@@ -5,6 +5,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import model.Game;
@@ -14,7 +15,7 @@ public class Driver implements Runnable, Observer {
 	private Game _game;
 	private BoardWindow _boardWindow;
 	private InfoWindow _infoWindow;
-	
+
 	public Driver(String[] args) {
 		if(args.length==0 || args.length==2){
 			_game = new Game(args);
@@ -24,7 +25,7 @@ public class Driver implements Runnable, Observer {
 			System.err.println("You can input exactly two names!");
 			System.exit(1);
 		}
-			
+
 	}
 
 	@Override
@@ -38,13 +39,31 @@ public class Driver implements Runnable, Observer {
 		_frame.setVisible(true);
 		_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	
+
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Driver(args));
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
+		if(_game.getPawnPromotion()){
+			int n = -1;
+			while(n==-1){
+				Object[] options = {"Knight",
+						"Rook",
+						"Queen", "Bishop"};
+				        n = JOptionPane.showOptionDialog(_frame,
+						"Please select one ",
+						"Pawn Promotion",
+						JOptionPane.YES_NO_CANCEL_OPTION,
+						JOptionPane.PLAIN_MESSAGE,
+						null,
+						options,
+						options[2]);
+			}
+			_game.setPromotionChoice(n);
+
+		}
 		_boardWindow.update();
 		_infoWindow.update();
 		if(_game.getCurrentPlayer()){
