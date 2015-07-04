@@ -19,6 +19,7 @@ public class Game extends Observable {
 	private ArrayList<String> _names;
 	private boolean _pawnPromotion;
 	private int _promotionChoice;
+	private boolean _checkmate;
 	
 	public Game(String[] args) {
 		_names = new ArrayList<String>();
@@ -40,6 +41,7 @@ public class Game extends Observable {
 		_gameHistory = new ArrayList<String>();
 		_inCheck = false;
 		_pawnPromotion = false;
+		_checkmate = false;
 		_capturedPieces = new ArrayList<Piece>();
 		save();
 		getNumberOfPossibleMoves(this.getCurrentPlayer());
@@ -229,6 +231,9 @@ public class Game extends Observable {
 		checkCheck();
 		if(isInCheck()){
 			System.out.println("IN CHECK!");
+			if(checkCheckmate()){
+				this.changePlayers();
+			}
 		}
 		_previousClick = null;
 		System.out.println("Set previous click to null again.");
@@ -254,6 +259,30 @@ public class Game extends Observable {
 
 	}
 	
+	private boolean checkCheckmate() {
+		for(int i = 0; i < 8; i++){
+			for(int j = 0; j<8; j++){
+				if(_board.getPiece(i, j)!=null){
+					if(_board.getPiece(i, j).getColor()==this.getCurrentPlayer()){
+						_board.getPiece(i, j).setPossibleMoves();
+						selfCheck(_board.getPiece(i, j));
+						if(_board.getPiece(i, j).getPossibleMoves().size() !=0){
+							return false;
+						}
+					}
+				}
+				
+			}
+		}
+		_checkmate = true;
+		return true;
+		
+	}
+	
+	public boolean isCheckmate(){
+		return _checkmate;
+	}
+
 	private void handlePawnPromotion(int x, int y) {
 			_pawnPromotion = true;
 			setChanged();

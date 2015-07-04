@@ -66,12 +66,33 @@ public class Driver implements Runnable, Observer {
 		}
 		_boardWindow.update();
 		_infoWindow.update();
-		if(_game.getCurrentPlayer()){
-			_frame.setTitle("Chess (White to move)" );
+		if(_game.isCheckmate()){
+			if(_game.getCurrentPlayer()){
+				_frame.setTitle("Chess - White Wins!");
+				JOptionPane.showMessageDialog(_frame,
+				        "White Wins!",
+				        "Checkmate",
+				        JOptionPane.INFORMATION_MESSAGE);
+			}
+			else{
+				_frame.setTitle("Chess - Black Wins!");
+				JOptionPane.showMessageDialog(_frame,
+				        "Black Wins!",
+				        "Checkmate",
+				        JOptionPane.INFORMATION_MESSAGE);
+			}
+			
+			
 		}
 		else{
-			_frame.setTitle("Chess (Black to move)");
+			if(_game.getCurrentPlayer()){
+				_frame.setTitle("Chess (White to move)" );
+			}
+			else{
+				_frame.setTitle("Chess (Black to move)");
+			}
 		}
+		
 		_frame.pack();
 	}
 
