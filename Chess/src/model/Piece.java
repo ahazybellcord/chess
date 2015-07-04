@@ -33,6 +33,10 @@ public class Piece {
 		return _color;
 	}
 	
+	public void overridePossibleMoves(HashSet<Point> myHash){
+		_possibleMoves = myHash;
+	}
+	
 	public Point getLocation() {
 		return _location;
 	}

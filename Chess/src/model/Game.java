@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Observable;
 
 public class Game extends Observable {
@@ -95,6 +96,7 @@ public class Game extends Observable {
 				System.out.println("Setting a piece to previous click!");
 				_previousClick = _board.getPiece(x, y);
 				_previousClick.setPossibleMoves();
+				selfCheck(_previousClick);
 				System.out.println("Possible clicks are" + _previousClick.getPossibleMoves().toString());
 			}
 		}
@@ -121,11 +123,40 @@ public class Game extends Observable {
 			else{
 				_previousClick = _board.getPiece(x, y);
 				_previousClick.setPossibleMoves();
+				selfCheck(_previousClick);
 				System.out.println("Possible clicks are" + _previousClick.getPossibleMoves().toString());
 			}	
 		}
 		setChanged();
 		notifyObservers();
+	}
+
+	private void selfCheck(Piece piece) {
+		HashSet<Point> possibleMoves = new HashSet<Point>();
+		for(Point p: piece.getPossibleMoves()){
+			Piece temperory = null;
+			if(!_board.isEmpty(p.x, p.y)){
+				temperory = _board.getPiece(p.x, p.y);
+			}
+			Point originalLocation = piece.getLocation();
+			_board.setPiece(null, p.x, p.y);
+			_board.setPiece(null, originalLocation.x, originalLocation.y);
+			_board.setPiece(piece, p.x, p.y);
+			checkCheck();
+			if(!isInCheck()){
+				possibleMoves.add(p);
+			}
+			if(temperory==null){
+				_board.setPiece(null, p.x, p.y);
+				_board.setPiece(piece, originalLocation.x, originalLocation.y);
+			}
+			else{
+				_board.setPiece(null, p.x, p.y);
+				_board.setPiece(temperory, p.x, p.y);
+				_board.setPiece(piece, originalLocation.x, originalLocation.y);
+			}
+		}
+		piece.overridePossibleMoves(possibleMoves);
 	}
 
 	private void move(Piece piece, int x, int y) {
@@ -196,6 +227,9 @@ public class Game extends Observable {
 		this.changePlayers();
 		System.out.println("Switched players.");
 		checkCheck();
+		if(isInCheck()){
+			System.out.println("IN CHECK!");
+		}
 		_previousClick = null;
 		System.out.println("Set previous click to null again.");
 		// notate the move
