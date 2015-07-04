@@ -20,13 +20,13 @@ public class Game extends Observable {
 	private boolean _pawnPromotion;
 	private int _promotionChoice;
 	private boolean _checkmate;
-	
+
 	public Game(String[] args) {
 		_names = new ArrayList<String>();
 		if(args.length!=0){
 			_names.add(args[0]);
 			_names.add(args[1]);
-			
+
 		}
 		else{
 			_names.add("White");
@@ -46,47 +46,47 @@ public class Game extends Observable {
 		save();
 		getNumberOfPossibleMoves(this.getCurrentPlayer());
 	}
-	
+
 	public Board getBoard() {
 		return _board;
 	}
-	
+
 	public ArrayList<String> getMoves(){
 		return _moves;
 	}
-	
+
 	public ArrayList<String> getNames(){
 		return _names;
 	}
-	
+
 	public ArrayList<String> getGameHistory() {
 		return _gameHistory;
 	}
-	
+
 	public void putInCheck() {
 		_inCheck = true;
 	}
-	
+
 	public void removeCheck() {
 		_inCheck = false;
 	}
-	
+
 	public boolean isInCheck() {
 		return _inCheck;
 	}
-	
+
 	public ArrayList<Piece> getCapturedPieces(){
 		return _capturedPieces;
 	}
-	
+
 	public boolean getCurrentPlayer(){
 		return _currentPlayer;
 	}
-	
+
 	public void changePlayers() {
 		_currentPlayer = !_currentPlayer;
 	}
-	
+
 	public void setPromotionChoice(int n){
 		_promotionChoice = n;
 	}
@@ -106,21 +106,21 @@ public class Game extends Observable {
 			System.out.println("Previous click isn't null!");
 			if(_board.isEmpty(x, y)){
 				System.out.println("Board is empty and previous click isn't empty!");
-				
-					if(_previousClick.moveIsValid(new Point(x,y))){
-							move(_previousClick, x, y);
-							System.out.println("The coordinates match and the piece should move!");
-						
-						
-					}
+
+				if(_previousClick.moveIsValid(new Point(x,y))){
+					move(_previousClick, x, y);
+					System.out.println("The coordinates match and the piece should move!");
+
+
+				}
 			}
 			else if(_board.getPiece(x, y).getColor()!=this.getCurrentPlayer()){
 				System.out.println("There's an opponent piece and previous click isn't empty!");
-				
-					if(_previousClick.moveIsValid(new Point(x,y))){
-						move(_previousClick, x, y);
-						System.out.println("The coordinates match, the piece should move and opponent's piece should be disposed!");
-					}
+
+				if(_previousClick.moveIsValid(new Point(x,y))){
+					move(_previousClick, x, y);
+					System.out.println("The coordinates match, the piece should move and opponent's piece should be disposed!");
+				}
 			}
 			else{
 				_previousClick = _board.getPiece(x, y);
@@ -148,6 +148,9 @@ public class Game extends Observable {
 			if(!isInCheck()){
 				possibleMoves.add(p);
 			}
+			else{
+				this.putInCheck();
+			}
 			if(temperory==null){
 				_board.setPiece(null, p.x, p.y);
 				_board.setPiece(piece, originalLocation.x, originalLocation.y);
@@ -162,7 +165,7 @@ public class Game extends Observable {
 	}
 
 	private void move(Piece piece, int x, int y) {
-		
+
 		// castling 0: no, 1: kingside, 2: queenside
 		int castling = 0;
 		//check if castling kingside - white
@@ -212,10 +215,10 @@ public class Game extends Observable {
 			captured = true;
 		}
 		char rank = getRank(piece.getLocation().x);
-		
+
 		_board.setPiece(piece, x, y);
 		System.out.println("Moved the piece to the new location!");
-		
+
 		piece.setLocation(x,y);
 		System.out.println("Set location of the piece to new location!");
 		if(piece.getClass().getName().equals("model.Pawn") && piece.getColor() == true && y == 0){
@@ -233,6 +236,8 @@ public class Game extends Observable {
 			System.out.println("IN CHECK!");
 			if(checkCheckmate()){
 				this.changePlayers();
+				System.out.println("CHECKMATE!");
+				
 			}
 		}
 		_previousClick = null;
@@ -247,18 +252,18 @@ public class Game extends Observable {
 		getNumberOfPossibleMoves(_currentPlayer);
 		System.out.println("Saved the game in the current configuration");
 		// at this point the move has been made and next player is up
-				// we must check to see if the current player is in check
-				// if so then we need to restrict his moves such that
-				// each move must force _inCheck = false.
-				// so when the current player attempts to move, when we generate possible moves
-				// for the piece he has chosen we need to see whether those moves result
-				// in _inCheck = false.
-				// when _inCheck = true we need to call checkCheckmate()
-				// which sets the possible moves of all the current player's pieces
-				// and sees if the union is empty
+		// we must check to see if the current player is in check
+		// if so then we need to restrict his moves such that
+		// each move must force _inCheck = false.
+		// so when the current player attempts to move, when we generate possible moves
+		// for the piece he has chosen we need to see whether those moves result
+		// in _inCheck = false.
+		// when _inCheck = true we need to call checkCheckmate()
+		// which sets the possible moves of all the current player's pieces
+		// and sees if the union is empty
 
 	}
-	
+
 	private boolean checkCheckmate() {
 		for(int i = 0; i < 8; i++){
 			for(int j = 0; j<8; j++){
@@ -271,84 +276,84 @@ public class Game extends Observable {
 						}
 					}
 				}
-				
+
 			}
 		}
 		_checkmate = true;
 		return true;
-		
+
 	}
-	
+
 	public boolean isCheckmate(){
 		return _checkmate;
 	}
 
 	private void handlePawnPromotion(int x, int y) {
-			_pawnPromotion = true;
-			setChanged();
-			notifyObservers();
-			if(_promotionChoice != -1){
-				if(_promotionChoice == 0){
-					System.out.println("The pawn should be promoted to a Knight.");
-					_board.setPiece(null, x, y);
-					if(y==0){
-						Knight myKnight = new Knight(true, this,new Point(x, y));
-						_board.setPiece(myKnight, x, y);
-					}
-					else{
-						Knight myKnight = new Knight(false, this,new Point(x, y));
-						_board.setPiece(myKnight, x, y);
-					}
-					_pawnPromotion = false;
-					
+		_pawnPromotion = true;
+		setChanged();
+		notifyObservers();
+		if(_promotionChoice != -1){
+			if(_promotionChoice == 0){
+				System.out.println("The pawn should be promoted to a Knight.");
+				_board.setPiece(null, x, y);
+				if(y==0){
+					Knight myKnight = new Knight(true, this,new Point(x, y));
+					_board.setPiece(myKnight, x, y);
 				}
-				else if(_promotionChoice == 1){
-					System.out.println("The pawn should be promoted to a Rook.");
-					_board.setPiece(null, x, y);
-					if(y==0){
-						Rook myRook = new Rook(true, this,new Point(x, y));
-						_board.setPiece(myRook, x, y);
-					}
-					else{
-						Rook myRook = new Rook(false, this,new Point(x, y));
-						_board.setPiece(myRook, x, y);
-					}
-					_pawnPromotion = false;
+				else{
+					Knight myKnight = new Knight(false, this,new Point(x, y));
+					_board.setPiece(myKnight, x, y);
 				}
-				else if(_promotionChoice == 2){
-					System.out.println("The pawn should be promoted to a Queen.");
-					_board.setPiece(null, x, y);
-					if(y==0){
-						Queen myQueen = new Queen(true, this,new Point(x, y));
-						_board.setPiece(myQueen, x, y);
-					}
-					else{
-						Queen myQueen = new Queen(false, this,new Point(x, y));
-						_board.setPiece(myQueen, x, y);
-					}
-					_pawnPromotion = false;
-				}
-				else if(_promotionChoice ==3){
-					System.out.println("The pawn should be promoted to a Bishop.");
-					if(y==0){
-						Bishop myBishop = new Bishop(true, this,new Point(x, y));
-						_board.setPiece(myBishop, x, y);
-					}
-					else{
-						Bishop myBishop = new Bishop(false, this,new Point(x, y));
-						_board.setPiece(myBishop, x, y);
-					}
-					_pawnPromotion = false;
-				}
+				_pawnPromotion = false;
+
 			}
-			else{
-				System.out.println("Promotion choice not selected properly.");
-				System.exit(1);
+			else if(_promotionChoice == 1){
+				System.out.println("The pawn should be promoted to a Rook.");
+				_board.setPiece(null, x, y);
+				if(y==0){
+					Rook myRook = new Rook(true, this,new Point(x, y));
+					_board.setPiece(myRook, x, y);
+				}
+				else{
+					Rook myRook = new Rook(false, this,new Point(x, y));
+					_board.setPiece(myRook, x, y);
+				}
+				_pawnPromotion = false;
 			}
-			
-			
+			else if(_promotionChoice == 2){
+				System.out.println("The pawn should be promoted to a Queen.");
+				_board.setPiece(null, x, y);
+				if(y==0){
+					Queen myQueen = new Queen(true, this,new Point(x, y));
+					_board.setPiece(myQueen, x, y);
+				}
+				else{
+					Queen myQueen = new Queen(false, this,new Point(x, y));
+					_board.setPiece(myQueen, x, y);
+				}
+				_pawnPromotion = false;
+			}
+			else if(_promotionChoice ==3){
+				System.out.println("The pawn should be promoted to a Bishop.");
+				if(y==0){
+					Bishop myBishop = new Bishop(true, this,new Point(x, y));
+					_board.setPiece(myBishop, x, y);
+				}
+				else{
+					Bishop myBishop = new Bishop(false, this,new Point(x, y));
+					_board.setPiece(myBishop, x, y);
+				}
+				_pawnPromotion = false;
+			}
+		}
+		else{
+			System.out.println("Promotion choice not selected properly.");
+			System.exit(1);
+		}
+
+
 	}
-	
+
 	public boolean getPawnPromotion(){
 		return _pawnPromotion;
 	}
@@ -362,6 +367,7 @@ public class Game extends Observable {
 					if(_board.getPiece(i, j).getColor()==_currentPlayer) {
 						//count all the possible moves of each piece of the given color
 						_board.getPiece(i, j).setPossibleMoves();
+						selfCheck(_board.getPiece(i, j));
 						count += _board.getPiece(i, j).getPossibleMoves().size();
 					}
 				}
@@ -385,7 +391,7 @@ public class Game extends Observable {
 				}
 			}
 		}
-		
+
 		// now generate possible moves for the opponent and see if they intersect the king
 		for(int i=0; i<8; i++) {
 			for(int j=0; j<8; j++) {
@@ -401,10 +407,10 @@ public class Game extends Observable {
 					}
 				}
 			}
- 		}
-		
+		}
+
 	}
-	
+
 	// a cute text representation of the board to test model-UI updating
 	private void printBoard() {
 		for(int i=0; i<8; i++) {
@@ -425,7 +431,13 @@ public class Game extends Observable {
 
 	//notate which piece is moving and its source
 	private void notate(Piece piece, char rank, int castling, boolean captured, int x, int y) {
-		if(!_currentPlayer) { _notation += (_moves.size()/2 + 1) + ". "; }
+		if(_checkmate && _currentPlayer){
+			_notation += (_moves.size()/2 + 1) + ". ";
+		}
+		else if(_checkmate && !_currentPlayer){
+			
+		}
+		else if(!_currentPlayer) { _notation += (_moves.size()/2 + 1) + ". "; }
 		if(castling==1) {
 			_notation += "O-O";
 		}
@@ -443,28 +455,34 @@ public class Game extends Observable {
 			}
 			_notation += getChessCoordinate(x,y);
 		}
-		if(this.isInCheck()) { _notation += "+"; }
+		if(_checkmate){
+        	_notation += "#";
+        	_moves.add(_notation);
+    		_notation = "";
+        	return;
+        }
+		if(this.isInCheck()) {	_notation += "+"; }
 		if(_currentPlayer) { _notation += " "; }
-
+        
 		_moves.add(_notation);
 		_notation = "";
 	}
-	
+
 	private char getRank(int x) {
 		return (char)(x + 'a');
 	}
-	
+
 	private String getChessCoordinate(int x, int y) {
 		String coordinate = "";
 		coordinate += getRank(x);   //rank
 		coordinate += (8-y);       //file
 		return coordinate;
 	}
-	
+
 	public Piece getPreviousClick(){
 		return _previousClick;
 	}
-	
+
 	public void save() {
 		String game = "";
 		for(int j=0; j<8; j++) {
@@ -482,10 +500,10 @@ public class Game extends Observable {
 				game += "\n";
 			}
 		}
-		
+
 		//add board configuration encoded as String to game history
 		_gameHistory.add(game);
-		
+
 		game += boolToInt(_currentPlayer);
 		try {
 			PrintWriter saveFile = new PrintWriter("save.txt");
@@ -496,7 +514,7 @@ public class Game extends Observable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// a helper method to create the save file
 	private int boolToInt(boolean b) {
 		if(b) { return 1; }
