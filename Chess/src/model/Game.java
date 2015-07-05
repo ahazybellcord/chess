@@ -147,7 +147,7 @@ public class Game extends Observable {
 				if(Math.abs(originalLocation.x - p.x)>1){
 					if(piece.getColor()){
 						if(p.x == 6){
-							_board.setPiece(piece, 5, 7);
+							_board.setPiece(new King(true, this, new Point(5,7)), 5, 7);
 							_board.setPiece(null, 4, 7);
 							checkCheck();
 							if(isInCheck()){
@@ -157,7 +157,7 @@ public class Game extends Observable {
 								break;
 							}
 							_board.setPiece(null, 5, 7);
-							_board.setPiece(piece, 6, 7);
+							_board.setPiece(new King(true, this, new Point(6,7)), 6, 7);
 							checkCheck();
 							if(isInCheck()){
 								_board.setPiece(null, 6, 7);
@@ -172,16 +172,16 @@ public class Game extends Observable {
 							}
 						}
 						else if(p.x == 1){
-							_board.setPiece(piece, 3, 7);
+							_board.setPiece(new King(true, this, new Point(3,7)), 3, 7);
 							_board.setPiece(null, 4, 7);
 							checkCheck();
 							if(isInCheck()){
-								_board.setPiece(piece, 2, 7);
+								_board.setPiece(piece, 4, 7);
 								_board.setPiece(null, 3, 7);
 								checkCheck();
 								break;
 							}
-							_board.setPiece(piece, 2, 7);
+							_board.setPiece(new King(true, this, new Point(2,7)), 2, 7);
 							_board.setPiece(null, 3, 7);
 							checkCheck();
 							if(isInCheck()){
@@ -191,7 +191,7 @@ public class Game extends Observable {
 								break;
 							}
 							_board.setPiece(null, 2, 7);
-							_board.setPiece(piece, 1, 7);
+							_board.setPiece(new King(true, this, new Point(1,7)), 1, 7);
 							checkCheck();
 							if(isInCheck()){
 								_board.setPiece(null, 1, 7);
@@ -209,7 +209,7 @@ public class Game extends Observable {
 					}
 					else{
 						if(p.x == 6){
-							_board.setPiece(piece, 5, 0);
+							_board.setPiece(new King(true, this, new Point(5,0)), 5, 0);
 							_board.setPiece(null, 4, 0);
 							checkCheck();
 							if(isInCheck()){
@@ -219,7 +219,7 @@ public class Game extends Observable {
 								break;
 							}
 							_board.setPiece(null, 5, 0);
-							_board.setPiece(piece, 6, 0);
+							_board.setPiece(new King(true, this, new Point(6,0)), 6, 0);
 							checkCheck();
 							if(isInCheck()){
 								_board.setPiece(null, 6, 0);
@@ -234,7 +234,7 @@ public class Game extends Observable {
 							}
 						}
 						else if(p.x == 1){
-							_board.setPiece(piece, 3, 0);
+							_board.setPiece(new King(true, this, new Point(3,0)), 3, 0);
 							_board.setPiece(null, 4, 0);
 							checkCheck();
 							if(isInCheck()){
@@ -243,7 +243,7 @@ public class Game extends Observable {
 								checkCheck();
 								break;
 							}
-							_board.setPiece(piece, 2, 0);
+							_board.setPiece(new King(true, this, new Point(2,0)), 2, 0);
 							_board.setPiece(null, 3, 0);
 							checkCheck();
 							if(isInCheck()){
@@ -253,7 +253,7 @@ public class Game extends Observable {
 								break;
 							}
 							_board.setPiece(null, 2, 0);
-							_board.setPiece(piece, 1, 0);
+							_board.setPiece(new King(true, this, new Point(1,0)), 1, 0);
 							checkCheck();
 							if(isInCheck()){
 								_board.setPiece(null, 1, 0);
