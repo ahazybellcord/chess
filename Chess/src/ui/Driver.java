@@ -83,6 +83,7 @@ public class Driver implements Runnable, Observer {
 				        JOptionPane.INFORMATION_MESSAGE);
 				
 			}
+			_game.setCheckmateFalse();
 			_frame.setEnabled(false);
 			
 			
@@ -104,6 +105,14 @@ public class Driver implements Runnable, Observer {
 				}
 			}
 			
+		}
+		if(_game.isEndGame()){
+			if(_game.getCurrentPlayer()){
+				_frame.setTitle("Chess - White Wins!");
+			}
+			else{
+				_frame.setTitle("Chess - Black Wins!");
+			}
 		}
 		
 		_frame.pack();

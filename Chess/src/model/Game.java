@@ -20,6 +20,7 @@ public class Game extends Observable {
 	private boolean _pawnPromotion;
 	private int _promotionChoice;
 	private boolean _checkmate;
+	private boolean _endGame;
 
 	public Game(String[] args) {
 		_names = new ArrayList<String>();
@@ -35,6 +36,7 @@ public class Game extends Observable {
 		_board = new Board(this);
 		_promotionChoice = -1;
 		_currentPlayer = true;
+		_endGame = false;
 		_previousClick = null;
 		_notation = "";
 		_moves = new ArrayList<String>();
@@ -519,6 +521,15 @@ public class Game extends Observable {
 	private int boolToInt(boolean b) {
 		if(b) { return 1; }
 		else return 0;
+	}
+	
+	public void setCheckmateFalse(){
+		_checkmate = false;
+		_endGame = true;
+	}
+	
+	public boolean isEndGame(){
+		return _endGame;
 	}
 
 }
