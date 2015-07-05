@@ -173,6 +173,17 @@ public class Game extends Observable {
 
 	private void move(Piece piece, int x, int y) {
 
+		for(int i = 0; i<8; i++){
+			for(int j = 0; j<8; j++){
+				if(_board.getPiece(i, j)!=null && _board.getPiece(i, j).getColor() == _currentPlayer && _board.getPiece(i, j).getClass().getName().equals("model.Pawn")){
+					((Pawn) _board.getPiece(i, j)).setJustMoved(false);
+				}
+			}
+		}
+		boolean en_passant = false;
+		if(piece.getClass().getName().equals("model.Pawn") && piece.getLocation().x!=x && _board.getPiece(x, y) == null){
+			en_passant = true;
+		}
 		// castling 0: no, 1: kingside, 2: queenside
 		int castling = 0;
 		//check if castling kingside - white
@@ -214,6 +225,10 @@ public class Game extends Observable {
 		if(!piece.wasMoved()) {
 			piece.setMoved();
 		}
+		if(piece.getClass().getName().equals("model.Pawn") && Math.abs(piece.getLocation().y - y) == 2) {
+			((Pawn) piece).setSpecial();
+			((Pawn) piece).setJustMoved(true);
+		}
 		_board.setPiece(null, piece.getLocation().x, piece.getLocation().y);
 		System.out.println("Set the position of the piece that's moving on the Board to null.");
 		boolean captured = false;
@@ -227,6 +242,19 @@ public class Game extends Observable {
 		System.out.println("Moved the piece to the new location!");
 
 		piece.setLocation(x,y);
+		if(en_passant){
+			if(piece.getColor()){
+				_capturedPieces.add(_board.getPiece(x, y+1));
+				_board.setPiece(null, x, y+1);
+				captured = true;
+			}
+			else{
+				_capturedPieces.add(_board.getPiece(x, y-1));
+				_board.setPiece(null, x, y-1);
+				captured = true;
+				
+			}
+		}
 		System.out.println("Set location of the piece to new location!");
 		if(piece.getClass().getName().equals("model.Pawn") && piece.getColor() == true && y == 0){
 			System.out.println("Pawn Promotion Method called!");
@@ -250,7 +278,7 @@ public class Game extends Observable {
 		_previousClick = null;
 		System.out.println("Set previous click to null again.");
 		// notate the move
-		notate(piece,rank,castling,captured,x,y);
+		notate(piece,rank,castling,captured,en_passant,x,y);
 		printBoard();
 		setChanged();
 		notifyObservers();
@@ -437,7 +465,7 @@ public class Game extends Observable {
 	}
 
 	//notate which piece is moving and its source
-	private void notate(Piece piece, char rank, int castling, boolean captured, int x, int y) {
+	private void notate(Piece piece, char rank, int castling, boolean captured, boolean en_passant, int x, int y) {
 		if(_checkmate && _currentPlayer){
 			_notation += (_moves.size()/2 + 1) + ". ";
 		}
@@ -461,6 +489,9 @@ public class Game extends Observable {
 				_notation += "x"; 
 			}
 			_notation += getChessCoordinate(x,y);
+			if(en_passant){
+				_notation += "e.p.";
+			}
 		}
 		if(_checkmate){
         	_notation += "#";
