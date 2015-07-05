@@ -4,11 +4,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Point;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
@@ -37,8 +39,7 @@ public class BoardWindow extends JPanel {
 		_altColor = new Color(209,236,237);
 		_possibleMovesColor = Color.GRAY;
 		_highlightColor = Color.BLUE;
-		_possibleCaptureColor = new Color(255,131,231);
-		
+		_possibleCaptureColor = new Color(131,146,159);
 		JPanel sidePanel = new JPanel();
 		sidePanel.setLayout(new GridLayout(8,1,2,2));
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -52,13 +53,13 @@ public class BoardWindow extends JPanel {
 		}
 		
 		JPanel boardPanel = new JPanel();
-		boardPanel.setLayout(new GridLayout(8,8,2,2));
+		boardPanel.setLayout(new GridLayout(8,8,0,0));
 		boolean backgroundColor = true;
 		for(int i=0; i<8; i++) {
 			for(int j=0; j<8; j++) {
 				_buttons[j][i] = new BoardButton(_game,j,i);
 				_buttons[j][i].setPreferredSize(new Dimension(80,80));
-				_buttons[j][i].setBorder(new LineBorder(_borderColor, 1));
+				_buttons[j][i].setBorder(new LineBorder(_borderColor, 0));
 				if(backgroundColor){
 					backgroundColor = !backgroundColor;
 				}
@@ -133,8 +134,10 @@ public class BoardWindow extends JPanel {
 					for(Point k: p.getPossibleMoves()){
 						_buttons[k.x][k.y].setForeground(_possibleCaptureColor);
 						if(_game.getBoard().isEmpty(k.x, k.y)){
-							_buttons[k.x][k.y].setBackground(_possibleMovesColor);
+							_buttons[k.x][k.y].setText("\u2B24");
+							_buttons[k.x][k.y].setFont(new Font("Times New Roman", Font.PLAIN, 12));
 							_buttons[k.x][k.y].setOpaque(true);
+							_buttons[k.x][k.y].setForeground(Color.BLACK);
 						}
 					}
 				}
@@ -188,7 +191,9 @@ public class BoardWindow extends JPanel {
 					for(Point k: p.getPossibleMoves()){
 						_buttons[7-k.x][7-k.y].setForeground(_possibleCaptureColor);
 						if(_game.getBoard().isEmpty(k.x, k.y)){
-							_buttons[7-k.x][7-k.y].setBackground(_possibleMovesColor);
+							_buttons[7-k.x][7-k.y].setText("\u2B24");
+							_buttons[7-k.x][7-k.y].setFont(new Font("Times New Roman", Font.PLAIN, 12));
+							_buttons[7-k.x][7-k.y].setForeground(Color.BLACK);
 							_buttons[7-k.x][7-k.y].setOpaque(true);
 						}
 					}
@@ -231,6 +236,10 @@ public class BoardWindow extends JPanel {
 		else if(s.equals("WinBoard")){
 			_altColor = new Color(112, 160, 104);
 			_mainColor = new Color(200, 192, 96);
+		}
+		else if(s.equals("Tournament")){
+			_altColor = new Color(103, 134, 66);
+			_mainColor = new Color(236, 233, 200);
 		}
 		else{
 			_altColor = new Color(209,236,237);
