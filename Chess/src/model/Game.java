@@ -145,7 +145,129 @@ public class Game extends Observable {
 			Point originalLocation = piece.getLocation();
 			if(piece.getClass().getName().equals("model.King")){
 				if(Math.abs(originalLocation.x - p.x)>1){
-					
+					if(piece.getColor()){
+						if(p.x == 6){
+							_board.setPiece(piece, 5, 7);
+							_board.setPiece(null, 4, 7);
+							checkCheck();
+							if(isInCheck()){
+								_board.setPiece(null, 5, 7);
+								_board.setPiece(piece, 4, 7);
+								checkCheck();
+								break;
+							}
+							_board.setPiece(null, 5, 7);
+							_board.setPiece(piece, 6, 7);
+							checkCheck();
+							if(isInCheck()){
+								_board.setPiece(null, 6, 7);
+								_board.setPiece(piece, 4, 7);
+								checkCheck();
+								break;
+							}
+							else{
+								_board.setPiece(null, 6, 7);
+								_board.setPiece(piece, 4, 7);
+								possibleMoves.add(p);
+							}
+						}
+						else if(p.x == 1){
+							_board.setPiece(piece, 3, 7);
+							_board.setPiece(null, 4, 7);
+							checkCheck();
+							if(isInCheck()){
+								_board.setPiece(piece, 2, 7);
+								_board.setPiece(null, 3, 7);
+								checkCheck();
+								break;
+							}
+							_board.setPiece(piece, 2, 7);
+							_board.setPiece(null, 3, 7);
+							checkCheck();
+							if(isInCheck()){
+								_board.setPiece(null, 2, 7);
+								_board.setPiece(piece, 4, 7);
+								checkCheck();
+								break;
+							}
+							_board.setPiece(null, 2, 7);
+							_board.setPiece(piece, 1, 7);
+							checkCheck();
+							if(isInCheck()){
+								_board.setPiece(null, 1, 7);
+								_board.setPiece(piece, 4, 7);
+								checkCheck();
+								break;
+							}
+							else{
+								_board.setPiece(null, 1, 7);
+								_board.setPiece(piece, 4, 7);
+								possibleMoves.add(p);
+							}
+							
+						}
+					}
+					else{
+						if(p.x == 6){
+							_board.setPiece(piece, 5, 0);
+							_board.setPiece(null, 4, 0);
+							checkCheck();
+							if(isInCheck()){
+								_board.setPiece(null, 5, 0);
+								_board.setPiece(piece, 4, 0);
+								checkCheck();
+								break;
+							}
+							_board.setPiece(null, 5, 0);
+							_board.setPiece(piece, 6, 0);
+							checkCheck();
+							if(isInCheck()){
+								_board.setPiece(null, 6, 0);
+								_board.setPiece(piece, 4, 0);
+								checkCheck();
+								break;
+							}
+							else{
+								_board.setPiece(null, 6, 0);
+								_board.setPiece(piece, 4, 0);
+								possibleMoves.add(p);
+							}
+						}
+						else if(p.x == 1){
+							_board.setPiece(piece, 3, 0);
+							_board.setPiece(null, 4, 0);
+							checkCheck();
+							if(isInCheck()){
+								_board.setPiece(piece, 2, 0);
+								_board.setPiece(null, 3, 0);
+								checkCheck();
+								break;
+							}
+							_board.setPiece(piece, 2, 0);
+							_board.setPiece(null, 3, 0);
+							checkCheck();
+							if(isInCheck()){
+								_board.setPiece(null, 2, 0);
+								_board.setPiece(piece, 4, 0);
+								checkCheck();
+								break;
+							}
+							_board.setPiece(null, 2, 0);
+							_board.setPiece(piece, 1, 0);
+							checkCheck();
+							if(isInCheck()){
+								_board.setPiece(null, 1, 0);
+								_board.setPiece(piece, 4, 0);
+								checkCheck();
+								break;
+							}
+							else{
+								_board.setPiece(null, 1, 0);
+								_board.setPiece(piece, 4, 0);
+								possibleMoves.add(p);
+							}
+						}
+					}
 				}
 			}
 			_board.setPiece(null, p.x, p.y);
@@ -306,6 +428,7 @@ public class Game extends Observable {
 					if(_board.getPiece(i, j).getColor()==this.getCurrentPlayer()){
 						_board.getPiece(i, j).setPossibleMoves();
 						selfCheck(_board.getPiece(i, j));
+						System.out.println("Check Checkmate:" +_board.getPiece(i, j).getPossibleMoves().toString());
 						if(_board.getPiece(i, j).getPossibleMoves().size() !=0){
 							return false;
 						}
