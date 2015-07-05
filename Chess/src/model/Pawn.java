@@ -3,9 +3,11 @@ package model;
 import java.awt.Point;
 
 public class Pawn extends Piece{
+	boolean _special;
 
 	public Pawn(boolean color, Game game, Point location) {
 		super(color,game,location);
+		_special = false;
 	}
     
 	@Override
@@ -71,6 +73,10 @@ public class Pawn extends Piece{
 	
 	public boolean checkEmpty(int x, int y) {
 		return this.getGame().getBoard().isEmpty(x, y);
+	}
+	
+	void setSpecial() {
+		_special = true;
 	}
 
 	@Override
