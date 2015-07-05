@@ -43,7 +43,7 @@ public class InfoWindow extends JPanel{
 			_blackPanel.add(new JLabel(_game.getMoves().get(i)));	
 		}
 		this.add(_blackPanel);
-		String[] options = {"Classic","Wooden","Civil War", "Aegean", "Burnt", "WinBoard"};
+		String[] options = {"Classic","Wooden","Civil War", "Aegean", "Burnt","Tournament", "WinBoard"};
 		JComboBox mybox = new JComboBox(options);
 		mybox.setSelectedItem(0);
 		mybox.addActionListener(new ThemeHandler());
