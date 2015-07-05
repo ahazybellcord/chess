@@ -32,7 +32,7 @@ public class Driver implements Runnable, Observer {
 	public void run() {
 		_frame = new JFrame("Chess (White to move)");
 		_boardWindow = new BoardWindow(_game);
-		_infoWindow = new InfoWindow(_game);
+		_infoWindow = new InfoWindow(_game, _boardWindow);
 		_frame.add(_boardWindow, BorderLayout.WEST);
 		_frame.add(_infoWindow, BorderLayout.EAST);
 		_frame.pack();

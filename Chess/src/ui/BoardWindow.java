@@ -22,14 +22,17 @@ public class BoardWindow extends JPanel {
 	private JButton[][] _bottomButtons;
 	private Color _borderColor;
 	private Color _altColor;
+	private Color _mainColor;
 	private Color _possibleMovesColor;
 	private Color _highlightColor;
 	private Color _possibleCaptureColor;
+	private Boolean _beginnerMode;
 	
 	public BoardWindow(Game game) {
 		_game = game;
+		_beginnerMode = true;
 		_buttons = new BoardButton[8][8];
-		
+		_mainColor = new JButton().getBackground();
 		_borderColor = Color.GRAY;
 		_altColor = new Color(209,236,237);
 		_possibleMovesColor = Color.GRAY;
@@ -110,7 +113,7 @@ public class BoardWindow extends JPanel {
 						_buttons[j][i].setText("");
 					}
 					if(backgroundColor){
-						_buttons[j][i].setBackground(new JButton().getBackground());
+						_buttons[j][i].setBackground(_mainColor);
 						backgroundColor = !backgroundColor;
 					}
 					else{
@@ -126,13 +129,16 @@ public class BoardWindow extends JPanel {
 			if(_game.getPreviousClick()!=null){
 				Piece p = _game.getPreviousClick();
 				_buttons[p.getLocation().x][p.getLocation().y].setForeground(_highlightColor);
-				for(Point k: p.getPossibleMoves()){
-					_buttons[k.x][k.y].setForeground(_possibleCaptureColor);
-					if(_game.getBoard().isEmpty(k.x, k.y)){
-						_buttons[k.x][k.y].setBackground(_possibleMovesColor);
-						_buttons[k.x][k.y].setOpaque(true);
+				if(_beginnerMode){
+					for(Point k: p.getPossibleMoves()){
+						_buttons[k.x][k.y].setForeground(_possibleCaptureColor);
+						if(_game.getBoard().isEmpty(k.x, k.y)){
+							_buttons[k.x][k.y].setBackground(_possibleMovesColor);
+							_buttons[k.x][k.y].setOpaque(true);
+						}
 					}
 				}
+				
 			}
 			
 			for(int i = 0; i<8; i++){
@@ -156,7 +162,7 @@ public class BoardWindow extends JPanel {
 						backgroundColor = !backgroundColor;
 					}
 					if(backgroundColor){
-						_buttons[7-j][7-i].setBackground(new JButton().getBackground());
+						_buttons[7-j][7-i].setBackground(_mainColor);
 						backgroundColor = !backgroundColor;
 					}
 					else{
@@ -178,13 +184,16 @@ public class BoardWindow extends JPanel {
 			if(_game.getPreviousClick()!=null){
 				Piece p = _game.getPreviousClick();
 				_buttons[7-p.getLocation().x][7-p.getLocation().y].setForeground(_highlightColor);
-				for(Point k: p.getPossibleMoves()){
-					_buttons[7-k.x][7-k.y].setForeground(_possibleCaptureColor);
-					if(_game.getBoard().isEmpty(k.x, k.y)){
-						_buttons[7-k.x][7-k.y].setBackground(_possibleMovesColor);
-						_buttons[7-k.x][7-k.y].setOpaque(true);
+				if(_beginnerMode){
+					for(Point k: p.getPossibleMoves()){
+						_buttons[7-k.x][7-k.y].setForeground(_possibleCaptureColor);
+						if(_game.getBoard().isEmpty(k.x, k.y)){
+							_buttons[7-k.x][7-k.y].setBackground(_possibleMovesColor);
+							_buttons[7-k.x][7-k.y].setOpaque(true);
+						}
 					}
 				}
+				
 			}
 			
 			for(int i = 0; i<8; i++){
@@ -200,6 +209,43 @@ public class BoardWindow extends JPanel {
 				_sideButtons[0][i].setBorder(new EmptyBorder(1, 1, 1, 1));
 			}
 		}
+	}
+	
+	public void theme(String s){
+		if(s.equals("Wooden")){
+			_altColor = new Color(222, 185, 119);
+			_mainColor = new Color(247, 206, 132);
+		}
+		else if(s.equals("Civil War")){
+			_altColor = new Color(92, 129, 152);
+			_mainColor = new Color(140, 150, 155);
+		}
+		else if(s.equals("Aegean")){
+			_altColor = new Color(94, 147, 207);
+			_mainColor = new Color(127, 176, 231);
+		}
+		else if(s.equals("Burnt")){
+			_altColor = new Color(153, 142, 17);
+			_mainColor = new Color(203, 189, 22);
+		}
+		else if(s.equals("WinBoard")){
+			_altColor = new Color(112, 160, 104);
+			_mainColor = new Color(200, 192, 96);
+		}
+		else{
+			_altColor = new Color(209,236,237);
+			_mainColor = new JButton().getBackground();
+		}
+		update();
+	}
+	public void beginnerMode(String s){
+		if(s.equals("Off")){
+			_beginnerMode = false;
+		}
+		else{
+			_beginnerMode = true;
+		}
+		update();
 	}
 
 }

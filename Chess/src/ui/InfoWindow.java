@@ -1,9 +1,13 @@
 package ui;
 
+import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -14,11 +18,13 @@ public class InfoWindow extends JPanel{
 	private Game _game;
 	private JPanel _whitePanel;
 	private JPanel _blackPanel;
+	private BoardWindow _boardWindow;
 	
-	public InfoWindow(Game game){
+	public InfoWindow(Game game, BoardWindow boardWindow){
 		_game = game;
+		_boardWindow = boardWindow;
 		_whitePanel = new JPanel();
-		this.setLayout(new GridLayout(1,2,15,2));
+		this.setLayout(new GridLayout(2,2,15,2));
 		_whitePanel.setLayout(new BoxLayout(_whitePanel, BoxLayout.Y_AXIS));
 		JLabel myLabel = new JLabel(_game.getNames().get(0) +"   ");
 		myLabel.setFont(new Font("Times New Roman", Font.PLAIN, 25));
@@ -37,7 +43,24 @@ public class InfoWindow extends JPanel{
 			_blackPanel.add(new JLabel(_game.getMoves().get(i)));	
 		}
 		this.add(_blackPanel);
-		
+		String[] options = {"Classic","Wooden","Civil War", "Aegean", "Burnt", "WinBoard"};
+		JComboBox mybox = new JComboBox(options);
+		mybox.setSelectedItem(0);
+		mybox.addActionListener(new ThemeHandler());
+		String[] bmode = {"On", "Off"};
+		JComboBox bbox = new JComboBox(bmode);
+		bbox.setSelectedItem(0);
+		bbox.addActionListener(new BeginnerHandler());
+		JLabel themeLabel = new JLabel("Theme");
+		JLabel beginnerLabel = new JLabel("Beginner Mode");
+		JPanel bottomPanel = new JPanel();
+		bottomPanel.add(themeLabel);
+		bottomPanel.add(mybox);
+		JPanel otherPanel = new JPanel();
+		otherPanel.add(beginnerLabel);
+		otherPanel.add(bbox);
+		this.add(bottomPanel);
+		this.add(otherPanel);		
 	}
 	
 	public void update(){
@@ -73,5 +96,24 @@ public class InfoWindow extends JPanel{
 			_blackPanel.add(new JLabel(_game.getMoves().get(i)));
 		}
 		
+	}
+	
+	public class ThemeHandler implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JComboBox cb = (JComboBox)e.getSource();
+	        String selected = (String)cb.getSelectedItem();
+	        _boardWindow.theme(selected);
+		}
+	}
+	public class BeginnerHandler implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JComboBox cb = (JComboBox)e.getSource();
+	        String selected = (String)cb.getSelectedItem();
+	        _boardWindow.beginnerMode(selected);
+		}
 	}
 }
