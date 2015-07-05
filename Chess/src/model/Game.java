@@ -143,6 +143,11 @@ public class Game extends Observable {
 				temperory = _board.getPiece(p.x, p.y);
 			}
 			Point originalLocation = piece.getLocation();
+			if(piece.getClass().getName().equals("model.King")){
+				if(Math.abs(originalLocation.x - p.x)>1){
+					
+				}
+			}
 			_board.setPiece(null, p.x, p.y);
 			_board.setPiece(null, originalLocation.x, originalLocation.y);
 			_board.setPiece(piece, p.x, p.y);
