@@ -12,6 +12,10 @@ public class Board {
 		makePieces();
 	}
 	
+	public Board(){
+		_pieces = new Piece[8][8];
+	}
+	
 	public void makePieces() {
 		Boolean color = true;
 		int position = 7;

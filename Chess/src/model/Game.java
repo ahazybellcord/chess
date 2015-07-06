@@ -49,6 +49,10 @@ public class Game extends Observable {
 		getNumberOfPossibleMoves(this.getCurrentPlayer());
 	}
 
+	public Game(Board board){
+		_board = board;
+	}
+
 	public Board getBoard() {
 		return _board;
 	}
@@ -95,40 +99,27 @@ public class Game extends Observable {
 
 	public void handleClick(int x, int y) {
 		if(_previousClick == null){
-			System.out.println("Previous click is null!");
 			if(!_board.isEmpty(x, y) && _board.getPiece(x, y).getColor() == this.getCurrentPlayer()){
-				System.out.println("Setting a piece to previous click!");
 				_previousClick = _board.getPiece(x, y);
 				_previousClick.setPossibleMoves();
 				selfCheck(_previousClick);
-				System.out.println("Possible clicks are" + _previousClick.getPossibleMoves().toString());
 			}
 		}
 		else{
-			System.out.println("Previous click isn't null!");
 			if(_board.isEmpty(x, y)){
-				System.out.println("Board is empty and previous click isn't empty!");
-
 				if(_previousClick.moveIsValid(new Point(x,y))){
 					move(_previousClick, x, y);
-					System.out.println("The coordinates match and the piece should move!");
-
-
 				}
 			}
 			else if(_board.getPiece(x, y).getColor()!=this.getCurrentPlayer()){
-				System.out.println("There's an opponent piece and previous click isn't empty!");
-
 				if(_previousClick.moveIsValid(new Point(x,y))){
 					move(_previousClick, x, y);
-					System.out.println("The coordinates match, the piece should move and opponent's piece should be disposed!");
 				}
 			}
 			else{
 				_previousClick = _board.getPiece(x, y);
 				_previousClick.setPossibleMoves();
 				selfCheck(_previousClick);
-				System.out.println("Possible clicks are" + _previousClick.getPossibleMoves().toString());
 			}	
 		}
 		setChanged();
@@ -137,167 +128,78 @@ public class Game extends Observable {
 
 	private void selfCheck(Piece piece) {
 		HashSet<Point> possibleMoves = new HashSet<Point>();
-		for(Point p: piece.getPossibleMoves()){
-			Piece temperory = null;
-			if(!_board.isEmpty(p.x, p.y)){
-				temperory = _board.getPiece(p.x, p.y);
-			}
-			Point originalLocation = piece.getLocation();
-			if(piece.getClass().getName().equals("model.King")){
-				if(Math.abs(originalLocation.x - p.x)>1){
-					if(piece.getColor()){
-						if(p.x == 6){
-							_board.setPiece(new King(true, this, new Point(5,7)), 5, 7);
-							_board.setPiece(null, 4, 7);
-							checkCheck();
-							if(isInCheck()){
-								_board.setPiece(null, 5, 7);
-								_board.setPiece(piece, 4, 7);
-								checkCheck();
-								break;
-							}
-							_board.setPiece(null, 5, 7);
-							_board.setPiece(new King(true, this, new Point(6,7)), 6, 7);
-							checkCheck();
-							if(isInCheck()){
-								_board.setPiece(null, 6, 7);
-								_board.setPiece(piece, 4, 7);
-								checkCheck();
-								break;
-							}
-							else{
-								_board.setPiece(null, 6, 7);
-								_board.setPiece(piece, 4, 7);
-								possibleMoves.add(p);
-							}
-						}
-						else if(p.x == 1){
-							_board.setPiece(new King(true, this, new Point(3,7)), 3, 7);
-							_board.setPiece(null, 4, 7);
-							checkCheck();
-							if(isInCheck()){
-								_board.setPiece(piece, 4, 7);
-								_board.setPiece(null, 3, 7);
-								checkCheck();
-								break;
-							}
-							_board.setPiece(new King(true, this, new Point(2,7)), 2, 7);
-							_board.setPiece(null, 3, 7);
-							checkCheck();
-							if(isInCheck()){
-								_board.setPiece(null, 2, 7);
-								_board.setPiece(piece, 4, 7);
-								checkCheck();
-								break;
-							}
-							_board.setPiece(null, 2, 7);
-							_board.setPiece(new King(true, this, new Point(1,7)), 1, 7);
-							checkCheck();
-							if(isInCheck()){
-								_board.setPiece(null, 1, 7);
-								_board.setPiece(piece, 4, 7);
-								checkCheck();
-								break;
-							}
-							else{
-								_board.setPiece(null, 1, 7);
-								_board.setPiece(piece, 4, 7);
-								possibleMoves.add(p);
-							}
-							
-						}
-					}
-					else{
-						if(p.x == 6){
-							_board.setPiece(new King(true, this, new Point(5,0)), 5, 0);
-							_board.setPiece(null, 4, 0);
-							checkCheck();
-							if(isInCheck()){
-								_board.setPiece(null, 5, 0);
-								_board.setPiece(piece, 4, 0);
-								checkCheck();
-								break;
-							}
-							_board.setPiece(null, 5, 0);
-							_board.setPiece(new King(true, this, new Point(6,0)), 6, 0);
-							checkCheck();
-							if(isInCheck()){
-								_board.setPiece(null, 6, 0);
-								_board.setPiece(piece, 4, 0);
-								checkCheck();
-								break;
-							}
-							else{
-								_board.setPiece(null, 6, 0);
-								_board.setPiece(piece, 4, 0);
-								possibleMoves.add(p);
-							}
-						}
-						else if(p.x == 1){
-							_board.setPiece(new King(true, this, new Point(3,0)), 3, 0);
-							_board.setPiece(null, 4, 0);
-							checkCheck();
-							if(isInCheck()){
-								_board.setPiece(piece, 2, 0);
-								_board.setPiece(null, 3, 0);
-								checkCheck();
-								break;
-							}
-							_board.setPiece(new King(true, this, new Point(2,0)), 2, 0);
-							_board.setPiece(null, 3, 0);
-							checkCheck();
-							if(isInCheck()){
-								_board.setPiece(null, 2, 0);
-								_board.setPiece(piece, 4, 0);
-								checkCheck();
-								break;
-							}
-							_board.setPiece(null, 2, 0);
-							_board.setPiece(new King(true, this, new Point(1,0)), 1, 0);
-							checkCheck();
-							if(isInCheck()){
-								_board.setPiece(null, 1, 0);
-								_board.setPiece(piece, 4, 0);
-								checkCheck();
-								break;
-							}
-							else{
-								_board.setPiece(null, 1, 0);
-								_board.setPiece(piece, 4, 0);
-								possibleMoves.add(p);
-							}
-						}
-					}
+		Board myBoard = new Board();
+		Game game = new Game(myBoard);
+		for(int i = 0; i < 8; i++){
+			for(int j = 0; j<8; j++){
+				if(_board.getPiece(i, j) !=null){
+					myBoard.setPiece(_board.getPiece(i, j), i, j);
+					myBoard.getPiece(i, j).setGame(game);
 				}
 			}
-			_board.setPiece(null, p.x, p.y);
-			_board.setPiece(null, originalLocation.x, originalLocation.y);
-			_board.setPiece(piece, p.x, p.y);
-			checkCheck();
-			if(!isInCheck()){
-				possibleMoves.add(p);
+		}
+		Point loc = piece.getLocation();
+		for(Point p: piece.getPossibleMoves()){
+			if(piece.getClass().getName().equals("model.King") && Math.abs(p.x-piece.getLocation().x)>1){
+				ArrayList<Point> queenSide = new ArrayList<Point>();
+				queenSide.add(new Point(3,p.y));
+				queenSide.add(new Point(2,p.y));
+				queenSide.add(new Point(1,p.y));
+				ArrayList<Point> kingSide = new ArrayList<Point>();
+				kingSide.add(new Point(5,p.y));
+				kingSide.add(new Point(6,p.y));
+				ArrayList<Point> defaultSide = queenSide;
+				if(p.x>4){
+					defaultSide = kingSide;
+				}
+				boolean canCastle = true;
+				for(Point q: defaultSide){
+					Piece temperory = null;
+					myBoard.setPiece(null, loc.x, loc.y);
+					myBoard.setPiece(piece, q.x, q.y);
+					piece.setLocation(q.x, q.y);
+					checkCheck(myBoard);
+					if(isInCheck()){
+						canCastle = false;
+					}
+					myBoard.setPiece(temperory, q.x, q.y);
+					myBoard.setPiece(piece, loc.x, loc.y);
+					piece.setLocation(loc.x, loc.y);
+				}
+				if(canCastle){
+					possibleMoves.add(p);
+				}
+
 			}
 			else{
-				this.putInCheck();
+				Piece temperory = null;
+				myBoard.setPiece(null, loc.x, loc.y);
+				if(!myBoard.isEmpty(p.x, p.y)){
+					temperory = myBoard.getPiece(p.x, p.y);
+				}
+				myBoard.setPiece(piece, p.x, p.y);
+				piece.setLocation(p.x, p.y);
+				checkCheck(myBoard);
+				if(!isInCheck()){
+					possibleMoves.add(p);
+				}
+
+				myBoard.setPiece(temperory, p.x, p.y);
+				myBoard.setPiece(piece, loc.x, loc.y);
+				piece.setLocation(loc.x, loc.y);	
 			}
-			if(temperory==null){
-				_board.setPiece(null, p.x, p.y);
-				_board.setPiece(piece, originalLocation.x, originalLocation.y);
-			}
-			else{
-				_board.setPiece(null, p.x, p.y);
-				_board.setPiece(temperory, p.x, p.y);
-				_board.setPiece(piece, originalLocation.x, originalLocation.y);
-			}
+
 		}
 		piece.overridePossibleMoves(possibleMoves);
+		checkCheck(_board);
+
 	}
 
 	private void move(Piece piece, int x, int y) {
 
 		for(int i = 0; i<8; i++){
 			for(int j = 0; j<8; j++){
-				if(_board.getPiece(i, j)!=null && _board.getPiece(i, j).getColor() == _currentPlayer && _board.getPiece(i, j).getClass().getName().equals("model.Pawn")){
+				if(!_board.isEmpty(i, j) && _board.getPiece(i, j).getColor() == _currentPlayer && _board.getPiece(i, j).getClass().getName().equals("model.Pawn")){
 					((Pawn) _board.getPiece(i, j)).setJustMoved(false);
 				}
 			}
@@ -352,7 +254,6 @@ public class Game extends Observable {
 			((Pawn) piece).setJustMoved(true);
 		}
 		_board.setPiece(null, piece.getLocation().x, piece.getLocation().y);
-		System.out.println("Set the position of the piece that's moving on the Board to null.");
 		boolean captured = false;
 		if(_board.getPiece(x, y)!=null){
 			_capturedPieces.add(_board.getPiece(x, y));
@@ -361,8 +262,6 @@ public class Game extends Observable {
 		char rank = getRank(piece.getLocation().x);
 
 		_board.setPiece(piece, x, y);
-		System.out.println("Moved the piece to the new location!");
-
 		piece.setLocation(x,y);
 		if(en_passant){
 			if(piece.getColor()){
@@ -374,61 +273,43 @@ public class Game extends Observable {
 				_capturedPieces.add(_board.getPiece(x, y-1));
 				_board.setPiece(null, x, y-1);
 				captured = true;
-				
+
 			}
 		}
-		System.out.println("Set location of the piece to new location!");
 		if(piece.getClass().getName().equals("model.Pawn") && piece.getColor() == true && y == 0){
-			System.out.println("Pawn Promotion Method called!");
 			handlePawnPromotion(x, y);
 		}
 		else if(piece.getClass().getName().equals("model.Pawn") && piece.getColor() == false && y == 7){
-			System.out.println("Pawn Promotion Method called!");
 			handlePawnPromotion(x, y);
 		}
 		this.changePlayers();
-		System.out.println("Switched players.");
-		checkCheck();
+		checkCheck(_board);
 		if(isInCheck()){
 			System.out.println("IN CHECK!");
 			if(checkCheckmate()){
 				this.changePlayers();
 				System.out.println("CHECKMATE!");
-				
+
 			}
 		}
 		_previousClick = null;
-		System.out.println("Set previous click to null again.");
 		// notate the move
 		notate(piece,rank,castling,captured,en_passant,x,y);
 		printBoard();
+		getNumberOfPossibleMoves(_currentPlayer);
 		setChanged();
 		notifyObservers();
-		System.out.println("Notified the UI.");
 		save();
-		getNumberOfPossibleMoves(_currentPlayer);
-		System.out.println("Saved the game in the current configuration");
-		// at this point the move has been made and next player is up
-		// we must check to see if the current player is in check
-		// if so then we need to restrict his moves such that
-		// each move must force _inCheck = false.
-		// so when the current player attempts to move, when we generate possible moves
-		// for the piece he has chosen we need to see whether those moves result
-		// in _inCheck = false.
-		// when _inCheck = true we need to call checkCheckmate()
-		// which sets the possible moves of all the current player's pieces
-		// and sees if the union is empty
 
 	}
 
 	private boolean checkCheckmate() {
 		for(int i = 0; i < 8; i++){
 			for(int j = 0; j<8; j++){
-				if(_board.getPiece(i, j)!=null){
+				if(!_board.isEmpty(i, j)){
 					if(_board.getPiece(i, j).getColor()==this.getCurrentPlayer()){
 						_board.getPiece(i, j).setPossibleMoves();
 						selfCheck(_board.getPiece(i, j));
-						System.out.println("Check Checkmate:" +_board.getPiece(i, j).getPossibleMoves().toString());
 						if(_board.getPiece(i, j).getPossibleMoves().size() !=0){
 							return false;
 						}
@@ -452,7 +333,6 @@ public class Game extends Observable {
 		notifyObservers();
 		if(_promotionChoice != -1){
 			if(_promotionChoice == 0){
-				System.out.println("The pawn should be promoted to a Knight.");
 				_board.setPiece(null, x, y);
 				if(y==0){
 					Knight myKnight = new Knight(true, this,new Point(x, y));
@@ -466,7 +346,6 @@ public class Game extends Observable {
 
 			}
 			else if(_promotionChoice == 1){
-				System.out.println("The pawn should be promoted to a Rook.");
 				_board.setPiece(null, x, y);
 				if(y==0){
 					Rook myRook = new Rook(true, this,new Point(x, y));
@@ -479,7 +358,6 @@ public class Game extends Observable {
 				_pawnPromotion = false;
 			}
 			else if(_promotionChoice == 2){
-				System.out.println("The pawn should be promoted to a Queen.");
 				_board.setPiece(null, x, y);
 				if(y==0){
 					Queen myQueen = new Queen(true, this,new Point(x, y));
@@ -492,7 +370,6 @@ public class Game extends Observable {
 				_pawnPromotion = false;
 			}
 			else if(_promotionChoice ==3){
-				System.out.println("The pawn should be promoted to a Bishop.");
 				if(y==0){
 					Bishop myBishop = new Bishop(true, this,new Point(x, y));
 					_board.setPiece(myBishop, x, y);
@@ -518,11 +395,10 @@ public class Game extends Observable {
 
 	public int getNumberOfPossibleMoves(boolean color) {
 		int count=0;
-
 		for(int i=0; i<8; i++) {
 			for(int j=0; j<8; j++) {
-				if(_board.getPiece(i,j)!=null) {
-					if(_board.getPiece(i, j).getColor()==_currentPlayer) {
+				if(!_board.isEmpty(i, j)) {
+					if(_board.getPiece(i, j).getColor()==color) {
 						//count all the possible moves of each piece of the given color
 						_board.getPiece(i, j).setPossibleMoves();
 						selfCheck(_board.getPiece(i, j));
@@ -535,14 +411,14 @@ public class Game extends Observable {
 		return count;
 	}
 
-	public void checkCheck() {
+	public void checkCheck(Board board) {
 		removeCheck();
 		// find current player's king
 		Point kingLocation = new Point(0,0);
 		for(int i=0; i<8; i++) {
 			for(int j=0; j<8; j++) {
-				if(_board.getPiece(i,j)!=null) {
-					if(_board.getPiece(i,j).getColor()==_currentPlayer && _board.getPiece(i,j).getClass().getName().equals("model.King")) {
+				if(!board.isEmpty(i, j)) {
+					if(board.getPiece(i,j).getColor()==_currentPlayer && board.getPiece(i,j).getClass().getName().equals("model.King")) {
 						kingLocation = new Point(i,j);
 						break;
 					}
@@ -553,13 +429,13 @@ public class Game extends Observable {
 		// now generate possible moves for the opponent and see if they intersect the king
 		for(int i=0; i<8; i++) {
 			for(int j=0; j<8; j++) {
-				if(_board.getPiece(i,j)!=null) {
-					if(_board.getPiece(i,j).getColor()!=this._currentPlayer) {
-						_board.getPiece(i,j).setPossibleMoves();
-						for(Point p : _board.getPiece(i,j).getPossibleMoves()) {
+				if(!board.isEmpty(i, j)) {
+					if(board.getPiece(i,j).getColor()!=this._currentPlayer) {
+						board.getPiece(i,j).setPossibleMoves();
+						for(Point p : board.getPiece(i,j).getPossibleMoves()) {
 							if(p.equals(kingLocation)) {
 								putInCheck();
-								break;
+								return;
 							}
 						}
 					}
@@ -571,19 +447,18 @@ public class Game extends Observable {
 
 	// a cute text representation of the board to test model-UI updating
 	private void printBoard() {
-		for(int i=0; i<8; i++) {
-			for(int j=0; j<8; j++){
-				if(_board.getPiece(j, i)!=null) {
-					System.out.print(_board.getPiece(j, i).getUnicode()+" ");
-					if(j==7) { System.out.print("\n");
-					}
+		for(int i = 0; i < 8; i++){
+			for(int j = 0; j<8; j++){
+				if(!_board.isEmpty(j, i)){
+					System.out.print(_board.getPiece(j, i).getUnicode()+' ');
 				}
-				else {
-					System.out.print("   ");
-					if(j==7) { System.out.print("\n");
-					}
+				else{
+					System.out.print('\u3000');
+					System.out.print('\u2006');
+
 				}
 			}
+			System.out.println("");
 		}
 	}
 
@@ -593,7 +468,7 @@ public class Game extends Observable {
 			_notation += (_moves.size()/2 + 1) + ". ";
 		}
 		else if(_checkmate && !_currentPlayer){
-			
+
 		}
 		else if(!_currentPlayer) { _notation += (_moves.size()/2 + 1) + ". "; }
 		if(castling==1) {
@@ -617,14 +492,14 @@ public class Game extends Observable {
 			}
 		}
 		if(_checkmate){
-        	_notation += "#";
-        	_moves.add(_notation);
-    		_notation = "";
-        	return;
-        }
+			_notation += "#";
+			_moves.add(_notation);
+			_notation = "";
+			return;
+		}
 		if(this.isInCheck()) {	_notation += "+"; }
 		if(_currentPlayer) { _notation += " "; }
-        
+
 		_moves.add(_notation);
 		_notation = "";
 	}
@@ -681,12 +556,12 @@ public class Game extends Observable {
 		if(b) { return 1; }
 		else return 0;
 	}
-	
+
 	public void setCheckmateFalse(){
 		_checkmate = false;
 		_endGame = true;
 	}
-	
+
 	public boolean isEndGame(){
 		return _endGame;
 	}

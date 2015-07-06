@@ -48,6 +48,10 @@ public class Piece {
 	public void setMoved(){
 		_moved = true;
 	}
+	
+	public void setGame(Game game){
+		_game = game;
+	}
 
 	public boolean wasMoved(){
 		return _moved;
