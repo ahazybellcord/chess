@@ -69,6 +69,33 @@ public class Game extends Observable {
 		return _gameHistory;
 	}
 
+	public Piece getPreviousClick(){
+		return _previousClick;
+	}
+	
+	public boolean isInCheck() {
+		return _inCheck;
+	}
+	
+	public boolean getCurrentPlayer(){
+		return _currentPlayer;
+	}
+	
+	private char getRank(int x) {
+		return (char)(x + 'a');
+	}
+
+	private String getChessCoordinate(int x, int y) {
+		String coordinate = "";
+		coordinate += getRank(x);   //rank
+		coordinate += (8-y);       //file
+		return coordinate;
+	}
+
+	public boolean isEndGame(){
+		return _endGame;
+	}
+
 	public void putInCheck() {
 		_inCheck = true;
 	}
@@ -77,16 +104,8 @@ public class Game extends Observable {
 		_inCheck = false;
 	}
 
-	public boolean isInCheck() {
-		return _inCheck;
-	}
-
 	public ArrayList<Piece> getCapturedPieces(){
 		return _capturedPieces;
-	}
-
-	public boolean getCurrentPlayer(){
-		return _currentPlayer;
 	}
 
 	public void changePlayers() {
@@ -95,6 +114,11 @@ public class Game extends Observable {
 
 	public void setPromotionChoice(int n){
 		_promotionChoice = n;
+	}
+
+	public void setCheckmateFalse(){
+		_checkmate = false;
+		_endGame = true;
 	}
 
 	public void handleClick(int x, int y) {
@@ -196,7 +220,6 @@ public class Game extends Observable {
 	}
 
 	private void move(Piece piece, int x, int y) {
-
 		for(int i = 0; i<8; i++){
 			for(int j = 0; j<8; j++){
 				if(!_board.isEmpty(i, j) && _board.getPiece(i, j).getColor() == _currentPlayer && _board.getPiece(i, j).getClass().getName().equals("model.Pawn")){
@@ -260,7 +283,6 @@ public class Game extends Observable {
 			captured = true;
 		}
 		char rank = getRank(piece.getLocation().x);
-
 		_board.setPiece(piece, x, y);
 		piece.setLocation(x,y);
 		if(en_passant){
@@ -300,7 +322,6 @@ public class Game extends Observable {
 		setChanged();
 		notifyObservers();
 		save();
-
 	}
 
 	private boolean checkCheckmate() {
@@ -448,6 +469,7 @@ public class Game extends Observable {
 	// a cute text representation of the board to test model-UI updating
 	private void printBoard() {
 		for(int i = 0; i < 8; i++){
+			System.out.print(8-i + " ");
 			for(int j = 0; j<8; j++){
 				if(!_board.isEmpty(j, i)){
 					System.out.print(_board.getPiece(j, i).getUnicode()+' ');
@@ -459,6 +481,12 @@ public class Game extends Observable {
 				}
 			}
 			System.out.println("");
+		}
+		System.out.print('\u3000');
+		System.out.print('\u2006');
+		for(int i =0; i<8; i++){
+			System.out.print((char)('a'+i));
+			System.out.print('\u3000');
 		}
 	}
 
@@ -504,21 +532,6 @@ public class Game extends Observable {
 		_notation = "";
 	}
 
-	private char getRank(int x) {
-		return (char)(x + 'a');
-	}
-
-	private String getChessCoordinate(int x, int y) {
-		String coordinate = "";
-		coordinate += getRank(x);   //rank
-		coordinate += (8-y);       //file
-		return coordinate;
-	}
-
-	public Piece getPreviousClick(){
-		return _previousClick;
-	}
-
 	public void save() {
 		String game = "";
 		for(int j=0; j<8; j++) {
@@ -546,8 +559,7 @@ public class Game extends Observable {
 			saveFile.println(game);
 			saveFile.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+						e.printStackTrace();
 		}
 	}
 
@@ -557,13 +569,5 @@ public class Game extends Observable {
 		else return 0;
 	}
 
-	public void setCheckmateFalse(){
-		_checkmate = false;
-		_endGame = true;
-	}
-
-	public boolean isEndGame(){
-		return _endGame;
-	}
 
 }
