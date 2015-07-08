@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Point;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class Game extends Observable {
 		_checkmate = false;
 		_stalemate = false;
 		_capturedPieces = new ArrayList<Piece>();
-		save();
+//		save();
 		getNumberOfPossibleMoves(this.getCurrentPlayer());
 	}
 
@@ -74,15 +75,15 @@ public class Game extends Observable {
 	public Piece getPreviousClick(){
 		return _previousClick;
 	}
-	
+
 	public boolean isInCheck() {
 		return _inCheck;
 	}
-	
+
 	public boolean getCurrentPlayer(){
 		return _currentPlayer;
 	}
-	
+
 	private char getRank(int x) {
 		return (char)(x + 'a');
 	}
@@ -123,7 +124,7 @@ public class Game extends Observable {
 		_stalemate = false;
 		_endGame = true;
 	}
-	
+
 	public void setNames(String white, String black){
 		_names = new ArrayList<String>();
 		_names.add(white);
@@ -335,7 +336,7 @@ public class Game extends Observable {
 		System.out.println("Stalemate: " + _stalemate);
 		setChanged();
 		notifyObservers();
-		save();
+//		save();
 	}
 
 	private boolean checkEndGame() {
@@ -366,7 +367,7 @@ public class Game extends Observable {
 	public boolean isCheckmate(){
 		return _checkmate;
 	}
-	
+
 	public boolean isStalemate(){
 		return _stalemate;
 	}
@@ -558,34 +559,27 @@ public class Game extends Observable {
 		_notation = "";
 	}
 
-	public void save() {
+	public void save(File f) {
 		String game = "";
-		for(int j=0; j<8; j++) {
-			for(int i=0; i<8; i++) {
-				Piece currentPiece = _board.getPiece(i, j);
-				if(currentPiece!=null) {
-					game += currentPiece.getUnicode();
-					//if the piece is a pawn, rook or king, include _moved variable
-					if(currentPiece.getClass().getName().equals("model.Pawn")
-							||currentPiece.getClass().getName().equals("model.Rook")
-							||currentPiece.getClass().getName().equals("model.King")) {
-						game += boolToInt(currentPiece.wasMoved());
-					}
-				}
-				game += "\n";
-			}
+		game += _names.get(0) + "\n";
+		game += _names.get(1) + "\n";
+		System.out.println("Moves: " + _moves.toString());
+		for(int i = 0; i<_moves.size(); i++){
+			game += _moves.get(i);
+			game += " ";
 		}
+
 
 		//add board configuration encoded as String to game history
 		_gameHistory.add(game);
 
-		game += boolToInt(_currentPlayer);
+		//		game += boolToInt(_currentPlayer);
 		try {
-			PrintWriter saveFile = new PrintWriter("save.txt");
+			PrintWriter saveFile = new PrintWriter(f);
 			saveFile.println(game);
 			saveFile.close();
 		} catch (FileNotFoundException e) {
-						e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 

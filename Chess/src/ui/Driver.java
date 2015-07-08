@@ -1,7 +1,7 @@
 package ui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -10,7 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import model.Game;
@@ -44,8 +43,23 @@ public class Driver implements Runnable, Observer {
 			            "Do you want to save the game?", "Exit", 
 			            JOptionPane.YES_NO_OPTION,
 			            JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-		        if(n ==0 || n ==1){
+		        if(n ==1){
 		        	System.exit(1);
+		        }
+		        else if(n == 0){
+		        	JFileChooser chooser = new JFileChooser();
+		        	chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		        	int result = chooser.showSaveDialog(_frame);
+		        	if(result == chooser.APPROVE_OPTION){
+		        		File myFile = chooser.getSelectedFile();
+		        		if(myFile.getAbsolutePath().lastIndexOf('.') == -1){
+		        			myFile = new File(myFile.getAbsolutePath()+".pgn");
+		        			_game.save(myFile);
+		        		}
+		        	}
+		        	else{
+		        		_frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		        	}
 		        }
 		        else{
 		        	_frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
