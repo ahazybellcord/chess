@@ -5,12 +5,13 @@ import java.awt.Dimension;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import model.Game;
 
@@ -35,55 +36,80 @@ public class Driver implements Runnable, Observer {
 	@Override
 	public void run() {
 		_frame = new JFrame("Chess (White to move)");
+		_frame.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		    	Object[] options = {"Save", "Don't Save", "Cancel"};
+		    	int n = JOptionPane.showOptionDialog(_frame, 
+			            "Do you want to save the game?", "Exit", 
+			            JOptionPane.YES_NO_OPTION,
+			            JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+		        if(n ==0 || n ==1){
+		        	System.exit(1);
+		        }
+		        else{
+		        	_frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		        }
+		    }
+		});
 		int n = -1;
-		while(n==-1){
-			Object[] options = {"New Game",
-					"Load Game"};
-			        n = JOptionPane.showOptionDialog(_frame,
-					"Please select one ",
-					"Chess",
-					JOptionPane.YES_NO_CANCEL_OPTION,
-					JOptionPane.PLAIN_MESSAGE,
-					null,
-					options,
-					options[0]);
-		}
-//		Haven't implemented Load Game yet
-		if(n==1){
+		Object[] options = {"New Game",
+		"Load Game"};
+		n = JOptionPane.showOptionDialog(_frame,
+				"Please select one ",
+				"Chess",
+				JOptionPane.YES_NO_CANCEL_OPTION,
+				JOptionPane.PLAIN_MESSAGE,
+				null,
+				options,
+				options[0]);
+		if(n==-1){
 			System.exit(1);
 		}
-		int o = -1;
-		while(o==-1){
-			Object[] options = {"Human vs. Human",
-			"Human vs. Computer"};
-	        o = JOptionPane.showOptionDialog(_frame,
-			"Please select one ",
-			"Chess",
-			JOptionPane.YES_NO_CANCEL_OPTION,
-			JOptionPane.PLAIN_MESSAGE,
-			null,
-			options,
-			options[0]);
+		//		Haven't implemented Load Game yet
+		else if(n==1){
+			JFileChooser chooser = new JFileChooser();
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("PGN and Chess files", "pgn", "chess");
+			chooser.setFileFilter(filter);
+			int returnVal = chooser.showOpenDialog(null);
+			if(returnVal == JFileChooser.APPROVE_OPTION){
+				System.out.println("We need to open this file " + chooser.getSelectedFile().getName());
+			}
+			else{
+				System.exit(1);
+			}
 		}
-		if(o==1){
+		Object[] options1 = {"Human vs. Human",
+		"Human vs. Computer"};
+		int o = JOptionPane.showOptionDialog(_frame,
+				"Please select one ",
+				"Chess",
+				JOptionPane.YES_NO_CANCEL_OPTION,
+				JOptionPane.PLAIN_MESSAGE,
+				null,
+				options1,
+				options1[0]);
+		if(o==-1 || o==1){
 			System.exit(1);
 		}
 		JTextField white = new JTextField();
 		JTextField black = new JTextField();
 		Object[] message = {
-		    "White:", white,
-		    "Black:", black
+				"Please enter the names or click cancel to skip",
+				"White:", white,
+				"Black:", black
 		};
-        UIManager.put("OptionPane.minimumSize", new Dimension(400,200));
-		int option = JOptionPane.showConfirmDialog(null, message, "Please enter the names or click cancel to skip", JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
+		int option = JOptionPane.showConfirmDialog(null, message, "Chess", JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
 		if (option == JOptionPane.OK_OPTION) {
-		    while(white.getText() == null || black.getText() == null){
-		    	option = JOptionPane.showConfirmDialog(null, message, "Please enter the names", JOptionPane.OK_CANCEL_OPTION);
-		    	if(option == JOptionPane.CANCEL_OPTION){
-		    		break;
-		    	}
-		    }
-		    _game.setNames(white.getText(), black.getText());
+			while(white.getText().equals("") || black.getText().equals("")){
+				option = JOptionPane.showConfirmDialog(null, message, "Chess", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+				if(option == JOptionPane.CANCEL_OPTION){
+					white.setText("White");
+					black.setText("Black");
+					break;
+				}
+			}
+			_game.setNames(white.getText(), black.getText());
 		}
 		else if(option == JOptionPane.CANCEL_OPTION){
 			_game.setNames("White", "Black");
@@ -91,9 +117,9 @@ public class Driver implements Runnable, Observer {
 		else{
 			System.exit(1);
 		}
-		
-		
-		
+
+
+
 		_boardWindow = new BoardWindow(_game);
 		_infoWindow = new InfoWindow(_game, _boardWindow);
 		_frame.add(_boardWindow, BorderLayout.WEST);
@@ -115,7 +141,7 @@ public class Driver implements Runnable, Observer {
 				Object[] options = {"Knight",
 						"Rook",
 						"Queen", "Bishop"};
-				        n = JOptionPane.showOptionDialog(_frame,
+				n = JOptionPane.showOptionDialog(_frame,
 						"Please select one ",
 						"Pawn Promotion",
 						JOptionPane.YES_NO_CANCEL_OPTION,
@@ -133,30 +159,30 @@ public class Driver implements Runnable, Observer {
 			if(_game.getCurrentPlayer()){
 				_frame.setTitle("Chess - White Wins!");
 				JOptionPane.showMessageDialog(_frame,
-				        "White Wins!",
-				        "Checkmate",
-				        JOptionPane.INFORMATION_MESSAGE);
-				
+						"White Wins!",
+						"Checkmate",
+						JOptionPane.INFORMATION_MESSAGE);
+
 			}
 			else{
 				_frame.setTitle("Chess - Black Wins!");
 				JOptionPane.showMessageDialog(_frame,
-				        "Black Wins!",
-				        "Checkmate",
-				        JOptionPane.INFORMATION_MESSAGE);
-				
+						"Black Wins!",
+						"Checkmate",
+						JOptionPane.INFORMATION_MESSAGE);
+
 			}
 			_game.setCheckmateFalse();
 			_frame.setEnabled(false);
-			
-			
+
+
 		}
 		else if(_game.isStalemate()){
 			_frame.setTitle("Chess - Stalemate!");
 			JOptionPane.showMessageDialog(_frame,
-			        "Stalemate, the game ends.",
-			        "Stalemate",
-			        JOptionPane.INFORMATION_MESSAGE);
+					"Stalemate, the game ends.",
+					"Stalemate",
+					JOptionPane.INFORMATION_MESSAGE);
 			_game.setCheckmateFalse();
 			_frame.setEnabled(false);
 		}
@@ -176,7 +202,7 @@ public class Driver implements Runnable, Observer {
 					_frame.setTitle("Chess (Black to move)");
 				}
 			}
-			
+
 		}
 		if(_game.isEndGame()){
 			if(_game.getCurrentPlayer()){
@@ -186,7 +212,7 @@ public class Driver implements Runnable, Observer {
 				_frame.setTitle("Chess - Black Wins!");
 			}
 		}
-		
+
 		_frame.pack();
 	}
 
