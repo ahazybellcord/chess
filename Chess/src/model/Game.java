@@ -21,6 +21,7 @@ public class Game extends Observable {
 	private int _promotionChoice;
 	private boolean _checkmate;
 	private boolean _endGame;
+	private boolean _stalemate;
 
 	public Game(String[] args) {
 		_names = new ArrayList<String>();
@@ -44,6 +45,7 @@ public class Game extends Observable {
 		_inCheck = false;
 		_pawnPromotion = false;
 		_checkmate = false;
+		_stalemate = false;
 		_capturedPieces = new ArrayList<Piece>();
 		save();
 		getNumberOfPossibleMoves(this.getCurrentPlayer());
@@ -118,6 +120,7 @@ public class Game extends Observable {
 
 	public void setCheckmateFalse(){
 		_checkmate = false;
+		_stalemate = false;
 		_endGame = true;
 	}
 
@@ -308,7 +311,7 @@ public class Game extends Observable {
 		checkCheck(_board);
 		if(isInCheck()){
 			System.out.println("IN CHECK!");
-			if(checkCheckmate()){
+			if(checkEndGame()){
 				this.changePlayers();
 				System.out.println("CHECKMATE!");
 
@@ -319,12 +322,17 @@ public class Game extends Observable {
 		notate(piece,rank,castling,captured,en_passant,x,y);
 		printBoard();
 		getNumberOfPossibleMoves(_currentPlayer);
+		if(getNumberOfPossibleMoves(_currentPlayer) == 0){
+			_stalemate = true;
+			_endGame = true;
+		}
+		System.out.println("Stalemate: " + _stalemate);
 		setChanged();
 		notifyObservers();
 		save();
 	}
 
-	private boolean checkCheckmate() {
+	private boolean checkEndGame() {
 		for(int i = 0; i < 8; i++){
 			for(int j = 0; j<8; j++){
 				if(!_board.isEmpty(i, j)){
@@ -339,13 +347,22 @@ public class Game extends Observable {
 
 			}
 		}
-		_checkmate = true;
+		if(!isInCheck()){
+			_stalemate = true;
+		}
+		else{
+			_checkmate = true;
+		}
 		return true;
 
 	}
 
 	public boolean isCheckmate(){
 		return _checkmate;
+	}
+	
+	public boolean isStalemate(){
+		return _stalemate;
 	}
 
 	private void handlePawnPromotion(int x, int y) {
@@ -423,6 +440,9 @@ public class Game extends Observable {
 						//count all the possible moves of each piece of the given color
 						_board.getPiece(i, j).setPossibleMoves();
 						selfCheck(_board.getPiece(i, j));
+						if(_board.getPiece(i, j).getPossibleMoves().size()!=0){
+							System.out.println("Possible moves for " + _board.getPiece(i, j).getUnicode() + " are " + _board.getPiece(i, j).getPossibleMoves().toString());
+						}
 						count += _board.getPiece(i, j).getPossibleMoves().size();
 					}
 				}

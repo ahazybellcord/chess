@@ -88,6 +88,15 @@ public class Driver implements Runnable, Observer {
 			
 			
 		}
+		else if(_game.isStalemate()){
+			_frame.setTitle("Chess - Stalemate!");
+			JOptionPane.showMessageDialog(_frame,
+			        "Stalemate, the game ends.",
+			        "Stalemate",
+			        JOptionPane.INFORMATION_MESSAGE);
+			_game.setCheckmateFalse();
+			_frame.setEnabled(false);
+		}
 		else{
 			if(_game.isInCheck()){
 				if(_game.getCurrentPlayer()){
