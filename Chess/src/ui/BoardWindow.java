@@ -213,6 +213,17 @@ public class BoardWindow extends JPanel {
 				_sideButtons[0][i].setBorder(new EmptyBorder(1, 1, 1, 1));
 			}
 		}
+		if(_game.getSource()!=null && _game.getDestination()!=null){
+			if(_game.getCurrentPlayer()){
+				_buttons[_game.getSource().x][_game.getSource().y].setBackground(new Color(255, 255, 0));
+				_buttons[_game.getDestination().x][_game.getDestination().y].setBackground(new Color(255, 255, 204));
+			}
+			else{
+				_buttons[7-_game.getSource().x][7-_game.getSource().y].setBackground(new Color(255, 255, 0));
+				_buttons[7-_game.getDestination().x][7-_game.getDestination().y].setBackground(new Color(255, 255, 204));
+			}
+			
+		}
 	}
 	
 	public void theme(String s){

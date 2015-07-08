@@ -26,6 +26,8 @@ public class Game extends Observable {
 	private boolean _endGame;
 	private boolean _stalemate;
 	private boolean _ai;
+	private Point _source;
+	private Point _destination;
 
 	public Game(String[] args) {
 		_names = new ArrayList<String>();
@@ -90,6 +92,14 @@ public class Game extends Observable {
 
 	private char getRank(int x) {
 		return (char)(x + 'a');
+	}
+	
+	public Point getSource(){
+		return _source;
+	}
+	
+	public Point getDestination(){
+		return _destination;
 	}
 
 	private String getChessCoordinate(int x, int y) {
@@ -291,6 +301,8 @@ public class Game extends Observable {
 			((Pawn) piece).setJustMoved(true);
 		}
 		_board.setPiece(null, piece.getLocation().x, piece.getLocation().y);
+		_source = new Point(piece.getLocation().x, piece.getLocation().y);
+		_destination = new Point(x,y);
 		boolean captured = false;
 		if(_board.getPiece(x, y)!=null){
 			_capturedPieces.add(_board.getPiece(x, y));
