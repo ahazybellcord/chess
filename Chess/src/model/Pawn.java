@@ -111,12 +111,12 @@ public class Pawn extends Piece{
 				}
 			}
 			else if(this.getLocation().x == 0){
-				if(checkOpponent(this.getLocation().x+1,this.getLocation().y) && this.getGame().getBoard().getPiece(this.getLocation().x+1,this.getLocation().y).getClass().getName().equals("model.Pawn") && ((Pawn)(this.getGame().getBoard().getPiece(this.getLocation().x-1,this.getLocation().y))).wasJustMoved()){
+				if(checkOpponent(this.getLocation().x+1,this.getLocation().y) && this.getGame().getBoard().getPiece(this.getLocation().x+1,this.getLocation().y).getClass().getName().equals("model.Pawn") && ((Pawn)(this.getGame().getBoard().getPiece(this.getLocation().x+1,this.getLocation().y))).wasJustMoved()){
 					this.getPossibleMoves().add(new Point(this.getLocation().x+1, this.getLocation().y+1));
 				}
 			}
 			else if(this.getLocation().x == 7){
-				if(checkOpponent(this.getLocation().x-1,this.getLocation().y) && this.getGame().getBoard().getPiece(this.getLocation().x-1,this.getLocation().y).getClass().getName().equals("model.Pawn") && ((Pawn)(this.getGame().getBoard().getPiece(this.getLocation().x+1,this.getLocation().y))).wasJustMoved()){
+				if(checkOpponent(this.getLocation().x-1,this.getLocation().y) && this.getGame().getBoard().getPiece(this.getLocation().x-1,this.getLocation().y).getClass().getName().equals("model.Pawn") && ((Pawn)(this.getGame().getBoard().getPiece(this.getLocation().x-1,this.getLocation().y))).wasJustMoved()){
 					this.getPossibleMoves().add(new Point(this.getLocation().x-1, this.getLocation().y+1));
 				}
 			}
