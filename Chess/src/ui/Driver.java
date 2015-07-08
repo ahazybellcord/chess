@@ -1,12 +1,16 @@
 package ui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import model.Game;
 
@@ -31,6 +35,65 @@ public class Driver implements Runnable, Observer {
 	@Override
 	public void run() {
 		_frame = new JFrame("Chess (White to move)");
+		int n = -1;
+		while(n==-1){
+			Object[] options = {"New Game",
+					"Load Game"};
+			        n = JOptionPane.showOptionDialog(_frame,
+					"Please select one ",
+					"Chess",
+					JOptionPane.YES_NO_CANCEL_OPTION,
+					JOptionPane.PLAIN_MESSAGE,
+					null,
+					options,
+					options[0]);
+		}
+//		Haven't implemented Load Game yet
+		if(n==1){
+			System.exit(1);
+		}
+		int o = -1;
+		while(o==-1){
+			Object[] options = {"Human vs. Human",
+			"Human vs. Computer"};
+	        o = JOptionPane.showOptionDialog(_frame,
+			"Please select one ",
+			"Chess",
+			JOptionPane.YES_NO_CANCEL_OPTION,
+			JOptionPane.PLAIN_MESSAGE,
+			null,
+			options,
+			options[0]);
+		}
+		if(o==1){
+			System.exit(1);
+		}
+		JTextField white = new JTextField();
+		JTextField black = new JTextField();
+		Object[] message = {
+		    "White:", white,
+		    "Black:", black
+		};
+        UIManager.put("OptionPane.minimumSize", new Dimension(400,200));
+		int option = JOptionPane.showConfirmDialog(null, message, "Please enter the names or click cancel to skip", JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
+		if (option == JOptionPane.OK_OPTION) {
+		    while(white.getText() == null || black.getText() == null){
+		    	option = JOptionPane.showConfirmDialog(null, message, "Please enter the names", JOptionPane.OK_CANCEL_OPTION);
+		    	if(option == JOptionPane.CANCEL_OPTION){
+		    		break;
+		    	}
+		    }
+		    _game.setNames(white.getText(), black.getText());
+		}
+		else if(option == JOptionPane.CANCEL_OPTION){
+			_game.setNames("White", "Black");
+		}
+		else{
+			System.exit(1);
+		}
+		
+		
+		
 		_boardWindow = new BoardWindow(_game);
 		_infoWindow = new InfoWindow(_game, _boardWindow);
 		_frame.add(_boardWindow, BorderLayout.WEST);

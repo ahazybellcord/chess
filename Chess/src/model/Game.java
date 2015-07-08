@@ -123,6 +123,12 @@ public class Game extends Observable {
 		_stalemate = false;
 		_endGame = true;
 	}
+	
+	public void setNames(String white, String black){
+		_names = new ArrayList<String>();
+		_names.add(white);
+		_names.add(black);
+	}
 
 	public void handleClick(int x, int y) {
 		if(_previousClick == null){
