@@ -5,8 +5,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Observable;
+import java.util.Random;
 
 public class Game extends Observable {
 	private Board _board;
@@ -23,6 +25,7 @@ public class Game extends Observable {
 	private boolean _checkmate;
 	private boolean _endGame;
 	private boolean _stalemate;
+	private boolean _ai;
 
 	public Game(String[] args) {
 		_names = new ArrayList<String>();
@@ -47,6 +50,7 @@ public class Game extends Observable {
 		_pawnPromotion = false;
 		_checkmate = false;
 		_stalemate = false;
+		_ai = false;
 		_capturedPieces = new ArrayList<Piece>();
 //		save();
 		getNumberOfPossibleMoves(this.getCurrentPlayer());
@@ -334,6 +338,9 @@ public class Game extends Observable {
 			_endGame = true;
 		}
 		System.out.println("Stalemate: " + _stalemate);
+		if(_ai){
+			this.aiMove();
+		}
 		setChanged();
 		notifyObservers();
 //		save();
@@ -436,6 +443,45 @@ public class Game extends Observable {
 
 	public boolean getPawnPromotion(){
 		return _pawnPromotion;
+	}
+	
+	public void setAI(){
+		_ai = true;
+	}
+	
+	public void aiMove(){
+		if(_currentPlayer == false){
+			ArrayList<Piece> aiPieces = new ArrayList<Piece>();
+			for(int i = 0; i<8; i++){
+				for(int j = 0; j<8; j++){
+					if(!_board.isEmpty(i, j)){
+						if(_board.getPiece(i, j).getColor()==_currentPlayer){
+							_board.getPiece(i, j).setPossibleMoves();
+							selfCheck(_board.getPiece(i, j));
+							if(_board.getPiece(i, j).getPossibleMoves().size()!=0){
+								aiPieces.add(_board.getPiece(i, j));
+							}
+						}
+					}
+				}
+			}
+			Collections.shuffle(aiPieces);
+			Piece selectedPiece = aiPieces.get(0);
+			HashSet<Point> moves = selectedPiece.getPossibleMoves();
+			int size = moves.size();
+			int randIndex = new Random().nextInt(size); // In real life, the Random object should be rather more shared than this
+			int i = 0;
+			Point q = new Point(0,0);
+			for(Point p : moves)
+			{
+			    if (i == randIndex){
+			    	q =p;
+			    }
+			    i = i + 1;
+			}
+			move(selectedPiece, q.x, q.y);
+		}
+		
 	}
 
 	public int getNumberOfPossibleMoves(boolean color) {

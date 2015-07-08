@@ -103,37 +103,39 @@ public class Driver implements Runnable, Observer {
 				null,
 				options1,
 				options1[0]);
-		if(o==-1 || o==1){
+		if(o==-1){
 			System.exit(1);
 		}
-		JTextField white = new JTextField();
-		JTextField black = new JTextField();
-		Object[] message = {
-				"Please enter the names or click cancel to skip",
-				"White:", white,
-				"Black:", black
-		};
-		int option = JOptionPane.showConfirmDialog(null, message, "Chess", JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
-		if (option == JOptionPane.OK_OPTION) {
-			while(white.getText().equals("") || black.getText().equals("")){
-				option = JOptionPane.showConfirmDialog(null, message, "Chess", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-				if(option == JOptionPane.CANCEL_OPTION){
-					white.setText("White");
-					black.setText("Black");
-					break;
+		else if(o==0){
+			JTextField white = new JTextField();
+			JTextField black = new JTextField();
+			Object[] message = {
+					"Please enter the names or click cancel to skip",
+					"White:", white,
+					"Black:", black
+			};
+			int option = JOptionPane.showConfirmDialog(null, message, "Chess", JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
+			if (option == JOptionPane.OK_OPTION) {
+				while(white.getText().equals("") || black.getText().equals("")){
+					option = JOptionPane.showConfirmDialog(null, message, "Chess", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+					if(option == JOptionPane.CANCEL_OPTION){
+						white.setText("White");
+						black.setText("Black");
+						break;
+					}
 				}
+				_game.setNames(white.getText(), black.getText());
 			}
-			_game.setNames(white.getText(), black.getText());
-		}
-		else if(option == JOptionPane.CANCEL_OPTION){
-			_game.setNames("White", "Black");
+			else if(option == JOptionPane.CANCEL_OPTION){
+				_game.setNames("White", "Black");
+			}
+			else{
+				System.exit(1);
+			}
 		}
 		else{
-			System.exit(1);
+			_game.setAI();
 		}
-
-
-
 		_boardWindow = new BoardWindow(_game);
 		_infoWindow = new InfoWindow(_game, _boardWindow);
 		_frame.add(_boardWindow, BorderLayout.WEST);
