@@ -6,6 +6,7 @@ public class King extends Piece{
 	
 	public King(boolean color, Game game, Point location) {
 		super(color,game,location);
+		super.setValue(-1);
 	}
 	
 	@Override
@@ -84,8 +85,7 @@ public class King extends Piece{
 	
 	@Override
 	public String getUnicode() {
-		if(this.getColor()) { return "\u2654"; }
-		else { return "\u265a" ; }
+		return this.getColor() ? "\u2654" : "\u265a" ;
 	}
 	
 	@Override

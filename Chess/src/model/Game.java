@@ -238,7 +238,7 @@ public class Game extends Observable {
 			}
 
 		}
-		piece.overridePossibleMoves(possibleMoves);
+		piece.setPossibleMoves(possibleMoves);
 		checkCheck(_board);
 
 	}

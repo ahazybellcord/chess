@@ -8,6 +8,7 @@ public class Pawn extends Piece{
 
 	public Pawn(boolean color, Game game, Point location) {
 		super(color,game,location);
+		super.setValue(1);
 		_special = false;
 		_justMoved = false;
 	}
@@ -22,102 +23,104 @@ public class Pawn extends Piece{
 
 	@Override
 	public void setPossibleMoves() {
+		int x = this.getLocation().x;
+		int y = this.getLocation().y;
 		super.setPossibleMoves();
 		if(this.getColor()){
 			if(!this.wasMoved()){
-				if(checkEmpty(this.getLocation().x, this.getLocation().y-2)){
-					if(this.getGame().getBoard().isEmpty(this.getLocation().x, this.getLocation().y-2) && this.getGame().getBoard().isEmpty(this.getLocation().x,  this.getLocation().y-1)){
-						this.getPossibleMoves().add(new Point(this.getLocation().x, this.getLocation().y-2));
+				if(checkEmpty(x, y-2)){
+					if(this.getGame().getBoard().isEmpty(x,y-2) && this.getGame().getBoard().isEmpty(x,y-1)){
+						this.getPossibleMoves().add(new Point(x,y-2));
 					}
 				}
 			}
-			if(checkEmpty(this.getLocation().x, this.getLocation().y-1)){
-				if(this.getGame().getBoard().isEmpty(this.getLocation().x, this.getLocation().y-1)){
-					this.getPossibleMoves().add(new Point(this.getLocation().x, this.getLocation().y-1));
+			if(checkEmpty(x, y-1)){
+				if(this.getGame().getBoard().isEmpty(x,y-1)){
+					this.getPossibleMoves().add(new Point(x,y-1));
 				}
 			}
-			if(this.getLocation().x<7){
-				if(checkOpponent(this.getLocation().x+1, this.getLocation().y-1)){
-					if(!this.getGame().getBoard().isEmpty(this.getLocation().x+1, this.getLocation().y-1)){
-						this.getPossibleMoves().add(new Point(this.getLocation().x+1, this.getLocation().y-1));
+			if(x<7){
+				if(checkOpponent(x+1,y-1)){
+					if(!this.getGame().getBoard().isEmpty(x+1,y-1)){
+						this.getPossibleMoves().add(new Point(x+1,y-1));
 					}
 				}
 			}
-			if(this.getLocation().x>0){
-				if(checkOpponent(this.getLocation().x-1, this.getLocation().y-1)){
-					if(!this.getGame().getBoard().isEmpty(this.getLocation().x-1, this.getLocation().y-1)){
-						this.getPossibleMoves().add(new Point(this.getLocation().x-1, this.getLocation().y-1));
+			if(x>0){
+				if(checkOpponent(x-1, y-1)){
+					if(!this.getGame().getBoard().isEmpty(x-1,y-1)){
+						this.getPossibleMoves().add(new Point(x-1,y-1));
 					}
 				}
 			}
 		}
 		else{
 			if(!this.wasMoved()){
-				if(checkEmpty(this.getLocation().x, this.getLocation().y+2)){
-					if(this.getGame().getBoard().isEmpty(this.getLocation().x, this.getLocation().y+2) && this.getGame().getBoard().isEmpty(this.getLocation().x, this.getLocation().y+1)){
-						this.getPossibleMoves().add(new Point(this.getLocation().x, this.getLocation().y+2));
+				if(checkEmpty(x,y+2)){
+					if(this.getGame().getBoard().isEmpty(x,y+2) && this.getGame().getBoard().isEmpty(x,y+1)){
+						this.getPossibleMoves().add(new Point(x,y+2));
 					}
 				}
 			}
-			if(checkEmpty(this.getLocation().x, this.getLocation().y+1)){
-				if(this.getGame().getBoard().isEmpty(this.getLocation().x, this.getLocation().y+1)){
-					this.getPossibleMoves().add(new Point(this.getLocation().x, this.getLocation().y+1));
+			if(checkEmpty(x,y+1)){
+				if(this.getGame().getBoard().isEmpty(x,y+1)){
+					this.getPossibleMoves().add(new Point(x,y+1));
 				}
 			}
-			if(this.getLocation().x<7){
-				if(checkOpponent(this.getLocation().x+1, this.getLocation().y+1)){
-					if(!this.getGame().getBoard().isEmpty(this.getLocation().x+1, this.getLocation().y+1)){
-						this.getPossibleMoves().add(new Point(this.getLocation().x+1, this.getLocation().y+1));
+			if(x<7){
+				if(checkOpponent(x+1,y+1)){
+					if(!this.getGame().getBoard().isEmpty(x+1,y+1)){
+						this.getPossibleMoves().add(new Point(x+1,y+1));
 					}
 				}
 			}
-			if(this.getLocation().x>0){
-				if(checkOpponent(this.getLocation().x-1, this.getLocation().y+1)){
-					if(!this.getGame().getBoard().isEmpty(this.getLocation().x-1, this.getLocation().y+1)){
-						this.getPossibleMoves().add(new Point(this.getLocation().x-1, this.getLocation().y+1));
+			if(x>0){
+				if(checkOpponent(x-1, y+1)){
+					if(!this.getGame().getBoard().isEmpty(x-1,y+1)){
+						this.getPossibleMoves().add(new Point(x-1,y+1));
 					}
 				}
 			}
 		}
-		if(this.getColor() && this.getLocation().y == 3)
+		if(this.getColor() && y == 3)
 		{
-			if(this.getLocation().x>0 && this.getLocation().x<7){
-				if(checkOpponent(this.getLocation().x-1,this.getLocation().y) && this.getGame().getBoard().getPiece(this.getLocation().x-1,this.getLocation().y).getClass().getName().equals("model.Pawn") && ((Pawn)(this.getGame().getBoard().getPiece(this.getLocation().x-1,this.getLocation().y))).wasJustMoved()){
-					this.getPossibleMoves().add(new Point(this.getLocation().x-1, this.getLocation().y-1));
+			if(x>0 && x<7){
+				if(checkOpponent(x-1,y) && this.getGame().getBoard().getPiece(x-1,y).getClass().getName().equals("model.Pawn") && ((Pawn)(this.getGame().getBoard().getPiece(x-1,y))).wasJustMoved()){
+					this.getPossibleMoves().add(new Point(x-1, y-1));
 				}
-				if(checkOpponent(this.getLocation().x+1,this.getLocation().y) && this.getGame().getBoard().getPiece(this.getLocation().x+1,this.getLocation().y).getClass().getName().equals("model.Pawn") && ((Pawn)(this.getGame().getBoard().getPiece(this.getLocation().x+1,this.getLocation().y))).wasJustMoved()){
-					this.getPossibleMoves().add(new Point(this.getLocation().x+1, this.getLocation().y-1));
-				}
-			}
-			else if(this.getLocation().x == 0){
-				if(checkOpponent(this.getLocation().x+1,this.getLocation().y) && this.getGame().getBoard().getPiece(this.getLocation().x+1,this.getLocation().y).getClass().getName().equals("model.Pawn") && ((Pawn)(this.getGame().getBoard().getPiece(this.getLocation().x+1,this.getLocation().y))).wasJustMoved()){
-					this.getPossibleMoves().add(new Point(this.getLocation().x+1, this.getLocation().y-1));
+				if(checkOpponent(x+1,y) && this.getGame().getBoard().getPiece(x+1,y).getClass().getName().equals("model.Pawn") && ((Pawn)(this.getGame().getBoard().getPiece(x+1,y))).wasJustMoved()){
+					this.getPossibleMoves().add(new Point(x+1, y-1));
 				}
 			}
-			else if(this.getLocation().x == 7){
-				if(checkOpponent(this.getLocation().x-1,this.getLocation().y) && this.getGame().getBoard().getPiece(this.getLocation().x-1,this.getLocation().y).getClass().getName().equals("model.Pawn") && ((Pawn)(this.getGame().getBoard().getPiece(this.getLocation().x-1,this.getLocation().y))).wasJustMoved()){
-					this.getPossibleMoves().add(new Point(this.getLocation().x-1, this.getLocation().y-1));
+			else if(x == 0){
+				if(checkOpponent(x+1,y) && this.getGame().getBoard().getPiece(x+1,y).getClass().getName().equals("model.Pawn") && ((Pawn)(this.getGame().getBoard().getPiece(x+1,y))).wasJustMoved()){
+					this.getPossibleMoves().add(new Point(x+1, y-1));
+				}
+			}
+			else if(x == 7){
+				if(checkOpponent(x-1,y) && this.getGame().getBoard().getPiece(x-1,y).getClass().getName().equals("model.Pawn") && ((Pawn)(this.getGame().getBoard().getPiece(x-1,y))).wasJustMoved()){
+					this.getPossibleMoves().add(new Point(x-1, y-1));
 				}
 			}
 		}
-		else if (!this.getColor() && this.getLocation().y == 4)
+		else if (!this.getColor() && y == 4)
 		{
-			if(this.getLocation().x>0 && this.getLocation().x<7){
-				if(checkOpponent(this.getLocation().x-1,this.getLocation().y) && this.getGame().getBoard().getPiece(this.getLocation().x-1,this.getLocation().y).getClass().getName().equals("model.Pawn") && ((Pawn)(this.getGame().getBoard().getPiece(this.getLocation().x-1,this.getLocation().y))).wasJustMoved()){
-					this.getPossibleMoves().add(new Point(this.getLocation().x-1, this.getLocation().y+1));
+			if(x>0 && x<7){
+				if(checkOpponent(x-1,y) && this.getGame().getBoard().getPiece(x-1,y).getClass().getName().equals("model.Pawn") && ((Pawn)(this.getGame().getBoard().getPiece(x-1,y))).wasJustMoved()){
+					this.getPossibleMoves().add(new Point(x-1, y+1));
 				}
-				if(checkOpponent(this.getLocation().x+1,this.getLocation().y) && this.getGame().getBoard().getPiece(this.getLocation().x+1,this.getLocation().y).getClass().getName().equals("model.Pawn") && ((Pawn)(this.getGame().getBoard().getPiece(this.getLocation().x+1,this.getLocation().y))).wasJustMoved()){
-					this.getPossibleMoves().add(new Point(this.getLocation().x+1, this.getLocation().y+1));
-				}
-			}
-			else if(this.getLocation().x == 0){
-				if(checkOpponent(this.getLocation().x+1,this.getLocation().y) && this.getGame().getBoard().getPiece(this.getLocation().x+1,this.getLocation().y).getClass().getName().equals("model.Pawn") && ((Pawn)(this.getGame().getBoard().getPiece(this.getLocation().x+1,this.getLocation().y))).wasJustMoved()){
-					this.getPossibleMoves().add(new Point(this.getLocation().x+1, this.getLocation().y+1));
+				if(checkOpponent(x+1,y) && this.getGame().getBoard().getPiece(x+1,y).getClass().getName().equals("model.Pawn") && ((Pawn)(this.getGame().getBoard().getPiece(x+1,y))).wasJustMoved()){
+					this.getPossibleMoves().add(new Point(x+1, y+1));
 				}
 			}
-			else if(this.getLocation().x == 7){
-				if(checkOpponent(this.getLocation().x-1,this.getLocation().y) && this.getGame().getBoard().getPiece(this.getLocation().x-1,this.getLocation().y).getClass().getName().equals("model.Pawn") && ((Pawn)(this.getGame().getBoard().getPiece(this.getLocation().x-1,this.getLocation().y))).wasJustMoved()){
-					this.getPossibleMoves().add(new Point(this.getLocation().x-1, this.getLocation().y+1));
+			else if(x == 0){
+				if(checkOpponent(x+1,y) && this.getGame().getBoard().getPiece(x+1,y).getClass().getName().equals("model.Pawn") && ((Pawn)(this.getGame().getBoard().getPiece(x+1,y))).wasJustMoved()){
+					this.getPossibleMoves().add(new Point(x+1, y+1));
+				}
+			}
+			else if(x == 7){
+				if(checkOpponent(x-1,y) && this.getGame().getBoard().getPiece(x-1,y).getClass().getName().equals("model.Pawn") && ((Pawn)(this.getGame().getBoard().getPiece(x-1,y))).wasJustMoved()){
+					this.getPossibleMoves().add(new Point(x-1, y+1));
 				}
 			}
 		}
@@ -137,8 +140,7 @@ public class Pawn extends Piece{
 
 	@Override
 	public String getUnicode() {
-		if(this.getColor()) { return "\u2659"; }
-		else { return "\u265f" ; }
+		return this.getColor() ? "\u2659" : "\u265f";
 	}
 
 }

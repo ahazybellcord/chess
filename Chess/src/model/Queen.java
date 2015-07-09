@@ -6,6 +6,7 @@ public class Queen extends Piece{
 	
 	public Queen(boolean color, Game game, Point location) {
 		super(color,game,location);
+		super.setValue(9);
 	}
 	
 	@Override
@@ -25,8 +26,7 @@ public class Queen extends Piece{
 	
 	@Override
 	public String getUnicode() {
-		if(this.getColor()) { return "\u2655"; }
-		else { return "\u265b" ; }
+		return this.getColor() ? "\u2655" : "\u265b";
 	}
 	
 	@Override

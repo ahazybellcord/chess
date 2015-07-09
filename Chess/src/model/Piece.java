@@ -7,6 +7,7 @@ public class Piece {
 	private boolean _color;
 	private Game _game;
 	private Point _location;
+	private int _value;
 	private HashSet<Point> _possibleMoves;
 	private boolean _moved;
 	
@@ -14,27 +15,21 @@ public class Piece {
 		_color = color;
 		_game = game;
 		_location = location;
+		_value = 0;
 		_possibleMoves = new HashSet<Point>();
 		_moved = false;
 	}
 	
-	public boolean moveIsValid(Point location) {
-		for(Point point : _possibleMoves) {
-			if(point.equals(location)) { return true; }
-		}
-		return false;
+	public Game getGame() {
+		return _game;
 	}
-	
-	public void setPossibleMoves(){
-		_possibleMoves = new HashSet<Point>();
+
+	public void setGame(Game game){
+		_game = game;
 	}
-	
+		
 	public boolean getColor() {
 		return _color;
-	}
-	
-	public void overridePossibleMoves(HashSet<Point> myHash){
-		_possibleMoves = myHash;
 	}
 	
 	public Point getLocation() {
@@ -45,34 +40,22 @@ public class Piece {
 		_location = new Point(x,y);
 	}
 	
+	public int getValue() {
+		return _value;
+	}
+
+	public void setValue(int value) {
+		_value = value;
+	}
+	
 	public void setMoved(){
 		_moved = true;
 	}
 	
-	public void setGame(Game game){
-		_game = game;
-	}
-
 	public boolean wasMoved(){
 		return _moved;
 	}
 	
-	public HashSet<Point> getPossibleMoves() {
-		return _possibleMoves;
-	}
-	
-	public String getUnicode() {
-		return "";
-	}
-	
-	public String getSymbol() {
-		return "";
-	}
-	
-	public Game getGame() {
-		return _game;
-	}
-
 	public boolean checkMove(int x, int y) {
 		Board b = this.getGame().getBoard();
 		if(b.isEmpty(x, y)){
@@ -89,5 +72,33 @@ public class Piece {
 		}
 		else return false; 
 	}
+
+	public boolean moveIsValid(Point location) {
+		for(Point point : _possibleMoves) {
+			if(point.equals(location)) { return true; }
+		}
+		return false;
+	}
+	
+	public HashSet<Point> getPossibleMoves() {
+		return _possibleMoves;
+	}
+	
+	public void setPossibleMoves(){
+		_possibleMoves = new HashSet<Point>();
+	}
+	
+	public void setPossibleMoves(HashSet<Point> possibleMoves){
+		_possibleMoves = possibleMoves;
+	}
+	
+	public String getUnicode() {
+		return "";
+	}
+	
+	public String getSymbol() {
+		return "";
+	}
+
 
 }
