@@ -9,20 +9,22 @@ import model.Game;
 import model.Piece;
 
 public class BoardButton extends JButton {
+    private Game _game;	
 	private Piece _piece;
     private int _x;
     private int _y;
-    private Game _game;
+    private static int FONT_SIZE = 40;
     
 	public BoardButton(Game game, int x, int y) {
+		_game = game;
+		_x = x;
+		_y = y;
 		if(!game.getBoard().isEmpty(x, y)){
 			_piece = game.getBoard().getPiece(x, y);
 			this.setText(_piece.getUnicode());
-			this.setFont(new Font("Times New Roman", Font.PLAIN, 40));
+			this.setFont(new Font("Times New Roman", Font.PLAIN, FONT_SIZE));
 		}
-		_x = x;
-		_y = y;
-		_game = game;
+
 		this.addActionListener(new BoardButtonHandler());
 	}
 
@@ -34,14 +36,11 @@ public class BoardButton extends JButton {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(_game.getCurrentPlayer()){
+			if(_game.getCurrentPlayer())
 				_game.handleClick(_x, _y);
-			}
-			else{
+			else
 				_game.handleClick(7-_x, 7-_y);
-			}
 		}
-		
 	}
 	
 }

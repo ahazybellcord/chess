@@ -94,7 +94,7 @@ public class Driver implements Runnable, Observer {
 			}
 		}
 		Object[] options1 = {"Human vs. Human",
-		"Human vs. Computer"};
+		"Human vs. Computer", "Computer vs. Human"};
 		int o = JOptionPane.showOptionDialog(_frame,
 				"Please select one ",
 				"Chess",
@@ -133,8 +133,49 @@ public class Driver implements Runnable, Observer {
 				System.exit(1);
 			}
 		}
-		else{
-			_game.setAI();
+		else if (o==1){
+			JTextField white = new JTextField();
+			Object[] message = {
+					"Please enter your name or click cancel to skip",
+					"White:", white
+			};
+			int option = JOptionPane.showConfirmDialog(null, message, "Chess", JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
+			if (option == JOptionPane.OK_OPTION) {
+				while(white.getText().equals("")){
+					option = JOptionPane.showConfirmDialog(null, message, "Chess", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+					if(option == JOptionPane.CANCEL_OPTION){
+						white.setText("White");
+						break;
+					}
+				}
+				_game.setNames(white.getText(), "Computer");
+			}
+			else if(option == JOptionPane.CANCEL_OPTION){
+				_game.setNames("White", "Computer");
+			}
+			_game.setAI(false);
+		}
+		else {
+			JTextField black = new JTextField();
+			Object[] message = {
+					"Please enter your name or click cancel to skip",
+					"Black:", black
+			};
+			int option = JOptionPane.showConfirmDialog(null, message, "Chess", JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
+			if (option == JOptionPane.OK_OPTION) {
+				while(black.getText().equals("")){
+					option = JOptionPane.showConfirmDialog(null, message, "Chess", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+					if(option == JOptionPane.CANCEL_OPTION){
+						black.setText("Black");
+						break;
+					}
+				}
+				_game.setNames("Computer", black.getText());
+			}
+			else if(option == JOptionPane.CANCEL_OPTION){
+				_game.setNames("Computer", "Black");
+			}
+			_game.setAI(true);
 		}
 		_boardWindow = new BoardWindow(_game);
 		_infoWindow = new InfoWindow(_game, _boardWindow);
@@ -143,6 +184,7 @@ public class Driver implements Runnable, Observer {
 		_frame.pack();
 		_frame.setVisible(true);
 		_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		_game.aiMove();
 	}
 
 	public static void main(String[] args) {
@@ -190,8 +232,7 @@ public class Driver implements Runnable, Observer {
 			}
 			_game.setCheckmateFalse();
 			_frame.setEnabled(false);
-
-
+			//_game.aiMove();
 		}
 		else if(_game.isStalemate()){
 			_frame.setTitle("Chess - Stalemate!");
@@ -228,7 +269,6 @@ public class Driver implements Runnable, Observer {
 				_frame.setTitle("Chess - Black Wins!");
 			}
 		}
-
 		_frame.pack();
 	}
 

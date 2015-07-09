@@ -26,6 +26,7 @@ public class Game extends Observable {
 	private boolean _endGame;
 	private boolean _stalemate;
 	private boolean _ai;
+	private boolean _aiColor;
 	private Point _source;
 	private Point _destination;
 
@@ -54,7 +55,6 @@ public class Game extends Observable {
 		_stalemate = false;
 		_ai = false;
 		_capturedPieces = new ArrayList<Piece>();
-//		save();
 		getNumberOfPossibleMoves(this.getCurrentPlayer());
 	}
 
@@ -244,6 +244,7 @@ public class Game extends Observable {
 	}
 
 	private void move(Piece piece, int x, int y) {
+		
 		for(int i = 0; i<8; i++){
 			for(int j = 0; j<8; j++){
 				if(!_board.isEmpty(i, j) && _board.getPiece(i, j).getColor() == _currentPlayer && _board.getPiece(i, j).getClass().getName().equals("model.Pawn")){
@@ -355,7 +356,50 @@ public class Game extends Observable {
 		}
 		setChanged();
 		notifyObservers();
-//		save();
+	}
+	public void aiMove(){
+		if(_currentPlayer == _aiColor){
+			ArrayList<Piece> aiPieces = new ArrayList<Piece>();
+			for(int i = 0; i<8; i++){
+				for(int j = 0; j<8; j++){
+					if(!_board.isEmpty(i, j)){
+						if(_board.getPiece(i, j).getColor()==_currentPlayer){
+							_board.getPiece(i, j).setPossibleMoves();
+							selfCheck(_board.getPiece(i, j));
+							if(_board.getPiece(i, j).getPossibleMoves().size()!=0){
+								aiPieces.add(_board.getPiece(i, j));
+							}
+						}
+					}
+				}
+			}
+			Collections.shuffle(aiPieces);
+			Piece selectedPiece = aiPieces.get(0);
+			HashSet<Point> moves = selectedPiece.getPossibleMoves();
+			Point q = new Point(0,0);
+			boolean canCapture = false;
+			for(Point p: moves){
+				if(!_board.isEmpty(p.x, p.y)){
+					canCapture = true;
+				}
+			}
+			do{
+				int size = moves.size();
+				int randIndex = new Random().nextInt(size); // In real life, the Random object should be rather more shared than this
+				int i = 0;
+				for(Point p : moves)
+				{
+				    if (i == randIndex){
+				    	q=p;
+				    }
+				    i = i + 1;
+				}
+				if(!canCapture){
+					break;
+				}
+			} while(_board.isEmpty(q.x, q.y));
+			move(selectedPiece, q.x, q.y);
+		}
 	}
 
 	private boolean checkEndGame() {
@@ -449,63 +493,15 @@ public class Game extends Observable {
 			System.out.println("Promotion choice not selected properly.");
 			System.exit(1);
 		}
-
-
 	}
 
 	public boolean getPawnPromotion(){
 		return _pawnPromotion;
 	}
 	
-	public void setAI(){
+	public void setAI(boolean aiColor){
 		_ai = true;
-	}
-	
-	public void aiMove(){
-		if(_currentPlayer == false){
-			ArrayList<Piece> aiPieces = new ArrayList<Piece>();
-			for(int i = 0; i<8; i++){
-				for(int j = 0; j<8; j++){
-					if(!_board.isEmpty(i, j)){
-						if(_board.getPiece(i, j).getColor()==_currentPlayer){
-							_board.getPiece(i, j).setPossibleMoves();
-							selfCheck(_board.getPiece(i, j));
-							if(_board.getPiece(i, j).getPossibleMoves().size()!=0){
-								aiPieces.add(_board.getPiece(i, j));
-							}
-						}
-					}
-				}
-			}
-			Collections.shuffle(aiPieces);
-			Piece selectedPiece = aiPieces.get(0);
-			HashSet<Point> moves = selectedPiece.getPossibleMoves();
-			Point q = new Point(0,0);
-			boolean canCapture = false;
-			for(Point p: moves){
-				if(!_board.isEmpty(p.x, p.y)){
-					canCapture = true;
-				}
-			}
-			do{
-				int size = moves.size();
-				int randIndex = new Random().nextInt(size); // In real life, the Random object should be rather more shared than this
-				int i = 0;
-				for(Point p : moves)
-				{
-				    if (i == randIndex){
-				    	q=p;
-				    }
-				    i = i + 1;
-				}
-				if(!canCapture){
-					break;
-				}
-			} while(_board.isEmpty(q.x, q.y));
-			
-			move(selectedPiece, q.x, q.y);
-		}
-		
+		_aiColor = aiColor;
 	}
 
 	public int getNumberOfPossibleMoves(boolean color) {
