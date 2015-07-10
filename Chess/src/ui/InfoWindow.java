@@ -1,6 +1,6 @@
 package ui;
 
-import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -24,15 +24,17 @@ public class InfoWindow extends JPanel{
 		_game = game;
 		_boardWindow = boardWindow;
 		_whitePanel = new JPanel();
-		this.setLayout(new GridLayout(2,2,15,2));
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		_whitePanel.setLayout(new BoxLayout(_whitePanel, BoxLayout.Y_AXIS));
+		JPanel topPanel = new JPanel(new GridLayout(1,2,15,2));
 		JLabel myLabel = new JLabel(_game.getNames().get(0) +"   ");
 		myLabel.setFont(new Font("Times New Roman", Font.PLAIN, 25));
 		_whitePanel.add(myLabel);
 		for(int i = 0; i<_game.getMoves().size(); i = i+2){
 			_whitePanel.add(new JLabel(_game.getMoves().get(i)));	
 		}
-		this.add(_whitePanel);
+		topPanel.add(_whitePanel);
+		
 		
 		_blackPanel = new JPanel();
 		_blackPanel.setLayout(new BoxLayout(_blackPanel, BoxLayout.Y_AXIS));
@@ -42,7 +44,7 @@ public class InfoWindow extends JPanel{
 		for(int i = 1; i<_game.getMoves().size(); i = i+2){
 			_blackPanel.add(new JLabel(_game.getMoves().get(i)));	
 		}
-		this.add(_blackPanel);
+		topPanel.add(_blackPanel);
 		String[] options = {"Classic","Wooden","Civil War", "Aegean", "Burnt","Tournament", "WinBoard"};
 		JComboBox mybox = new JComboBox(options);
 		mybox.setSelectedItem(0);
@@ -51,6 +53,7 @@ public class InfoWindow extends JPanel{
 		JComboBox bbox = new JComboBox(bmode);
 		bbox.setSelectedItem(0);
 		bbox.addActionListener(new BeginnerHandler());
+		JPanel optionPanel = new JPanel(new GridLayout(1,2,15,2));
 		JLabel themeLabel = new JLabel("Theme");
 		JLabel beginnerLabel = new JLabel("Beginner Mode");
 		JPanel bottomPanel = new JPanel();
@@ -59,8 +62,11 @@ public class InfoWindow extends JPanel{
 		JPanel otherPanel = new JPanel();
 		otherPanel.add(beginnerLabel);
 		otherPanel.add(bbox);
-		this.add(bottomPanel);
-		this.add(otherPanel);		
+		optionPanel.add(bottomPanel);
+		optionPanel.add(otherPanel);
+		optionPanel.setMaximumSize(new Dimension(450,350));
+		this.add(optionPanel);
+		this.add(topPanel);
 	}
 	
 	public void update(){
