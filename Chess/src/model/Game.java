@@ -164,6 +164,9 @@ public class Game extends Observable {
 					move(_previousClick, x, y);
 				}
 			}
+			else if(_previousClick.getLocation().x == x && _previousClick.getLocation().y == y) {
+				_previousClick = null;
+			}
 			else{
 				_previousClick = _board.getPiece(x, y);
 				_previousClick.setPossibleMoves();

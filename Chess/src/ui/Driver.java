@@ -228,7 +228,6 @@ public class Driver implements Runnable, Observer {
 						"Black Wins!",
 						"Checkmate",
 						JOptionPane.INFORMATION_MESSAGE);
-
 			}
 			_game.setCheckmateFalse();
 			_frame.setEnabled(false);
