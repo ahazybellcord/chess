@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
@@ -8,7 +9,9 @@ import java.util.Observer;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -183,6 +186,7 @@ public class Driver implements Runnable, Observer {
 		_frame.add(_infoWindow, BorderLayout.EAST);
 		_frame.pack();
 		_frame.setVisible(true);
+		_frame.setMaximumSize(new Dimension(800,800));
 		_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		_game.aiMove();
 	}

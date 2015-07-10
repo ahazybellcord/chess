@@ -52,6 +52,7 @@ public class BoardWindow extends JPanel {
 		}
 		
 		JPanel boardPanel = new JPanel();
+		boardPanel.setBorder(LineBorder.createBlackLineBorder());
 		boardPanel.setLayout(new GridLayout(8,8,0,0));
 		boolean backgroundColor = true;
 		for(int i=0; i<8; i++) {

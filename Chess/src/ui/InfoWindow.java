@@ -3,6 +3,7 @@ package ui;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,6 +11,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 import model.Game;
 import model.Piece;
@@ -45,6 +48,8 @@ public class InfoWindow extends JPanel{
 			_blackPanel.add(new JLabel(_game.getMoves().get(i)));	
 		}
 		topPanel.add(_blackPanel);
+		JScrollPane myScroller = new JScrollPane(new JPanel());
+		myScroller.add(topPanel);
 		String[] options = {"Classic","Wooden","Civil War", "Aegean", "Burnt","Tournament", "WinBoard"};
 		JComboBox mybox = new JComboBox(options);
 		mybox.setSelectedItem(0);
