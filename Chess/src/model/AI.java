@@ -13,11 +13,15 @@ public class AI {
 	boolean _aiColor;
 	Board _board;
 	int _level;
+	HashMap<Piece, HashMap<Point,Integer>> _mainMap;
+	HashMap<Piece, ArrayList<HashMap<Point, Integer>>> _woahMan;
 	public AI(Game game, boolean aiColor){
 		_game = game;
 		_aiColor = aiColor;
 		_board = _game.getBoard();
 		_level = 2;
+		_mainMap = new HashMap<Piece, HashMap<Point, Integer>>();
+		_woahMan = new HashMap<Piece, ArrayList<HashMap<Point, Integer>>>();
 
 	}
 
@@ -132,7 +136,7 @@ public class AI {
 									}
 									currentPiecePoints.add(Collections.min(oppDamage));
 								}
-								
+
 							}
 						}
 					}
@@ -155,7 +159,7 @@ public class AI {
 			Piece actualGamePiece = _game.getBoard().getPiece(myPiece.getLocation().x, myPiece.getLocation().y);
 			_game.move(actualGamePiece, myPiece.getAIMove().x, myPiece.getAIMove().y);
 		}
-		
+
 	}
 
 	private int getPointDifference(Board board, boolean aiColor){
@@ -175,5 +179,116 @@ public class AI {
 		}
 		return count - oppositionCount;
 	}
-	
+
+	public void alphaMove(Game game, Board board, int level){
+		if(game.getCurrentPlayer() == _aiColor){
+			Board temporary = new Board();
+			Game tempGame = new Game(temporary);
+			for(int i = 0; i < 8; i++){
+				for(int j = 0; j < 8; j++){
+					if(board.getPiece(i, j)!=null){
+						if(board.getPiece(i, j).getSymbol().equals("K")){
+							temporary.setPiece(new King(board.getPiece(i, j).getColor(), tempGame, new Point(i,j)), i, j);
+						}
+						else if(board.getPiece(i, j).getSymbol().equals("Q")){
+							temporary.setPiece(new Queen(board.getPiece(i, j).getColor(), tempGame, new Point(i,j)), i, j);
+						}
+						else if(board.getPiece(i, j).getSymbol().equals("B")){
+							temporary.setPiece(new Bishop(board.getPiece(i, j).getColor(), tempGame, new Point(i,j)), i, j);
+						}
+						else if(board.getPiece(i, j).getSymbol().equals("R")){
+							temporary.setPiece(new Rook(board.getPiece(i, j).getColor(), tempGame, new Point(i,j)), i, j);
+						}
+						else if(board.getPiece(i, j).getSymbol().equals("N")){
+							temporary.setPiece(new Knight(board.getPiece(i, j).getColor(), tempGame, new Point(i,j)), i, j);
+						}
+						else{
+							temporary.setPiece(new Pawn(board.getPiece(i, j).getColor(), tempGame, new Point(i,j)), i, j);
+						}
+					}
+					
+				}
+			}
+			ArrayList<Piece> aiPieces = new ArrayList<Piece>();
+			for(int i = 0; i < 8; i++){
+				for(int j = 0; j < 8; j++){
+					if(temporary.getPiece(i, j)!=null && temporary.getPiece(i, j).getColor()==_aiColor){
+						temporary.getPiece(i, j).setPossibleMoves();
+						_game.selfCheck(temporary.getPiece(i, j), temporary);
+						if(temporary.getPiece(i, j).getPossibleMoves().size()!=0){
+							aiPieces.add(temporary.getPiece(i, j));
+						}
+					}
+				}
+			}
+			Collections.shuffle(aiPieces);
+			for(int i = 0; i < aiPieces.size(); i++){
+				Piece currentPiece = aiPieces.get(i);
+				Point currentLocation = currentPiece.getLocation();
+				HashMap<Point, Integer> map = new HashMap<Point, Integer>();
+				ArrayList<Integer> mp = new ArrayList<Integer>();
+				for(Point p: currentPiece.getPossibleMoves()){
+					temporary.setPiece(null, currentLocation.x, currentLocation.y);
+					temporary.setPiece(currentPiece, p.x, p.y);
+					currentPiece.setLocation(p.x, p.y);
+					ArrayList<Integer> points = new ArrayList<Integer>();
+					ArrayList<Piece> oPieces = new ArrayList<Piece>();
+					for(int j = 0; j < 8; j++){
+						for(int k = 0; k < 8; k++){
+							if(temporary.getPiece(j, k)!=null && temporary.getPiece(j, k).getColor()!=_aiColor){
+								temporary.getPiece(j, k).setPossibleMoves();
+								_game.selfCheck(temporary.getPiece(j, k), temporary);
+								if(temporary.getPiece(j, k).getPossibleMoves().size()!=0){
+									oPieces.add(temporary.getPiece(j, k));
+								}
+							}
+						}
+					}
+					for(int j = 0; j < oPieces.size(); j++){
+						Piece oPiece = oPieces.get(j);
+						Point oLocation = oPiece.getLocation();
+						for(Point q: oPiece.getPossibleMoves()){
+							temporary.setPiece(null, oLocation.x, oLocation.y);
+							temporary.setPiece(oPiece, q.x, q.y);
+							oPiece.setLocation(q.x, q.y);
+							points.add(getPointDifference(temporary, _aiColor));
+							if(level != 0){
+								alphaMove(tempGame, temporary, level - 1);
+							}
+							temporary.setPiece(null, q.x, q.y);
+							temporary.setPiece(oPiece, oLocation.x, oLocation.y);
+							oPiece.setLocation(oLocation.x, oLocation.y);
+						}
+						mp.add(Collections.min(points));
+					}
+					map.put(p, Collections.min(mp));
+					temporary.setPiece(null, p.x, p.y);
+					temporary.setPiece(currentPiece, currentLocation.x, currentLocation.y);
+					currentPiece.setLocation(currentLocation.x, currentLocation.y);
+				}
+				if(level == _level){
+					_mainMap.put(currentPiece, map);
+					_woahMan.put(currentPiece, new ArrayList<HashMap<Point,Integer>>());
+					_woahMan.get(currentPiece).add(level, map);
+				}
+				else{
+					_woahMan.get(currentPiece).add(level, map);
+				}
+				if(level == 0){
+					ArrayList<HashMap<Point, Integer>> myList = _woahMan.get(currentPiece);
+					for(int n = 0; n<myList.size(); n++){
+						if(n==_level){
+							break;
+						}
+						for(Point p: myList.get(n).keySet()){
+							
+						}
+					}
+				}
+			}
+		}
+		
+		
+	}
+
 }
