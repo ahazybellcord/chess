@@ -107,9 +107,14 @@ public class AI {
 				HashMap<Point, Integer> myMap = new HashMap<Point, Integer>();
 				//going over the possible moves of the current piece
 				for(Point pos: currentPiece.getPossibleMoves()){
+					Piece c = null;
+					if(temporary.getPiece(pos.x, pos.y)!=null){
+						c = temporary.getPiece(pos.x, pos.y);
+					}
 					temporary.setPiece(currentPiece, pos.x, pos.y);
 					temporary.setPiece(null, pieceLocation.x, pieceLocation.y);
 					currentPiece.setLocation(pos.x, pos.y);
+					_game.printBoard(temporary);
 					//moved it to its new location on the board
 					//keeps track of the point difference between the sides for all the possible moves the opponent could make
 					ArrayList<Integer> currentPiecePoints = new ArrayList<Integer>();
@@ -125,39 +130,58 @@ public class AI {
 									ArrayList<Integer> oppDamage = new ArrayList<Integer>();
 									//going over the currently selected opposition piece's possible moves
 									for(Point p: oppositionPiece.getPossibleMoves()){
+										Piece captured = null;
+										if(temporary.getPiece(p.x, p.y)!=null){
+											captured = temporary.getPiece(p.x, p.y);
+										}
 										temporary.setPiece(oppositionPiece, p.x, p.y);
 										temporary.setPiece(null, oppositionLocation.x, oppositionLocation.y);
 										oppositionPiece.setLocation(p.x, p.y);
 										//adding the point difference to the ArrayList
 										oppDamage.add(getPointDifference(temporary, _aiColor));
+										
+//											_game.printBoard(temporary);
+										
+//										System.out.println("Point diff " + getPointDifference(temporary, _aiColor));
 										//moving the piece back
 										temporary.setPiece(null, p.x, p.y);
+										if(captured!=null){
+											temporary.setPiece(captured, p.x, p.y);
+										}
 										temporary.setPiece(oppositionPiece, oppositionLocation.x, oppositionLocation.y);
 										oppositionPiece.setLocation(oppositionLocation.x, oppositionLocation.y);
 									}
-									currentPiecePoints.add(Collections.min(oppDamage));
+									currentPiecePoints.add(Collections.max(oppDamage));
 								}
 
 							}
 						}
 					}
 					Collections.shuffle(currentPiecePoints);
-					int lowestValue = Collections.min(currentPiecePoints);
+					int lowestValue = Collections.max(currentPiecePoints);
 					myMap.put(pos, lowestValue);
 					temporary.setPiece(null, pos.x, pos.y);
+					if(c!=null){
+						temporary.setPiece(c, pos.x, pos.y);
+					}
 					temporary.setPiece(currentPiece, pieceLocation.x, pieceLocation.y);
 					currentPiece.setLocation(pieceLocation.x, pieceLocation.y);
 				}
 				currentPiece.setAIMap(myMap);
+				System.out.println(myMap.toString());
 			}
 			ArrayList<Integer> bestRating = new ArrayList<Integer>();
 			for(int i = 0; i< aiPieces.size(); i++){
 				bestRating.add(aiPieces.get(i).getAIRating());
 			}
 			Collections.shuffle(bestRating);
+			System.out.println("Best Rating: " + Collections.max(bestRating));
 			int indexOfCandidate = bestRating.indexOf(Collections.max(bestRating));
 			Piece myPiece = aiPieces.get(indexOfCandidate);
+			System.out.println("Best Piece: " + myPiece.getUnicode());
 			Piece actualGamePiece = _game.getBoard().getPiece(myPiece.getLocation().x, myPiece.getLocation().y);
+			System.out.println("Actual Game Piece: " + actualGamePiece.getUnicode());
+			System.out.println("Actual Move: " + myPiece.getAIMove().toString());
 			_game.move(actualGamePiece, myPiece.getAIMove().x, myPiece.getAIMove().y);
 		}
 

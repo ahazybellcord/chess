@@ -526,12 +526,12 @@ public class Game extends Observable {
 	}
 
 	// a cute text representation of the board to test model-UI updating
-	private void printBoard() {
+	void printBoard(Board board) {
 		for(int i = 0; i < 8; i++){
 			System.out.print(8-i + " ");
 			for(int j = 0; j<8; j++){
-				if(!_board.isEmpty(j, i)){
-					System.out.print(_board.getPiece(j, i).getUnicode()+' ');
+				if(!board.isEmpty(j, i)){
+					System.out.print(board.getPiece(j, i).getUnicode()+' ');
 				}
 				else{
 					System.out.print('\u3000');
