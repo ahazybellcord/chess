@@ -150,7 +150,7 @@ public class Game extends Observable {
 			if(!_board.isEmpty(x, y) && _board.getPiece(x, y).getColor() == this.getCurrentPlayer()){
 				_previousClick = _board.getPiece(x, y);
 				_previousClick.setPossibleMoves();
-				selfCheck(_previousClick);
+				selfCheck(_previousClick, _board);
 			}
 		}
 		else{
@@ -170,21 +170,21 @@ public class Game extends Observable {
 			else{
 				_previousClick = _board.getPiece(x, y);
 				_previousClick.setPossibleMoves();
-				selfCheck(_previousClick);
+				selfCheck(_previousClick, _board);
 			}	
 		}
 		setChanged();
 		notifyObservers();
 	}
 
-	private void selfCheck(Piece piece) {
+	private void selfCheck(Piece piece, Board board) {
 		HashSet<Point> possibleMoves = new HashSet<Point>();
 		Board myBoard = new Board();
 		Game game = new Game(myBoard);
 		for(int i = 0; i < 8; i++){
 			for(int j = 0; j<8; j++){
-				if(_board.getPiece(i, j) !=null){
-					myBoard.setPiece(_board.getPiece(i, j), i, j);
+				if(board.getPiece(i, j) !=null){
+					myBoard.setPiece(board.getPiece(i, j), i, j);
 					myBoard.getPiece(i, j).setGame(game);
 				}
 			}
@@ -242,7 +242,7 @@ public class Game extends Observable {
 
 		}
 		piece.setPossibleMoves(possibleMoves);
-		checkCheck(_board);
+		checkCheck(board);
 
 	}
 
@@ -368,7 +368,7 @@ public class Game extends Observable {
 					if(!_board.isEmpty(i, j)){
 						if(_board.getPiece(i, j).getColor()==_currentPlayer){
 							_board.getPiece(i, j).setPossibleMoves();
-							selfCheck(_board.getPiece(i, j));
+							selfCheck(_board.getPiece(i, j), _board);
 							if(_board.getPiece(i, j).getPossibleMoves().size()!=0){
 								aiPieces.add(_board.getPiece(i, j));
 							}
@@ -402,26 +402,8 @@ public class Game extends Observable {
 				}
 			} while(_board.isEmpty(q.x, q.y));
 			move(selectedPiece, q.x, q.y);
-		}
-	}
 
-	
-	private int getPointDifference(Board board, boolean player){
-		int playerCount = 0;
-		int oppositionCount = 0;
-		for(int i = 0; i< 8; i++){
-			for(int j = 0; j < 8; j++){
-				if(!board.isEmpty(i, j)){
-					if(_board.getPiece(i, j).getColor()==player){
-						playerCount += _board.getPiece(i, j).getValue();
-					}
-					else{
-						oppositionCount += _board.getPiece(i, j).getValue();
-					}
-				}
-			}
 		}
-		return playerCount - oppositionCount;
 	}
 
 	private boolean checkEndGame() {
@@ -430,7 +412,7 @@ public class Game extends Observable {
 				if(!_board.isEmpty(i, j)){
 					if(_board.getPiece(i, j).getColor()==this.getCurrentPlayer()){
 						_board.getPiece(i, j).setPossibleMoves();
-						selfCheck(_board.getPiece(i, j));
+						selfCheck(_board.getPiece(i, j), _board);
 						if(_board.getPiece(i, j).getPossibleMoves().size() !=0){
 							return false;
 						}
@@ -534,7 +516,7 @@ public class Game extends Observable {
 					if(_board.getPiece(i, j).getColor()==color) {
 						//count all the possible moves of each piece of the given color
 						_board.getPiece(i, j).setPossibleMoves();
-						selfCheck(_board.getPiece(i, j));
+						selfCheck(_board.getPiece(i, j), _board);
 						if(_board.getPiece(i, j).getPossibleMoves().size()!=0){
 							System.out.println("Possible moves for " + _board.getPiece(i, j).getUnicode() + " are " + _board.getPiece(i, j).getPossibleMoves().toString());
 						}
