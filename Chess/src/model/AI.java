@@ -12,10 +12,12 @@ public class AI {
 	Game _game;
 	boolean _aiColor;
 	Board _board;
+	int _level;
 	public AI(Game game, boolean aiColor){
 		_game = game;
 		_aiColor = aiColor;
 		_board = _game.getBoard();
+		_level = 2;
 
 	}
 
@@ -91,6 +93,7 @@ public class AI {
 					}
 				}
 			}
+			Collections.shuffle(aiPieces);
 			//iterating over those pieces
 			for(int i = 0; i < aiPieces.size(); i++){
 				Piece currentPiece = aiPieces.get(i);
@@ -133,6 +136,7 @@ public class AI {
 							}
 						}
 					}
+					Collections.shuffle(currentPiecePoints);
 					int lowestValue = Collections.min(currentPiecePoints);
 					myMap.put(pos, lowestValue);
 					temporary.setPiece(null, pos.x, pos.y);
@@ -145,6 +149,7 @@ public class AI {
 			for(int i = 0; i< aiPieces.size(); i++){
 				bestRating.add(aiPieces.get(i).getAIRating());
 			}
+			Collections.shuffle(bestRating);
 			int indexOfCandidate = bestRating.indexOf(Collections.max(bestRating));
 			Piece myPiece = aiPieces.get(indexOfCandidate);
 			Piece actualGamePiece = _game.getBoard().getPiece(myPiece.getLocation().x, myPiece.getLocation().y);

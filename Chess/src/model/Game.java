@@ -294,6 +294,7 @@ public class Game extends Observable {
 			castling = 2;
 		}
 		//check if castling queenside - black
+		//something wrong with castling
 		if(piece.getLocation().equals(new Point(4,0)) && x==2 && y==0) {
 			Rook r = (Rook) _board.getPiece(0,0);
 			_board.setPiece(null, 0, 0);
@@ -352,8 +353,8 @@ public class Game extends Observable {
 		_previousClick = null;
 		// notate the move
 		notate(piece,rank,castling,captured,en_passant,x,y);
-		printBoard();
-		getNumberOfPossibleMoves(_currentPlayer);
+//		printBoard();
+//		getNumberOfPossibleMoves(_currentPlayer);
 		if(getNumberOfPossibleMoves(_currentPlayer) == 0){
 			_stalemate = true;
 			_endGame = true;
@@ -479,14 +480,14 @@ public class Game extends Observable {
 						_board.getPiece(i, j).setPossibleMoves();
 						selfCheck(_board.getPiece(i, j), _board);
 						if(_board.getPiece(i, j).getPossibleMoves().size()!=0){
-							System.out.println("Possible moves for " + _board.getPiece(i, j).getUnicode() + " are " + _board.getPiece(i, j).getPossibleMoves().toString());
+//							System.out.println("Possible moves for " + _board.getPiece(i, j).getUnicode() + " are " + _board.getPiece(i, j).getPossibleMoves().toString());
 						}
 						count += _board.getPiece(i, j).getPossibleMoves().size();
 					}
 				}
 			}
 		}
-		System.out.println("There are "+count+" possible moves for the current player");
+//		System.out.println("There are "+count+" possible moves for the current player");
 		return count;
 	}
 
