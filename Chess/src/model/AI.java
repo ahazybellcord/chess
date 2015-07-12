@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Random;
 
 public class AI {
@@ -227,6 +228,9 @@ public class AI {
 				Point currentLocation = currentPiece.getLocation();
 				HashMap<Point, Integer> map = new HashMap<Point, Integer>();
 				ArrayList<Integer> mp = new ArrayList<Integer>();
+				if(!currentPiece.wasMoved()){
+					currentPiece.setMoved();
+				}
 				for(Point p: currentPiece.getPossibleMoves()){
 					temporary.setPiece(null, currentLocation.x, currentLocation.y);
 					temporary.setPiece(currentPiece, p.x, p.y);
@@ -237,7 +241,7 @@ public class AI {
 						for(int k = 0; k < 8; k++){
 							if(temporary.getPiece(j, k)!=null && temporary.getPiece(j, k).getColor()!=_aiColor){
 								temporary.getPiece(j, k).setPossibleMoves();
-								_game.selfCheck(temporary.getPiece(j, k), temporary);
+//								_game.selfCheck(temporary.getPiece(j, k), temporary);
 								if(temporary.getPiece(j, k).getPossibleMoves().size()!=0){
 									oPieces.add(temporary.getPiece(j, k));
 								}
@@ -247,6 +251,9 @@ public class AI {
 					for(int j = 0; j < oPieces.size(); j++){
 						Piece oPiece = oPieces.get(j);
 						Point oLocation = oPiece.getLocation();
+						if(!oPiece.wasMoved()){
+							oPiece.setMoved();
+						}
 						for(Point q: oPiece.getPossibleMoves()){
 							temporary.setPiece(null, oLocation.x, oLocation.y);
 							temporary.setPiece(oPiece, q.x, q.y);
@@ -266,26 +273,86 @@ public class AI {
 					temporary.setPiece(currentPiece, currentLocation.x, currentLocation.y);
 					currentPiece.setLocation(currentLocation.x, currentLocation.y);
 				}
-				if(level == _level){
-					_mainMap.put(currentPiece, map);
-					_woahMan.put(currentPiece, new ArrayList<HashMap<Point,Integer>>());
+				if(level == 0){
+					_woahMan.put(currentPiece, new ArrayList<HashMap<Point, Integer>>());
+					_woahMan.get(currentPiece).add(level, map);
+				}
+				else if(level != _level){
 					_woahMan.get(currentPiece).add(level, map);
 				}
 				else{
 					_woahMan.get(currentPiece).add(level, map);
-				}
-				if(level == 0){
-					ArrayList<HashMap<Point, Integer>> myList = _woahMan.get(currentPiece);
-					for(int n = 0; n<myList.size(); n++){
-						if(n==_level){
+					ArrayList<HashMap<Point,Integer>> list = _woahMan.get(currentPiece);
+					for(int p = 0; p<list.size(); p++){
+						if(p == _level){
 							break;
 						}
-						for(Point p: myList.get(n).keySet()){
+						HashMap<Point, Integer> m = list.get(p);
+						Map.Entry<Point, Integer> worstMove = null;
+						for (Map.Entry<Point, Integer> entry : m.entrySet()){
+						    if (worstMove == null || entry.getValue().compareTo(worstMove.getValue()) < 0){
+						        worstMove = entry;
+						    }
+						}
+						HashMap<Point, Integer> m2 = list.get(p+1);
+						for(Point s: m2.keySet()){
+							boolean color = currentPiece.getColor();
+							String symbol = currentPiece.getSymbol();
+							Board temp = new Board();
+							Game t = new Game(temp);
+							if(symbol.equals("K")){
+								King k = new King(color, t, s);
+								temp.setPiece(k, s.x, s.y);
+							}
+							else if(symbol.equals("Q")){
+								Queen k = new Queen(color, t, s);
+								temp.setPiece(k, s.x, s.y);
+							}
+							else if(symbol.equals("N")){
+								Knight k = new Knight(color, t, s);
+								temp.setPiece(k, s.x, s.y);
+							}
+							else if(symbol.equals("B")){
+								Bishop k = new Bishop(color, t, s);
+								temp.setPiece(k, s.x, s.y);
+							}
+							else if(symbol.equals("R")){
+								Rook k = new Rook(color, t, s);
+								temp.setPiece(k, s.x, s.y);
+							}
+							else{
+								Pawn k = new Pawn(color, t, s);
+								temp.setPiece(k, s.x, s.y);
+							}
+							temp.getPiece(s.x, s.y).setPossibleMoves();
+							for(Point u: temp.getPiece(s.x, s.y).getPossibleMoves()){
+								if(u.equals(worstMove.getKey())){
+									m2.put(s, m.get(s) + worstMove.getValue());
+								}
+							}
 							
 						}
+						
 					}
 				}
 			}
+			if(level == _level){
+				for(Piece z: _woahMan.keySet()){
+					ArrayList<HashMap<Point, Integer>> finalList = _woahMan.get(z);
+					HashMap<Point, Integer> finalMap = finalList.get(_level);
+					z.setAIMap(finalMap);
+				}
+				ArrayList<Integer> bestRating = new ArrayList<Integer>();
+				for(int i = 0; i< aiPieces.size(); i++){
+					bestRating.add(aiPieces.get(i).getAIRating());
+				}
+				Collections.shuffle(bestRating);
+				int indexOfCandidate = bestRating.indexOf(Collections.max(bestRating));
+				Piece myPiece = aiPieces.get(indexOfCandidate);
+				Piece actualGamePiece = _game.getBoard().getPiece(myPiece.getLocation().x, myPiece.getLocation().y);
+				_game.move(actualGamePiece, myPiece.getAIMove().x, myPiece.getAIMove().y);
+			}
+			
 		}
 		
 		
