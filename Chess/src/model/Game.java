@@ -359,7 +359,7 @@ public class Game extends Observable {
 			_endGame = true;
 		}
 		System.out.println("Stalemate: " + _stalemate);
-		if(_ai){
+		if(isAI()){
 			_aiLogic.move();
 		}
 		setChanged();
@@ -618,6 +618,10 @@ public class Game extends Observable {
 	private int boolToInt(boolean b) {
 		if(b) { return 1; }
 		else return 0;
+	}
+
+	public boolean isAI() {
+		return _ai;
 	}
 
 

@@ -1,7 +1,9 @@
 package model;
 
 import java.awt.Point;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 public class Piece {
 	private boolean _color;
@@ -10,6 +12,9 @@ public class Piece {
 	private int _value;
 	private HashSet<Point> _possibleMoves;
 	private boolean _moved;
+	private HashMap<Point, Integer> _aiMap;
+	private int _aiRating;
+	private Point _aiMove;
 	
 	public Piece(boolean color, Game game, Point location) {
 		_color = color;
@@ -26,6 +31,33 @@ public class Piece {
 
 	public void setGame(Game game){
 		_game = game;
+	}
+	
+	public void setAIMap(HashMap<Point, Integer> map){
+		_aiMap = map;
+		Map.Entry<Point, Integer> bestMove = null;
+		for (Map.Entry<Point, Integer> entry : _aiMap.entrySet())
+		{
+		    if (bestMove == null || entry.getValue().compareTo(bestMove.getValue()) > 0)
+		    {
+		        bestMove = entry;
+		    }
+		}
+		_aiRating = bestMove.getValue();
+		_aiMove = bestMove.getKey();
+		
+	}
+	
+	public int getAIRating(){
+		return _aiRating;
+	}
+	
+	public Point getAIMove(){
+		return _aiMove;
+	}
+	
+	public HashMap<Point, Integer> getAIMap(){
+		return _aiMap;
 	}
 		
 	public boolean getColor() {
