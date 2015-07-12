@@ -405,6 +405,25 @@ public class Game extends Observable {
 		}
 	}
 
+	
+	private int getPointDifference(Board board, boolean player){
+		int playerCount = 0;
+		int oppositionCount = 0;
+		for(int i = 0; i< 8; i++){
+			for(int j = 0; j < 8; j++){
+				if(!board.isEmpty(i, j)){
+					if(_board.getPiece(i, j).getColor()==player){
+						playerCount += _board.getPiece(i, j).getValue();
+					}
+					else{
+						oppositionCount += _board.getPiece(i, j).getValue();
+					}
+				}
+			}
+		}
+		return playerCount - oppositionCount;
+	}
+
 	private boolean checkEndGame() {
 		for(int i = 0; i < 8; i++){
 			for(int j = 0; j<8; j++){
