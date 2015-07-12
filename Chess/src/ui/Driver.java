@@ -189,7 +189,7 @@ public class Driver implements Runnable, Observer {
 		_frame.setMaximumSize(new Dimension(800,800));
 		_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		if(_game.isAI()){
-			_game.getAI().move();
+			_game.getAI().betaMove();
 		}
 	}
 

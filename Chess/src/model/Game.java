@@ -214,7 +214,7 @@ public class Game extends Observable {
 					myBoard.setPiece(null, loc.x, loc.y);
 					myBoard.setPiece(piece, q.x, q.y);
 					piece.setLocation(q.x, q.y);
-					checkCheck(myBoard);
+					checkCheck(game,myBoard);
 					if(isInCheck()){
 						canCastle = false;
 					}
@@ -235,7 +235,7 @@ public class Game extends Observable {
 				}
 				myBoard.setPiece(piece, p.x, p.y);
 				piece.setLocation(p.x, p.y);
-				checkCheck(myBoard);
+				checkCheck(game, myBoard);
 				if(!isInCheck()){
 					possibleMoves.add(p);
 				}
@@ -247,7 +247,7 @@ public class Game extends Observable {
 
 		}
 		piece.setPossibleMoves(possibleMoves);
-		checkCheck(board);
+		checkCheck(this,board);
 
 	}
 
@@ -340,7 +340,7 @@ public class Game extends Observable {
 			handlePawnPromotion(x, y);
 		}
 		this.changePlayers();
-		checkCheck(_board);
+		checkCheck(this, _board);
 		if(isInCheck()){
 			System.out.println("IN CHECK!");
 			if(checkEndGame()){
@@ -360,7 +360,7 @@ public class Game extends Observable {
 		}
 		System.out.println("Stalemate: " + _stalemate);
 		if(isAI()){
-			_aiLogic.move();
+			_aiLogic.betaMove();
 		}
 		setChanged();
 		notifyObservers();
@@ -490,7 +490,7 @@ public class Game extends Observable {
 		return count;
 	}
 
-	public void checkCheck(Board board) {
+	public void checkCheck(Game game, Board board) {
 		removeCheck();
 		// find current player's king
 		Point kingLocation = new Point(0,0);
