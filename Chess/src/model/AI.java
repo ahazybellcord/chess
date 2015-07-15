@@ -43,31 +43,35 @@ public class AI {
 				}
 			}
 			Collections.shuffle(aiPieces);
-			Piece selectedPiece = aiPieces.get(0);
-			HashSet<Point> moves = selectedPiece.getPossibleMoves();
-			Point q = new Point(0,0);
-			boolean canCapture = false;
-			for(Point p: moves){
-				if(!_board.isEmpty(p.x, p.y)){
-					canCapture = true;
-				}
-			}
-			do{
-				int size = moves.size();
-				int randIndex = new Random().nextInt(size); // In real life, the Random object should be rather more shared than this
-				int i = 0;
-				for(Point p : moves)
-				{
-					if (i == randIndex){
-						q=p;
+			if(aiPieces.size()>0){
+				Piece selectedPiece = aiPieces.get(0);
+				HashSet<Point> moves = selectedPiece.getPossibleMoves();
+				Point q = new Point(0,0);
+				boolean canCapture = false;
+				for(Point p: moves){
+					if(!_board.isEmpty(p.x, p.y)){
+						canCapture = true;
 					}
-					i = i + 1;
 				}
-				if(!canCapture){
-					break;
-				}
-			} while(_board.isEmpty(q.x, q.y));
-			_game.move(selectedPiece, q.x, q.y);
+				do{
+					int size = moves.size();
+					int randIndex = new Random().nextInt(size); // In real life, the Random object should be rather more shared than this
+					int i = 0;
+					for(Point p : moves)
+					{
+						if (i == randIndex){
+							q=p;
+						}
+						i = i + 1;
+					}
+					if(!canCapture){
+						break;
+					}
+				} while(_board.isEmpty(q.x, q.y));
+				_game.move(selectedPiece, q.x, q.y);
+			}
+			
+			
 
 		}
 	}
