@@ -58,6 +58,28 @@ public class Game extends Observable {
 		_capturedPieces = new ArrayList<Piece>();
 		getNumberOfPossibleMoves(this.getCurrentPlayer());
 	}
+	
+	// copy constructor
+	public Game(Game game) {
+		_names = new ArrayList<String>();
+		_names.add(this.getNames().get(0));
+		_names.add(this.getNames().get(1));
+		_board = game.getBoard();
+		_promotionChoice = -1;
+		_currentPlayer = game.getCurrentPlayer();
+		_endGame = game.isEndGame();
+		_previousClick = null;
+		_notation = "";
+		_moves = game.getMoves();
+		_gameHistory = game.getGameHistory();
+		_inCheck = game.isInCheck();
+		_pawnPromotion = game.getPawnPromotion();
+		_checkmate = game.isCheckmate();
+		_stalemate = game.isStalemate();
+		_ai = game.isAI();
+		_capturedPieces = game.getCapturedPieces();
+		getNumberOfPossibleMoves(game.getCurrentPlayer());
+	}
 
 	public Game(Board board){
 		_board = board;
