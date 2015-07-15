@@ -225,6 +225,14 @@ public class BoardWindow extends JPanel {
 			}
 			
 		}
+		if(_game.isCheckmate() || _game.isStalemate()){
+			for(int i = 0; i<8; i++){
+				for(int j = 0; j<8; j++){
+					_buttons[i][j].setEnabled(false);
+				}
+			}
+		}
+		
 	}
 	
 	public void theme(String s){

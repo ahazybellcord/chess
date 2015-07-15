@@ -188,9 +188,10 @@ public class Driver implements Runnable, Observer {
 		_frame.add(_boardWindow, BorderLayout.WEST);
 		_frame.add(_infoWindow, BorderLayout.EAST);
 		_infoWindow.add(j);
+		_frame.setBounds(0, 0, 1100, 750);
+		_frame.setPreferredSize(new Dimension(1100,750));
 		_frame.pack();
 		_frame.setVisible(true);
-		_frame.setMaximumSize(new Dimension(800,800));
 		_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		if(_game.isAI()){
 			_game.getAI().move();
@@ -240,7 +241,6 @@ public class Driver implements Runnable, Observer {
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 			_game.setCheckmateFalse();
-			_frame.setEnabled(false);
 			//_game.aiMove();
 		}
 		else if(_game.isStalemate()){
@@ -250,7 +250,6 @@ public class Driver implements Runnable, Observer {
 					"Stalemate",
 					JOptionPane.INFORMATION_MESSAGE);
 			_game.setCheckmateFalse();
-			_frame.setEnabled(false);
 		}
 		else{
 			if(_game.isInCheck()){
