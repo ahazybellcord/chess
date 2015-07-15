@@ -70,9 +70,6 @@ public class AI {
 				} while(_board.isEmpty(q.x, q.y));
 				_game.move(selectedPiece, q.x, q.y);
 			}
-			
-			
-
 		}
 	}
 
