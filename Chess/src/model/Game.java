@@ -361,7 +361,7 @@ public class Game extends Observable {
 		}
 		System.out.println("Stalemate: " + _stalemate);
 		if(isAI()){
-			_aiLogic.betaMove();
+			_aiLogic.move();
 		}
 		setChanged();
 		notifyObservers();

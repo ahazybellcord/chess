@@ -9,9 +9,9 @@ import java.util.Observer;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -182,14 +182,18 @@ public class Driver implements Runnable, Observer {
 		}
 		_boardWindow = new BoardWindow(_game);
 		_infoWindow = new InfoWindow(_game, _boardWindow);
+		_infoWindow.setBounds(0, 0, 400, 800);
+		_infoWindow.setPreferredSize(new Dimension(400,800));
+		JScrollPane j = new JScrollPane(_infoWindow.getComponent(1), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		_frame.add(_boardWindow, BorderLayout.WEST);
 		_frame.add(_infoWindow, BorderLayout.EAST);
+		_infoWindow.add(j);
 		_frame.pack();
 		_frame.setVisible(true);
 		_frame.setMaximumSize(new Dimension(800,800));
 		_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		if(_game.isAI()){
-			_game.getAI().betaMove();
+			_game.getAI().move();
 		}
 	}
 
