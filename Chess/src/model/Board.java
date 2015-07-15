@@ -49,6 +49,10 @@ public class Board {
 		
 	}
 	
+	public Piece[][] getPieces() {
+		return _pieces;
+	}
+	
 	public Piece getPiece(int x, int y) {
 		return _pieces[x][y];
 	}

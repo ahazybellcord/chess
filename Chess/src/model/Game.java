@@ -91,7 +91,7 @@ public class Game extends Observable {
 		return _currentPlayer;
 	}
 
-	private char getRank(int x) {
+	private char getFile(int x) {
 		return (char)(x + 'a');
 	}
 	
@@ -105,8 +105,8 @@ public class Game extends Observable {
 
 	private String getChessCoordinate(int x, int y) {
 		String coordinate = "";
-		coordinate += getRank(x);   //rank
-		coordinate += (8-y);       //file
+		coordinate += getFile(x);   //file
+		coordinate += (8-y);       //rank
 		return coordinate;
 	}
 
@@ -318,7 +318,6 @@ public class Game extends Observable {
 			_capturedPieces.add(_board.getPiece(x, y));
 			captured = true;
 		}
-		char rank = getRank(piece.getLocation().x);
 		_board.setPiece(piece, x, y);
 		piece.setLocation(x,y);
 		if(en_passant){
@@ -334,11 +333,14 @@ public class Game extends Observable {
 
 			}
 		}
+		boolean promotion = false;
 		if(piece.getClass().getName().equals("model.Pawn") && piece.getColor() == true && y == 0){
 			handlePawnPromotion(x, y);
+			promotion = true;
 		}
 		else if(piece.getClass().getName().equals("model.Pawn") && piece.getColor() == false && y == 7){
 			handlePawnPromotion(x, y);
+			promotion = true;
 		}
 		this.changePlayers();
 		checkCheck(this, _board);
@@ -347,12 +349,11 @@ public class Game extends Observable {
 			if(checkEndGame()){
 				this.changePlayers();
 				System.out.println("CHECKMATE!");
-
 			}
 		}
 		_previousClick = null;
 		// notate the move
-		notate(piece,rank,castling,captured,en_passant,x,y);
+		notate(piece,_source,_destination,castling,captured,en_passant,promotion);
 //		printBoard();
 //		getNumberOfPossibleMoves(_currentPlayer);
 		if(getNumberOfPossibleMoves(_currentPlayer) == 0){
@@ -549,44 +550,128 @@ public class Game extends Observable {
 		}
 	}
 
-	//notate which piece is moving and its source
-	private void notate(Piece piece, char rank, int castling, boolean captured, boolean en_passant, int x, int y) {
-		if(_checkmate && _currentPlayer){
-			_notation += (_moves.size()/2 + 1) + ". ";
+	// notate which piece is moving and its source
+	private void notate(Piece piece, Point source, Point destination, int castling, boolean captured, boolean en_passant, boolean pawnPromotion) {
+		if (!_currentPlayer || (_checkmate && _currentPlayer)) { 
+			_notation += (_moves.size()/2 + 1) + ". "; 
 		}
-		else if(_checkmate && !_currentPlayer){
-
+		if (pawnPromotion) {
+			_notation += getChessCoordinate(destination.x,destination.y);
+			_notation += "=";
+			switch (_promotionChoice) {
+				case 0:
+					_notation += "K";
+					break;
+				case 1:
+					_notation += "R";
+					break;
+				case 2:
+					_notation += "Q";
+					break;
+				case 3:
+					_notation += "B";
+					break;
+			}
 		}
-		else if(!_currentPlayer) { _notation += (_moves.size()/2 + 1) + ". "; }
-		if(castling==1) {
+		else if (castling==1) {
 			_notation += "O-O";
 		}
 		else if(castling==2) {
 			_notation += "O-O-O";
 		}
 		else {
-			_notation += piece.getSymbol();
+			// if a pawn capture, add source rank
+			if (piece.getClass().getName().equals("model.Pawn") && captured) {
+				_notation += getFile(source.x);
+			} 
+			else if (piece.getClass().getName().equals("model.Pawn")) {
+				
+			}
+			else {
+				_notation += piece.getSymbol();
+
+				// resolve ambiguities
+				if (!piece.getClass().getName().equals("model.King")) {
+					ArrayList<Piece> shareMoves = new ArrayList<Piece>();
+					for (int i=0; i<8; i++) {
+						for (Piece p : _board.getPieces()[i]) {
+							if (p != null && p.getColor() == !_currentPlayer && p.getClass().getName().equals( piece.getClass().getName() ) && !p.equals(piece)){
+								System.out.println("Found piece at location: " + p.getLocation().x + ", " + p.getLocation().y);
+								System.out.println("Moving piece is going to destintation: " + destination.x + ", " + destination.y);
+								Point dest = new Point (destination.x,destination.y);
+								for (Point pt : p.getPossibleMoves()) {
+									System.out.println("Found piece has possible move: " + pt.x + ", " + pt.y);
+									// Found current player's piece with the same move
+									if (dest.equals(pt)) {
+										System.out.println("Added piece to list");
+										shareMoves.add(p);
+									}
+								}
+							}
+						}	
+					} // found all pieces with same potential move
+					if (shareMoves.size()>0) {	
+						System.out.println("Source is " + source.toString() + " Dest is " + destination.toString());
+						boolean stop = true;
+						for (Piece p : shareMoves) {
+							for (Piece q: shareMoves) {
+								if (!p.equals(q)) {
+									if (p.getLocation().x == q.getLocation().x) {
+										System.out.println("Piece has x location " + p.getLocation().x);
+										System.out.println("While a different piece ");
+										stop = false;
+									}
+								}
+							}
+							if (p.getLocation().x == source.x) {
+								stop = false;
+							}
+						}
+						if (stop) {
+							_notation += getFile(source.x);
+						}
+						else {
+							stop = true;
+							for (Piece p : shareMoves) {
+								for (Piece q: shareMoves) {
+									if (!p.equals(q)) {
+										if (p.getLocation().y == q.getLocation().y) {
+											stop = false;
+										}
+									}
+									if (p.getLocation().y == source.y) {
+										stop = false;
+									}
+								}
+							}
+							if (stop) {
+								_notation += (8-source.y);
+							}
+							else {
+								_notation += getChessCoordinate(source.x,source.y);
+							}
+						}
+					}
+				} 
+			}
 			//if a piece is captured, indicate with 'x'
 			if(captured) { 
-				if(piece.getClass().getName().equals("model.Pawn")) {
-					_notation += rank;
-				}
 				_notation += "x"; 
 			}
-			_notation += getChessCoordinate(x,y);
-			if(en_passant){
-				_notation += "e.p.";
-			}
+			_notation += getChessCoordinate(destination.x,destination.y);	
 		}
+
+		if(en_passant){
+			_notation += "e.p.";
+		}
+
 		if(_checkmate){
 			_notation += "#";
-			_moves.add(_notation);
-			_notation = "";
-			return;
 		}
-		if(this.isInCheck()) {	_notation += "+"; }
+		else if(this.isInCheck()) {	_notation += "+"; }
+		
 		if(_currentPlayer) { _notation += " "; }
-
+		
 		_moves.add(_notation);
 		_notation = "";
 	}
