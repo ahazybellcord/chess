@@ -107,8 +107,10 @@ public class AI {
 				temp.setGame(gTemp);
 				gTemp.setBoard(temp);
 				gTemp.move(aiPieces.get(i), p.x, p.y);
-				gameTree.root.children.add();
-				
+				Node<Board> n = new Node<Board>();
+				n.data = temp;
+				n.parent = gameTree.root;
+				gameTree.root.children.add(n);
 				//creating a temporary board
 				
 			}

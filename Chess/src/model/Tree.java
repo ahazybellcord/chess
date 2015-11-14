@@ -13,8 +13,8 @@ public class Tree<T> {
     }
 
     public static class Node<T> {
-        private T data;
-        private Node<T> parent;
+        T data;
+        Node<T> parent;
         ArrayList<Node<T>> children;
     }
 }
