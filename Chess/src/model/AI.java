@@ -74,12 +74,32 @@ public class AI {
 	}
 	
 	public void treeMove(){
-		Tree<Board> gameTree = new Tree<Board>(_game.getBoard());
-		int layer = 3; 
-		while(layer>=0){
-			gameTree.getRoot().getChildren().add(null);
-			layer--;
+		Board temporary = new Board();
+		Game temporaryGame = new Game(temporary);
+		//creating a temporary board
+		for(int i = 0; i<8; i++){
+			for(int j = 0; j<8; j++){
+				if(_game.getBoard().getPiece(i, j)!=null){
+					temporary.setPiece(_game.getBoard().getPiece(i, j), i, j);
+					temporary.getPiece(i, j).setGame(temporaryGame);
+				}
+			}
 		}
+		Tree<Board> gameTree = new Tree<Board>(temporary);
+		ArrayList<Piece> aiPieces = new ArrayList<Piece>();
+		for(int i = 0; i<8; i++){
+			for(int j = 0; j<8; j++){
+				if(temporary.getPiece(i, j)!=null && temporary.getPiece(i, j).getColor() == _aiColor){
+					temporary.getPiece(i, j).setPossibleMoves();
+					_game.selfCheck(temporary.getPiece(i, j), temporary);
+					if(temporary.getPiece(i, j).getPossibleMoves().size()!=0){
+						aiPieces.add(temporary.getPiece(i, j));
+					}
+				}
+			}
+		}
+		
+		
 		
 	}
 
