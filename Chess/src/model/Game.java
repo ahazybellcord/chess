@@ -574,7 +574,7 @@ public class Game extends Observable {
 
 	// notate which piece is moving and its source
 	private void notate(Piece piece, Point source, Point destination, int castling, boolean captured, boolean en_passant, boolean pawnPromotion) {
-		if (!_currentPlayer || (_checkmate && _currentPlayer)) { 
+		if ((!_currentPlayer && !_checkmate) || (_currentPlayer && _checkmate)) { 
 			_notation += (_moves.size()/2 + 1) + ". "; 
 		}
 		if (pawnPromotion) {
