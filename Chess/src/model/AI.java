@@ -72,6 +72,16 @@ public class AI {
 			}
 		}
 	}
+	
+	public void treeMove(){
+		Tree<Board> gameTree = new Tree<Board>(_game.getBoard());
+		int layer = 3; 
+		while(layer>=0){
+			gameTree.getRoot().getChildren().add(null);
+			layer--;
+		}
+		
+	}
 
 	public void betaMove(){
 		if(_game.getCurrentPlayer() == _aiColor){
