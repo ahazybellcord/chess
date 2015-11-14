@@ -57,6 +57,10 @@ public class Board {
 		return _pieces[x][y];
 	}
 	
+	public void setGame(Game game){
+		_game = game;
+	}
+	
 	public Point getLocation(Piece piece) {
 		for(int i=0; i<8; i++) {
 			for(int j=0; j<8; j++) {

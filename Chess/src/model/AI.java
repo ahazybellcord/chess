@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 
+import model.Tree.Node;
+
 public class AI {
 
 	Game _game;
@@ -98,7 +100,19 @@ public class AI {
 				}
 			}
 		}
-		
+		for(int i = 0; i<aiPieces.size(); i++){
+			for(Point p: aiPieces.get(i).getPossibleMoves()){
+				Board temp = temporary;
+				Game gTemp = temporaryGame;
+				temp.setGame(gTemp);
+				gTemp.setBoard(temp);
+				gTemp.move(aiPieces.get(i), p.x, p.y);
+				gameTree.root.children.add();
+				
+				//creating a temporary board
+				
+			}
+		}
 		
 		
 	}

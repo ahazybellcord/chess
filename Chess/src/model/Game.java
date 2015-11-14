@@ -80,6 +80,10 @@ public class Game extends Observable {
 		_capturedPieces = game.getCapturedPieces();
 		getNumberOfPossibleMoves(game.getCurrentPlayer());
 	}
+	
+	public void setBoard(Board board){
+		_board = board;
+	}
 
 	public Game(Board board){
 		_board = board;
