@@ -90,13 +90,13 @@ public class AI {
 				}
 			}
 		}
-		for(int i = 0; i<aiPieces.size(); i++){
-			for(Point p: aiPieces.get(i).getPossibleMoves()){
+		for (Piece aiPiece : aiPieces) {
+			for (Point p : aiPiece.getPossibleMoves()) {
 				Board temp = temporary;
 				Game gTemp = temporaryGame;
 				temp.setGame(gTemp);
 				gTemp.setBoard(temp);
-				gTemp.move(aiPieces.get(i), p.x, p.y);
+				gTemp.move(aiPiece, p.x, p.y);
 				Node<Board> n = new Node<Board>();
 				n.data = temp;
 				n.parent = gameTree.root;

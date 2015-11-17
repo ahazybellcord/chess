@@ -16,7 +16,7 @@ public class Board {
 		_pieces = new Piece[8][8];
 	}
 	
-	public void makePieces() {
+	private void makePieces() {
 		Boolean color = true;
 		int position = 7;
 		for(int i = 0; i<2; i++){

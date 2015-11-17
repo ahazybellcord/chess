@@ -61,7 +61,7 @@ class Driver implements Runnable, Observer {
 		        }
 		    }
 		});
-		int n = -1;
+		int n;
 		Object[] options = {"New Game",
 		"Load Game"};
 		n = JOptionPane.showOptionDialog(_frame,

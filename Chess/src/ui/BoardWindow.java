@@ -8,7 +8,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
-public class BoardWindow extends JPanel {
+class BoardWindow extends JPanel {
 	private Game _game;
 	private BoardButton[][] _buttons;
 	private JButton[][] _sideButtons;
@@ -226,33 +226,35 @@ public class BoardWindow extends JPanel {
 	}
 	
 	public void theme(String s){
-		if(s.equals("Wooden")){
-			_altColor = new Color(222, 185, 119);
-			_mainColor = new Color(247, 206, 132);
-		}
-		else if(s.equals("Civil War")){
-			_altColor = new Color(92, 129, 152);
-			_mainColor = new Color(140, 150, 155);
-		}
-		else if(s.equals("Aegean")){
-			_altColor = new Color(94, 147, 207);
-			_mainColor = new Color(127, 176, 231);
-		}
-		else if(s.equals("Burnt")){
-			_altColor = new Color(153, 142, 17);
-			_mainColor = new Color(203, 189, 22);
-		}
-		else if(s.equals("WinBoard")){
-			_altColor = new Color(112, 160, 104);
-			_mainColor = new Color(200, 192, 96);
-		}
-		else if(s.equals("Tournament")){
-			_altColor = new Color(103, 134, 66);
-			_mainColor = new Color(236, 233, 200);
-		}
-		else{
-			_altColor = new Color(209,236,237);
-			_mainColor = new JButton().getBackground();
+		switch (s) {
+			case "Wooden":
+				_altColor = new Color(222, 185, 119);
+				_mainColor = new Color(247, 206, 132);
+				break;
+			case "Civil War":
+				_altColor = new Color(92, 129, 152);
+				_mainColor = new Color(140, 150, 155);
+				break;
+			case "Aegean":
+				_altColor = new Color(94, 147, 207);
+				_mainColor = new Color(127, 176, 231);
+				break;
+			case "Burnt":
+				_altColor = new Color(153, 142, 17);
+				_mainColor = new Color(203, 189, 22);
+				break;
+			case "WinBoard":
+				_altColor = new Color(112, 160, 104);
+				_mainColor = new Color(200, 192, 96);
+				break;
+			case "Tournament":
+				_altColor = new Color(103, 134, 66);
+				_mainColor = new Color(236, 233, 200);
+				break;
+			default:
+				_altColor = new Color(209, 236, 237);
+				_mainColor = new JButton().getBackground();
+				break;
 		}
 		update();
 	}

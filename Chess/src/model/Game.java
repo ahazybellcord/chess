@@ -98,7 +98,7 @@ public class Game extends Observable {
 		return _names;
 	}
 
-	public ArrayList<String> getGameHistory() {
+	private ArrayList<String> getGameHistory() {
 		return _gameHistory;
 	}
 
@@ -141,7 +141,7 @@ public class Game extends Observable {
 		_inCheck = true;
 	}
 
-	public void removeCheck() {
+	private void removeCheck() {
 		_inCheck = false;
 	}
 
@@ -233,7 +233,7 @@ public class Game extends Observable {
 				}
 				boolean canCastle = true;
 				for(Point q: defaultSide){
-					Piece temperory = null;
+					Piece temporary = null;
 					myBoard.setPiece(null, loc.x, loc.y);
 					myBoard.setPiece(piece, q.x, q.y);
 					piece.setLocation(q.x, q.y);
@@ -241,7 +241,7 @@ public class Game extends Observable {
 					if(isInCheck()){
 						canCastle = false;
 					}
-					myBoard.setPiece(temperory, q.x, q.y);
+					myBoard.setPiece(temporary, q.x, q.y);
 					myBoard.setPiece(piece, loc.x, loc.y);
 					piece.setLocation(loc.x, loc.y);
 				}
@@ -251,10 +251,10 @@ public class Game extends Observable {
 
 			}
 			else{
-				Piece temperory = null;
+				Piece temporary = null;
 				myBoard.setPiece(null, loc.x, loc.y);
 				if(!myBoard.isEmpty(p.x, p.y)){
-					temperory = myBoard.getPiece(p.x, p.y);
+					temporary = myBoard.getPiece(p.x, p.y);
 				}
 				myBoard.setPiece(piece, p.x, p.y);
 				piece.setLocation(p.x, p.y);
@@ -263,7 +263,7 @@ public class Game extends Observable {
 					possibleMoves.add(p);
 				}
 
-				myBoard.setPiece(temperory, p.x, p.y);
+				myBoard.setPiece(temporary, p.x, p.y);
 				myBoard.setPiece(piece, loc.x, loc.y);
 				piece.setLocation(loc.x, loc.y);	
 			}
@@ -491,10 +491,9 @@ public class Game extends Observable {
 	public void setAI(boolean aiColor){
 		_ai = true;
 		_aiLogic = new AI(this, aiColor);
-		boolean _aiColor = aiColor;
 	}
 
-	public int getNumberOfPossibleMoves(boolean color) {
+	private int getNumberOfPossibleMoves(boolean color) {
 		int count=0;
 		for(int i=0; i<8; i++) {
 			for(int j=0; j<8; j++) {
@@ -503,9 +502,9 @@ public class Game extends Observable {
 						//count all the possible moves of each piece of the given color
 						_board.getPiece(i, j).setPossibleMoves();
 						selfCheck(_board.getPiece(i, j), _board);
-						if(_board.getPiece(i, j).getPossibleMoves().size()!=0){
+//						if(_board.getPiece(i, j).getPossibleMoves().size()!=0){
 //							System.out.println("Possible moves for " + _board.getPiece(i, j).getUnicode() + " are " + _board.getPiece(i, j).getPossibleMoves().toString());
-						}
+//						}
 						count += _board.getPiece(i, j).getPossibleMoves().size();
 					}
 				}
@@ -515,7 +514,7 @@ public class Game extends Observable {
 		return count;
 	}
 
-	public void checkCheck(Board board) {
+	private void checkCheck(Board board) {
 		removeCheck();
 		// find current player's king
 		Point kingLocation = new Point(0,0);
@@ -622,7 +621,7 @@ public class Game extends Observable {
 						for (Piece p : _board.getPieces()[i]) {
 							if (p != null && p.getColor() == !_currentPlayer && p.getClass().getName().equals( piece.getClass().getName() ) && !p.equals(piece)){
 								System.out.println("Found piece at location: " + p.getLocation().x + ", " + p.getLocation().y);
-								System.out.println("Moving piece is going to destintation: " + destination.x + ", " + destination.y);
+								System.out.println("Moving piece is going to destination: " + destination.x + ", " + destination.y);
 								Point dest = new Point (destination.x,destination.y);
 								for (Point pt : p.getPossibleMoves()) {
 									System.out.println("Found piece has possible move: " + pt.x + ", " + pt.y);
@@ -706,8 +705,8 @@ public class Game extends Observable {
 		game += _names.get(0) + "\n";
 		game += _names.get(1) + "\n";
 		System.out.println("Moves: " + _moves.toString());
-		for(int i = 0; i<_moves.size(); i++){
-			game += _moves.get(i);
+		for (String _move : _moves) {
+			game += _move;
 			game += " ";
 		}
 

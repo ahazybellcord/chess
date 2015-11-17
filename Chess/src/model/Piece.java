@@ -14,7 +14,7 @@ public class Piece {
 	private boolean _moved;
 
 	
-	public Piece(boolean color, Game game, Point location) {
+	Piece(boolean color, Game game, Point location) {
 		_color = color;
 		_game = game;
 		_location = location;
@@ -23,7 +23,7 @@ public class Piece {
 		_moved = false;
 	}
 	
-	public Game getGame() {
+	Game getGame() {
 		return _game;
 	}
 
@@ -47,7 +47,7 @@ public class Piece {
 		return _value;
 	}
 
-	public void setValue(int value) {
+	void setValue(int value) {
 		_value = value;
 	}
 	
@@ -59,21 +59,15 @@ public class Piece {
 		return _moved;
 	}
 	
-	public boolean checkMove(int x, int y) {
+	boolean checkMove(int x, int y) {
 		Board b = this.getGame().getBoard();
-		if(b.isEmpty(x, y)){
-			 return true;
-		}
-		else return b.getPiece(x, y).getColor()!=this.getColor();
+		return b.isEmpty(x, y) || b.getPiece(x, y).getColor() != this.getColor();
 	}
 	
 	//checks for an opponent's piece on the board at (x,y)
-	public boolean checkOpponent(int x, int y) {
+	boolean checkOpponent(int x, int y) {
 		Board b = this.getGame().getBoard();
-		if(!b.isEmpty(x, y)){
-			return b.getPiece(x,y).getColor()!=this.getColor();
-		}
-		else return false; 
+		return !b.isEmpty(x, y) && b.getPiece(x, y).getColor() != this.getColor();
 	}
 
 	public boolean moveIsValid(Point location) {
