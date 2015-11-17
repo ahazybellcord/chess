@@ -1,11 +1,10 @@
 package tests;
 
-import java.awt.Point;
-
 import model.Game;
 import model.Pawn;
-
 import org.junit.Test;
+
+import java.awt.*;
 
 public class PawnTest {
 

@@ -1,6 +1,6 @@
 package model;
 
-import java.awt.Point;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;

@@ -1,6 +1,6 @@
 package model;
 
-import java.awt.Point;
+import java.awt.*;
 
 public class Bishop extends Piece{
 	

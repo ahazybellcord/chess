@@ -1,21 +1,13 @@
 package ui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+import model.Game;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
-
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-import model.Game;
 
 public class Driver implements Runnable, Observer {
 	private JFrame _frame;
@@ -53,7 +45,7 @@ public class Driver implements Runnable, Observer {
 		        	JFileChooser chooser = new JFileChooser();
 		        	chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		        	int result = chooser.showSaveDialog(_frame);
-		        	if(result == chooser.APPROVE_OPTION){
+		        	if(result == JFileChooser.APPROVE_OPTION){
 		        		File myFile = chooser.getSelectedFile();
 		        		if(myFile.getAbsolutePath().lastIndexOf('.') == -1){
 		        			myFile = new File(myFile.getAbsolutePath()+".pgn");

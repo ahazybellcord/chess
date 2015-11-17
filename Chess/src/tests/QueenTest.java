@@ -1,12 +1,10 @@
 package tests;
 
-import java.awt.Point;
-
 import model.Game;
 import model.Queen;
-import model.Rook;
-
 import org.junit.Test;
+
+import java.awt.*;
 
 public class QueenTest {
 

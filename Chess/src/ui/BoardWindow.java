@@ -1,20 +1,12 @@
 package ui;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.Point;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-
 import model.Game;
 import model.Piece;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import java.awt.*;
 
 public class BoardWindow extends JPanel {
 	private Game _game;
@@ -267,12 +259,7 @@ public class BoardWindow extends JPanel {
 		update();
 	}
 	public void beginnerMode(String s){
-		if(s.equals("Off")){
-			_beginnerMode = false;
-		}
-		else{
-			_beginnerMode = true;
-		}
+		_beginnerMode = !s.equals("Off");
 		update();
 	}
 

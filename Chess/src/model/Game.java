@@ -1,14 +1,12 @@
 package model;
 
-import java.awt.Point;
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Observable;
-import java.util.Random;
 
 public class Game extends Observable {
 	private Board _board;
