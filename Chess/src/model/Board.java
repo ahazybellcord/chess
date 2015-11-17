@@ -61,15 +61,17 @@ public class Board {
 		_game = game;
 	}
 	
-	public Point getLocation(Piece piece) {
-		for(int i=0; i<8; i++) {
-			for(int j=0; j<8; j++) {
-				if(_pieces[i][j].equals(piece)) { return new Point(i,j); }
-			}
-		}
-		return null;
-	}
-	
+// --Commented out by Inspection START (11/17/15, 4:17 PM):
+//	public Point getLocation(Piece piece) {
+//		for(int i=0; i<8; i++) {
+//			for(int j=0; j<8; j++) {
+//				if(_pieces[i][j].equals(piece)) { return new Point(i,j); }
+//			}
+//		}
+//		return null;
+//	}
+// --Commented out by Inspection STOP (11/17/15, 4:17 PM)
+
 	public boolean isEmpty(int x, int y){
 		return _pieces[x][y]==null;
 	}

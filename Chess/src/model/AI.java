@@ -7,11 +7,10 @@ import java.util.*;
 
 public class AI {
 
-	Game _game;
-	boolean _aiColor;
-	Board _board;
-	HashMap<Piece, HashMap<Point,Integer>> _mainMap;
-	HashMap<Piece, ArrayList<HashMap<Point, Integer>>> _woahMan;
+	private final Game _game;
+	private final boolean _aiColor;
+	private final Board _board;
+
 	public AI(Game game, boolean aiColor){
 		_game = game;
 		_aiColor = aiColor;
@@ -103,7 +102,7 @@ public class AI {
 				n.parent = gameTree.root;
 				gameTree.root.children.add(n);
 				//creating a temporary board
-				
+
 			}
 		}
 		

@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-public class Tree<T> {
+class Tree<T> {
     Node<T> root;
 
     public Tree(T rootData) {

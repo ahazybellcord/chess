@@ -8,11 +8,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class InfoWindow extends JPanel{
-	private Game _game;
-	private JPanel _whitePanel;
-	private JPanel _blackPanel;
-	private BoardWindow _boardWindow;
+class InfoWindow extends JPanel{
+	private final Game _game;
+	private final JPanel _whitePanel;
+	private final JPanel _blackPanel;
+	private final BoardWindow _boardWindow;
 	
 	public InfoWindow(Game game, BoardWindow boardWindow){
 		_game = game;
@@ -100,7 +100,7 @@ public class InfoWindow extends JPanel{
 		
 	}
 	
-	public class ThemeHandler implements ActionListener{
+	private class ThemeHandler implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -109,7 +109,7 @@ public class InfoWindow extends JPanel{
 	        _boardWindow.theme(selected);
 		}
 	}
-	public class BeginnerHandler implements ActionListener{
+	private class BeginnerHandler implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {

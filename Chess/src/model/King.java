@@ -23,7 +23,7 @@ public class King extends Piece{
 		checkCastlingQueenside(this.getColor());
 	}
 	
-	public void checkCastlingKingside(boolean color) {
+	private void checkCastlingKingside(boolean color) {
 		Board b = this.getGame().getBoard();
 		if(color){
 			if(b.getPiece(7,7)!=null && b.getPiece(4,7)!=null){
@@ -53,7 +53,7 @@ public class King extends Piece{
 		}
 	}
 	
-	public void checkCastlingQueenside(boolean color) {
+	private void checkCastlingQueenside(boolean color) {
 		Board b = this.getGame().getBoard();
 		if(color){
 			if(b.getPiece(0,7)!=null && b.getPiece(4,7)!=null){

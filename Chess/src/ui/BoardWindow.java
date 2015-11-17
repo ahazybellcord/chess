@@ -13,10 +13,8 @@ public class BoardWindow extends JPanel {
 	private BoardButton[][] _buttons;
 	private JButton[][] _sideButtons;
 	private JButton[][] _bottomButtons;
-	private Color _borderColor;
 	private Color _altColor;
 	private Color _mainColor;
-	private Color _possibleMovesColor;
 	private Color _highlightColor;
 	private Color _possibleCaptureColor;
 	private Boolean _beginnerMode;
@@ -26,9 +24,9 @@ public class BoardWindow extends JPanel {
 		_beginnerMode = true;
 		_buttons = new BoardButton[8][8];
 		_mainColor = new JButton().getBackground();
-		_borderColor = Color.GRAY;
+		Color _borderColor = Color.GRAY;
 		_altColor = new Color(209,236,237);
-		_possibleMovesColor = Color.GRAY;
+		Color _possibleMovesColor = Color.GRAY;
 		_highlightColor = Color.BLUE;
 		_possibleCaptureColor = new Color(131,146,159);
 		JPanel sidePanel = new JPanel();

@@ -3,8 +3,8 @@ package model;
 import java.awt.*;
 
 public class Pawn extends Piece{
-	boolean _special;
-	boolean _justMoved;
+	private boolean _special;
+	private boolean _justMoved;
 
 	public Pawn(boolean color, Game game, Point location) {
 		super(color,game,location);
@@ -13,7 +13,7 @@ public class Pawn extends Piece{
 		_justMoved = false;
 	}
     
-	public boolean wasJustMoved() {
+	private boolean wasJustMoved() {
 		return _justMoved;
 	}
 
@@ -126,7 +126,7 @@ public class Pawn extends Piece{
 		}
 	}
 	
-	public boolean checkEmpty(int x, int y) {
+	private boolean checkEmpty(int x, int y) {
 		return this.getGame().getBoard().isEmpty(x, y);
 	}
 	

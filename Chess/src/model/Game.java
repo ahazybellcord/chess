@@ -24,7 +24,6 @@ public class Game extends Observable {
 	private boolean _endGame;
 	private boolean _stalemate;
 	private boolean _ai;
-	private boolean _aiColor;
 	private Point _source;
 	private Point _destination;
 	private AI _aiLogic;
@@ -138,7 +137,7 @@ public class Game extends Observable {
 		return _endGame;
 	}
 
-	public void putInCheck() {
+	private void putInCheck() {
 		_inCheck = true;
 	}
 
@@ -150,7 +149,7 @@ public class Game extends Observable {
 		return _capturedPieces;
 	}
 
-	public void changePlayers() {
+	private void changePlayers() {
 		_currentPlayer = !_currentPlayer;
 	}
 
@@ -238,7 +237,7 @@ public class Game extends Observable {
 					myBoard.setPiece(null, loc.x, loc.y);
 					myBoard.setPiece(piece, q.x, q.y);
 					piece.setLocation(q.x, q.y);
-					checkCheck(game,myBoard);
+					checkCheck(myBoard);
 					if(isInCheck()){
 						canCastle = false;
 					}
@@ -259,7 +258,7 @@ public class Game extends Observable {
 				}
 				myBoard.setPiece(piece, p.x, p.y);
 				piece.setLocation(p.x, p.y);
-				checkCheck(game, myBoard);
+				checkCheck(myBoard);
 				if(!isInCheck()){
 					possibleMoves.add(p);
 				}
@@ -271,7 +270,7 @@ public class Game extends Observable {
 
 		}
 		piece.setPossibleMoves(possibleMoves);
-		checkCheck(this,board);
+		checkCheck(board);
 
 	}
 
@@ -358,16 +357,16 @@ public class Game extends Observable {
 			}
 		}
 		boolean promotion = false;
-		if(piece.getClass().getName().equals("model.Pawn") && piece.getColor() == true && y == 0){
+		if(piece.getClass().getName().equals("model.Pawn") && piece.getColor() && y == 0){
 			handlePawnPromotion(x, y);
 			promotion = true;
 		}
-		else if(piece.getClass().getName().equals("model.Pawn") && piece.getColor() == false && y == 7){
+		else if(piece.getClass().getName().equals("model.Pawn") && !piece.getColor() && y == 7){
 			handlePawnPromotion(x, y);
 			promotion = true;
 		}
 		this.changePlayers();
-		checkCheck(this, _board);
+		checkCheck(_board);
 		if(isInCheck()){
 			System.out.println("IN CHECK!");
 			if(checkEndGame()){
@@ -492,7 +491,7 @@ public class Game extends Observable {
 	public void setAI(boolean aiColor){
 		_ai = true;
 		_aiLogic = new AI(this, aiColor);
-		_aiColor = aiColor;
+		boolean _aiColor = aiColor;
 	}
 
 	public int getNumberOfPossibleMoves(boolean color) {
@@ -516,7 +515,7 @@ public class Game extends Observable {
 		return count;
 	}
 
-	public void checkCheck(Game game, Board board) {
+	public void checkCheck(Board board) {
 		removeCheck();
 		// find current player's king
 		Point kingLocation = new Point(0,0);
@@ -550,29 +549,31 @@ public class Game extends Observable {
 
 	}
 
-	// a cute text representation of the board to test model-UI updating
-	void printBoard(Board board) {
-		for(int i = 0; i < 8; i++){
-			System.out.print(8-i + " ");
-			for(int j = 0; j<8; j++){
-				if(!board.isEmpty(j, i)){
-					System.out.print(board.getPiece(j, i).getUnicode()+' ');
-				}
-				else{
-					System.out.print('\u3000');
-					System.out.print('\u2006');
-
-				}
-			}
-			System.out.println("");
-		}
-		System.out.print('\u3000');
-		System.out.print('\u2006');
-		for(int i =0; i<8; i++){
-			System.out.print((char)('a'+i));
-			System.out.print('\u3000');
-		}
-	}
+// --Commented out by Inspection START (11/17/15, 4:18 PM):
+//	// a cute text representation of the board to test model-UI updating
+//	void printBoard(Board board) {
+//		for(int i = 0; i < 8; i++){
+//			System.out.print(8-i + " ");
+//			for(int j = 0; j<8; j++){
+//				if(!board.isEmpty(j, i)){
+//					System.out.print(board.getPiece(j, i).getUnicode()+' ');
+//				}
+//				else{
+//					System.out.print('\u3000');
+//					System.out.print('\u2006');
+//
+//				}
+//			}
+//			System.out.println("");
+//		}
+//		System.out.print('\u3000');
+//		System.out.print('\u2006');
+//		for(int i =0; i<8; i++){
+//			System.out.print((char)('a'+i));
+//			System.out.print('\u3000');
+//		}
+//	}
+// --Commented out by Inspection STOP (11/17/15, 4:18 PM)
 
 	// notate which piece is moving and its source
 	private void notate(Piece piece, Point source, Point destination, int castling, boolean captured, boolean en_passant, boolean pawnPromotion) {
@@ -724,11 +725,13 @@ public class Game extends Observable {
 		}
 	}
 
-	// a helper method to create the save file
-	private int boolToInt(boolean b) {
-		if(b) { return 1; }
-		else return 0;
-	}
+// --Commented out by Inspection START (11/17/15, 4:18 PM):
+//	// a helper method to create the save file
+//	private int boolToInt(boolean b) {
+//		if(b) { return 1; }
+//		else return 0;
+//	}
+// --Commented out by Inspection STOP (11/17/15, 4:18 PM)
 
 	public boolean isAI() {
 		return _ai;

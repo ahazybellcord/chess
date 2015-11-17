@@ -9,13 +9,13 @@ import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
 
-public class Driver implements Runnable, Observer {
+class Driver implements Runnable, Observer {
 	private JFrame _frame;
 	private Game _game;
 	private BoardWindow _boardWindow;
 	private InfoWindow _infoWindow;
 
-	public Driver(String[] args) {
+	private Driver(String[] args) {
 		if(args.length==0 || args.length==2){
 			_game = new Game(args);
 			_game.addObserver(this);
